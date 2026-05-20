@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overview — Conductor Task Mgmt Prototype</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../theme.js"></script>
+  <script src="task-data.js"></script>
+  <script>window.CURRENT_APP_TAB = 'overview';</script>
+  <script src="topnav.js"></script>
+  <script src="task-drawer.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    body { background: #020617; }
+
+    .top-tab {
+      padding: 0.625rem 0.875rem;
+      font-size: 0.8125rem;
+      color: rgb(148 163 184);
+      cursor: pointer;
+      transition: color .12s;
+      border-bottom: 2px solid transparent;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .top-tab:hover { color: rgb(241 245 249); }
+    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+  </style>
+</head>
+
+<body class="text-slate-300 font-sans min-h-screen antialiased">
+
+  <div id="topnav-root"></div>
+
+  <!-- Helper strip linking back to outline -->
+  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2">
+    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Prototype mock · <a href="../index.html" class="text-orange-400 hover:text-orange-300 underline">PRD outline</a> · <a href="index.html" class="text-orange-400 hover:text-orange-300 underline">prototype index</a></span>
+  </div>
+
+  <main class="max-w-[1280px] mx-auto px-6 py-8">
+
+    <!-- Hello + stats row -->
+    <div class="flex items-start justify-between gap-6 mb-8">
+      <div>
+        <h1 class="text-3xl font-semibold text-slate-100 tracking-tight">Hello, Maya!</h1>
+        <div id="header-stats" class="flex items-center gap-3 mt-2 text-xs text-slate-500">
+          <!-- rendered by JS -->
+        </div>
+        <div class="flex items-center gap-2 mt-4">
+          <span class="text-[11px] uppercase tracking-wider text-slate-500">VIEW AS</span>
+          <button class="px-2.5 py-1 rounded-md text-xs bg-slate-800 text-slate-400 border border-slate-700">Travel Advisor</button>
+          <button class="px-2.5 py-1 rounded-md text-xs bg-orange-500/15 text-orange-300 border border-orange-500/40">Ops Associate</button>
+        </div>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 flex items-center gap-4">
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="text-center">
+          <div class="text-sm font-mono text-slate-100">7:46<span class="text-slate-500"> AM</span></div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Austin</div>
+        </div>
+        <div class="text-center">
+          <div class="text-sm font-mono text-slate-100">1:46<span class="text-slate-500"> PM</span></div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">London</div>
+        </div>
+        <div class="text-center">
+          <div class="text-sm font-mono text-slate-100">8:46<span class="text-slate-500"> PM</span></div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Manila</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2-column body: main + right inbox -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- LEFT (2/3) -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Needs your review (NEW — uniform AI review pattern roll-up) -->
+        <section id="needs-review-section">
+          <!-- rendered by JS -->
+        </section>
+
+        <!-- Important tasks -->
+        <section>
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <h2 class="text-sm font-semibold text-slate-200">Important tasks</h2>
+            <span class="px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-mono">2</span>
+            <div class="flex-1"></div>
+            <button class="px-2 py-0.5 rounded-md bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[11px]">Mine</button>
+            <button class="px-2 py-0.5 rounded-md text-slate-500 text-[11px] hover:text-slate-300">All</button>
+          </div>
+
+          <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-2">This week</div>
+
+          <a href="task-board.html#task=tsk-003" class="block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-orange-500/40 transition-colors group mb-3">
+            <div class="flex items-start gap-3">
+              <span class="text-red-400 text-base mt-0.5">⚡</span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-3 mb-1">
+                  <span class="text-sm font-medium text-slate-100 group-hover:text-orange-300 transition-colors">Rebook: Whitman LH441 IAD→FRA cancelled</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-red-500/10 text-red-400 border border-red-500/30 flex-shrink-0">DISRUPTION · IN 30M</span>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">LH441 cancelled 8 hrs before depart. 3 same-day alternatives identified.</p>
+                <div class="text-[11px] text-orange-400 mt-2">Open trip →</div>
+              </div>
+            </div>
+          </a>
+
+          <a href="task-board.html#task=tsk-007" class="block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-orange-500/40 transition-colors group">
+            <div class="flex items-start gap-3">
+              <span class="text-amber-400 text-base mt-0.5">💰</span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-3 mb-1">
+                  <span class="text-sm font-medium text-slate-100 group-hover:text-orange-300 transition-colors">Payment chase: Bowman deposit overdue 8d</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30 flex-shrink-0">PAYMENT · DUE TODAY</span>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">Deposit invoice sent May 7. No payment, 1 reminder sent May 12. Booking voids at 14d.</p>
+                <div class="text-[11px] text-orange-400 mt-2">Open trip →</div>
+              </div>
+            </div>
+          </a>
+        </section>
+
+        <!-- Bookings this week -->
+        <section>
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <h2 class="text-sm font-semibold text-slate-200">Bookings this week</h2>
+            <div class="flex-1"></div>
+            <a href="#" class="text-[11px] text-orange-400 hover:text-orange-300">View all →</a>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs text-slate-400 flex items-center gap-2">
+            <span class="text-green-400">✓</span>
+            <span>0 bookings pending this week</span>
+          </div>
+        </section>
+
+        <!-- Current & upcoming trips -->
+        <section>
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <h2 class="text-sm font-semibold text-slate-200">Current & upcoming trips</h2>
+            <span class="px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-mono">5</span>
+            <div class="flex-1"></div>
+            <a href="trips.html" class="text-[11px] text-orange-400 hover:text-orange-300">View all →</a>
+          </div>
+          <div id="trips-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT (1/3) — Inbox panel -->
+      <aside class="space-y-3">
+        <div id="inbox-panel" class="bg-slate-900 border border-slate-800 rounded-lg p-5 text-center">
+          <!-- rendered by JS -->
+        </div>
+
+        <!-- Uniform pattern explainer (so stakeholders know what they're looking at) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+            <span class="text-[11px] uppercase tracking-wider text-orange-300 font-semibold">Uniform AI review</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed mb-2">
+            Orange = AI did something, your turn. The same pattern shows up everywhere:
+          </p>
+          <ul class="text-[11px] text-slate-400 space-y-1 list-disc list-inside">
+            <li>Top-nav counts roll up per surface</li>
+            <li>"Needs your review" lists here as the homepage roll-up</li>
+            <li>Inline AI suggestion bubbles in Chat threads</li>
+            <li>Orange dots on Trip cards with pending suggestions</li>
+            <li>Banner inside a Trip page if it has pending items</li>
+            <li>Tasks → Needs Review tab is the catch-all backstop</li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    function renderHeaderStats() {
+      const pending = TopNav.aiPending().length;
+      const root = document.getElementById('header-stats');
+      root.innerHTML = `
+        <span><span class="text-slate-300 font-semibold">${pending}</span> task${pending === 1 ? '' : 's'} need review</span>
+        <span class="text-slate-700">·</span>
+        <span><span class="text-slate-300 font-semibold">3</span> waiting on client</span>
+        <span class="text-slate-700">·</span>
+        <span><span class="text-slate-300 font-semibold">0</span> unread</span>
+        <span class="text-slate-700">·</span>
+        <span><span class="text-slate-300 font-semibold">2</span> updates since yesterday</span>
+      `;
+    }
+
+    function renderNeedsReview() {
+      const pending = TopNav.aiPending();
+      const root = document.getElementById('needs-review-section');
+      if (pending.length === 0) {
+        root.innerHTML = `
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center gap-3 mb-6">
+            <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <div>
+              <div class="text-sm font-medium text-slate-200">Needs your review</div>
+              <div class="text-xs text-slate-500 mt-0.5">All caught up. AI items get auto-approved at confidence ≥90% or expire silently after 24h.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      const topThree = pending.slice(0, 3);
+      const more = pending.length - 3;
+      root.innerHTML = `
+        <div class="bg-orange-500/5 border border-orange-500/40 rounded-lg overflow-hidden mb-6">
+          <div class="px-4 py-3 border-b border-orange-500/20 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+            <h2 class="text-sm font-semibold text-orange-300">Needs your review</h2>
+            <span class="px-1.5 py-0.5 rounded-full bg-orange-500/20 text-orange-300 text-[10px] font-mono">${pending.length}</span>
+            <div class="flex-1"></div>
+            <span class="text-[10px] text-slate-500">AI flagged · approve in place or open the source</span>
+          </div>
+          <div class="divide-y divide-slate-800">
+            ${topThree.map(t => {
+              const tier = TIER_STYLES[t.routing_tier];
+              const owner = memberById(t.primary_owner);
+              const src = SOURCE_CHANNELS[t.source_channel] || SOURCE_CHANNELS['system'];
+              const isChatTask = t.primary_context.type === 'message-conversation';
+              const surfaceLabel = isChatTask ? 'Chat · ' + t.primary_context.label : t.primary_context.type === 'trip' ? 'Trip · ' + t.primary_context.label : t.primary_context.label;
+              return `
+                <div class="px-4 py-3 hover:bg-slate-800/30 transition-colors group">
+                  <div class="flex items-start gap-3">
+                    <span class="${src.color} mt-0.5 flex-shrink-0" title="${src.label}">${src.svg}</span>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-baseline gap-2 mb-1 flex-wrap">
+                        <a href="task-board.html#task=${t.id}" class="task-id-link text-sm text-slate-100 hover:text-orange-300 transition-colors">${t.title}</a>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
+                        ${t.confidence ? `<span class="text-[10px] text-amber-400 font-mono">${t.confidence}%</span>` : ''}
+                      </div>
+                      <div class="text-[11px] text-slate-500 mb-2">${surfaceLabel} · suggested for ${owner.name.split(' ')[0]}</div>
+                      <div class="flex items-center gap-1.5">
+                        <button class="approve-btn px-2 py-0.5 rounded-md bg-green-500/15 text-green-300 border border-green-500/40 hover:bg-green-500/25 text-[11px] font-medium" data-id="${t.id}">✓ Approve</button>
+                        ${isChatTask ? `<a href="inline-create.html#from-task=${t.id}" class="px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 text-[11px]">↗ Open in chat</a>` : ''}
+                        <button class="dismiss-btn px-2 py-0.5 rounded-md text-slate-500 hover:text-red-400 text-[11px]" data-id="${t.id}">Dismiss</button>
+                        <span class="text-[10px] text-slate-600 ml-auto">Click title to open in drawer →</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          ${more > 0 ? `<a href="task-board.html#tab=needs-review" class="block px-4 py-2.5 text-center text-[11px] text-orange-400 hover:text-orange-300 hover:bg-slate-800/30 border-t border-orange-500/20">View ${more} more in Tasks → Needs Review →</a>` : ''}
+        </div>
+      `;
+      // Wire up approve / dismiss
+      root.querySelectorAll('.approve-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          const t = TaskFilters.byId(b.dataset.id);
+          if (!t) return;
+          t.approval_state = 'human-approved';
+          t.status = 'completed';
+          showToast(`Approved “${t.title.slice(0,40)}…” — auto-closed.`);
+          rerenderAll();
+        });
+      });
+      root.querySelectorAll('.dismiss-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          const t = TaskFilters.byId(b.dataset.id);
+          if (!t) return;
+          t.status = 'dismissed';
+          showToast(`Dismissed.`);
+          rerenderAll();
+        });
+      });
+    }
+
+    function renderTripsGrid() {
+      const trips = [
+        { id: 'trip-whitman',        name: 'Whitman | Frankfurt May 16', dates: 'May 16 – May 24', status: 'On Trip (disruption)', pendingTasks: 1, badge: 'red' },
+        { id: 'trip-park-halverson', name: 'Park-Halverson | Bali',      dates: 'May 14 – May 24', status: 'On Trip',              pendingTasks: 1, badge: 'orange' },
+        { id: 'trip-castelli',       name: 'Castelli | Tokyo May 25',    dates: 'May 25 – Jun 2',  status: 'Not Started',          pendingTasks: 1, badge: 'orange' },
+        { id: 'trip-greer',          name: 'Greer | Tokyo Apr 30',       dates: 'Apr 30 – May 6',  status: 'Booking',              pendingTasks: 1, badge: 'orange' },
+        { id: 'trip-patel',          name: 'Patel | Tuscany Jun 22',     dates: 'Jun 22 – Jul 4',  status: 'Outline',              pendingTasks: 1, badge: 'orange' },
+      ];
+      const root = document.getElementById('trips-grid');
+      root.innerHTML = trips.map(t => `
+        <a href="trip-detail.html#id=${encodeURIComponent(t.id || t.name)}" class="block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-orange-500/40 transition-colors relative">
+          ${t.pendingTasks ? `<span class="absolute top-3 right-3 w-2 h-2 rounded-full bg-orange-500" title="${t.pendingTasks} AI suggestion pending"></span>` : ''}
+          <div class="text-sm font-medium text-slate-100 mb-1 pr-5">${t.name}</div>
+          <div class="text-[11px] text-slate-500 mb-3">📅 ${t.dates}</div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] px-1.5 py-0.5 rounded ${t.badge === 'red' ? 'bg-red-500/10 text-red-400 border border-red-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'}">${t.status}</span>
+            ${t.pendingTasks ? `<span class="text-[10px] text-orange-400">${t.pendingTasks} pending</span>` : ''}
+          </div>
+        </a>
+      `).join('');
+    }
+
+    function renderInbox() {
+      const pending = TopNav.aiPending().length;
+      const root = document.getElementById('inbox-panel');
+      if (pending === 0) {
+        root.innerHTML = `
+          <svg class="w-8 h-8 text-green-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          <div class="text-sm font-semibold text-slate-100">Inbox zero ✓</div>
+          <div class="text-xs text-slate-500 mt-1">No waits, unread, outreach, or moments pending.</div>
+        `;
+      } else {
+        root.innerHTML = `
+          <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Your inbox</div>
+          <div class="text-3xl font-mono text-orange-300 mb-1">${pending}</div>
+          <div class="text-sm font-semibold text-slate-100">AI items pending review</div>
+          <div class="text-xs text-slate-500 mt-1 mb-3">Approve in place above, or open the Needs Review tab for batch actions.</div>
+          <a href="task-board.html#tab=needs-review" class="inline-block px-3 py-1.5 rounded-lg bg-orange-500/15 text-orange-300 border border-orange-500/40 hover:bg-orange-500/25 text-xs font-medium">Open Tasks · Needs Review →</a>
+        `;
+      }
+    }
+
+    function rerenderAll() {
+      renderHeaderStats();
+      renderNeedsReview();
+      renderInbox();
+      // Top nav counts also need to re-render
+      TopNav.init();
+    }
+
+    // Toast (simple)
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-6 right-6 z-[70] bg-slate-800 border border-slate-700 rounded-lg shadow-xl px-4 py-2.5 text-sm text-slate-200';
+      t.style.animation = 'toast-in .2s ease-out';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.transition = 'opacity .25s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 280); }, 2500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeaderStats();
+      renderNeedsReview();
+      renderTripsGrid();
+      renderInbox();
+      // Refresh whenever the shared drawer mutates a task
+      if (window.onTaskMutated) window.onTaskMutated(rerenderAll);
+    });
+  </script>
+
+</body>
+</html>

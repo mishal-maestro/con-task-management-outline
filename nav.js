@@ -5,12 +5,33 @@ function initNav() {
   if (!root) return;
 
   const currentPage = window.CURRENT_PAGE || 'index';
+  // Path-prefix shim: when the browser's base URL is a subfolder (e.g. /prototype/),
+  // rewrite hrefs so sibling pages resolve correctly. Keeps data.js paths root-relative.
+  //
+  // The browser's base path for relative URL resolution is the URL up to and
+  // including the LAST `/`. So:
+  //   /prototype           → base = /         (no trailing slash; "prototype" is the filename)
+  //   /prototype/          → base = /prototype/
+  //   /prototype/task-board → base = /prototype/   ("task-board" is the filename)
+  //   /prototype/index.html → base = /prototype/
+  // We need to rewrite only when the base is inside a subfolder.
+  const basePath = window.location.pathname.endsWith('/')
+    ? window.location.pathname
+    : window.location.pathname.replace(/[^/]*$/, '');
+  const baseSegments = basePath.split('/').filter(Boolean);
+  const inSubFolder = baseSegments.length > 0;
+  const currentFolder = inSubFolder ? baseSegments[baseSegments.length - 1] : null;
+  function rewriteHref(href) {
+    if (!inSubFolder) return href;
+    if (href.startsWith(currentFolder + '/')) return href.slice(currentFolder.length + 1);
+    return '../' + href;
+  }
 
   function renderLink(item, isSubItem) {
     const active = currentPage === item.id;
     const padding = isSubItem ? 'pl-10 pr-5' : 'px-5';
     return `
-      <a href="${item.href}"
+      <a href="${rewriteHref(item.href)}"
          class="flex items-center gap-3 ${padding} py-2.5 text-sm transition-colors ${active
            ? 'text-slate-100 bg-slate-800/50 border-l-2 border-orange-500'
            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/30 border-l-2 border-transparent'}">

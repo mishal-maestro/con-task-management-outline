@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trip Detail — Conductor Task Mgmt Prototype</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../theme.js"></script>
+  <script src="task-data.js"></script>
+  <script>window.CURRENT_APP_TAB = 'trips';</script>
+  <script src="topnav.js"></script>
+  <script src="task-drawer.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    body { background: #020617; }
+
+    .top-tab { padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: rgb(148 163 184); cursor: pointer; transition: color .12s; border-bottom: 2px solid transparent; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .top-tab:hover { color: rgb(241 245 249); }
+    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+  </style>
+</head>
+
+<body class="text-slate-300 font-sans min-h-screen antialiased">
+
+  <div id="topnav-root"></div>
+
+  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2">
+    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Prototype mock · the orange banner below is the in-context AI review surface for a Trip</span>
+  </div>
+
+  <main class="max-w-[1280px] mx-auto px-6 py-6">
+
+    <!-- Back to trips -->
+    <a href="trips.html" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300 transition-colors mb-4">
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Back to Trips
+    </a>
+
+    <!-- Trip header -->
+    <div class="flex items-start justify-between gap-6 mb-5">
+      <div>
+        <h1 id="trip-title" class="text-2xl font-semibold text-slate-100 tracking-tight">—</h1>
+        <div id="trip-meta" class="flex items-center gap-3 mt-2 text-xs text-slate-400">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700">Share</button>
+        <button class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700">Edit</button>
+      </div>
+    </div>
+
+    <!-- AI review banner (appears when trip has pending AI suggestions) -->
+    <div id="ai-banner" class="hidden mb-5"></div>
+
+    <!-- 2-column layout: itinerary + bookings on left, tasks + client on right -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+      <!-- LEFT (2/3) -->
+      <div class="lg:col-span-2 space-y-5">
+
+        <!-- Itinerary timeline (lightweight mock) -->
+        <section class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold text-slate-200">Itinerary</h2>
+            <button class="text-[11px] text-orange-400 hover:text-orange-300">Edit itinerary →</button>
+          </div>
+          <div id="itinerary-list" class="space-y-3">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+
+        <!-- Bookings table -->
+        <section class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold text-slate-200">Bookings</h2>
+            <button class="text-[11px] text-orange-400 hover:text-orange-300">+ Add booking</button>
+          </div>
+          <div id="bookings-list" class="space-y-2">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT (1/3) — Linked tasks + client snapshot -->
+      <aside class="space-y-4">
+
+        <!-- Linked tasks -->
+        <section class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Linked tasks</h3>
+            <a href="task-board.html" class="text-[10px] text-orange-400 hover:text-orange-300">View all →</a>
+          </div>
+          <div id="trip-tasks-list" class="space-y-2">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+
+        <!-- Client snapshot -->
+        <section class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+          <div class="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-3">Client</div>
+          <div id="client-snapshot">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <script>
+    // Same trip dataset as trips.html (kept inline for prototype simplicity)
+    const TRIPS = [
+      { id: 'trip-greer', name: 'Greer family | Tokyo Apr 30', advisor: 'Maya Chen', dates: 'Apr 30 – May 6', stage: 'Itinerary Review', tags: ['VVIP', 'First class'], destination: 'Tokyo', clientName: 'Sarah Greer', clientTier: 'VVIP', clientPastTrips: 3, linkedTasks: ['tsk-001', 'tsk-020', 'tsk-024'],
+        itinerary: [
+          { day: 'Apr 30 (Tue)', event: 'Depart IAD 11:55a · JL061 First', status: 'pending-ticket' },
+          { day: 'May 1 (Wed)',  event: 'Arrive HND 3:35p · Aman Tokyo private transfer', status: 'confirmed' },
+          { day: 'May 1–5',       event: 'Aman Tokyo · Premier Suite × 5 nights', status: 'confirmed' },
+          { day: 'May 6 (Mon)',  event: 'Depart HND 9:55a · JL062 First · arr IAD 9:35a', status: 'pending-ticket' },
+        ],
+        bookings: [
+          { type: 'Flight', label: 'JL061 IAD-HND Apr 30 · First', status: 'On hold · ticketing by Mon', warn: true },
+          { type: 'Hotel',  label: 'Aman Tokyo · Premier Suite × 5 nights', status: 'Confirmed · #AT-44512' },
+          { type: 'Ground', label: 'Tokyo Royal Transport · NRT pickup', status: 'Confirmed' },
+        ]
+      },
+      { id: 'trip-whitman', name: 'Whitman | Frankfurt May 16', advisor: 'Tomás Kovac', dates: 'May 16 – May 24', stage: 'Booking In Progress', tags: ['VVIP', 'On trip', 'Disruption'], destination: 'Frankfurt', clientName: 'James Whitman', clientTier: 'VVIP', clientPastTrips: 5, linkedTasks: ['tsk-003', 'tsk-013', 'tsk-022'],
+        itinerary: [
+          { day: 'May 16 (Thu)', event: 'Depart IAD 18:30 · LH441 First', status: 'disrupted' },
+          { day: 'May 17 (Fri)',  event: 'Arrive FRA · driver to hotel', status: 'on-hold' },
+          { day: 'May 17–23',     event: 'Steigenberger Frankfurter Hof · Suite × 6 nights', status: 'confirmed' },
+        ],
+        bookings: [
+          { type: 'Flight', label: 'LH441 IAD-FRA May 16 · First', status: 'CANCELLED · rebooking', warn: true },
+          { type: 'Hotel',  label: 'Steigenberger · Suite × 6 nights', status: 'Confirmed' },
+        ]
+      },
+      { id: 'trip-castelli', name: 'Castelli | Tokyo May 25', advisor: 'Maya Chen', dates: 'May 25 – Jun 2', stage: 'Booking In Progress', tags: ['VVIP', 'Suite'], destination: 'Tokyo', clientName: 'Lorenzo Castelli', clientTier: 'VVIP', clientPastTrips: 4, linkedTasks: ['tsk-004', 'tsk-009', 'tsk-010', 'tsk-012', 'tsk-016'],
+        itinerary: [
+          { day: 'May 25 (Sun)', event: 'Depart JFK · ANA First class', status: 'confirmed' },
+          { day: 'May 25–Jun 1',  event: 'Aman Tokyo · Premier Suite × 7 nights', status: 'confirmed' },
+        ],
+        bookings: [
+          { type: 'Flight', label: 'NH009 JFK-HND May 25 · First', status: 'Confirmed' },
+          { type: 'Hotel',  label: 'Aman Tokyo · Premier Suite × 7 nights', status: 'Confirmed' },
+          { type: 'Ground', label: 'Tokyo Royal Transport · NRT pickup', status: 'Confirmed' },
+        ]
+      },
+      { id: 'trip-patel', name: 'Patel | Tuscany Jun 22', advisor: 'Jordan Singh', dates: 'Jun 22 – Jul 4', stage: 'Outline', tags: ['Standard', 'Villa', 'Dog'], destination: 'Tuscany', clientName: 'Anika Patel', clientTier: 'Standard', clientPastTrips: 1, linkedTasks: ['tsk-005', 'tsk-019'],
+        itinerary: [
+          { day: 'Jun 22 – Jul 4', event: '4 villa nights TBD · Tuscany region · party 8 + dog', status: 'planning' },
+        ],
+        bookings: []
+      },
+      { id: 'trip-bowman', name: 'Bowman | Patagonia Aug', advisor: 'Maya Chen', dates: 'Aug 14 – Aug 28', stage: 'Trip Identified', tags: ['Standard', 'Payment overdue'], destination: 'Patagonia', clientName: 'David Bowman', clientTier: 'Standard', clientPastTrips: 1, linkedTasks: ['tsk-007', 'tsk-014', 'tsk-023'],
+        itinerary: [
+          { day: 'Aug 14 – Aug 28', event: '2 weeks · Patagonia adventure · 4 lodges', status: 'planning' },
+        ],
+        bookings: [
+          { type: 'Deposit', label: 'Invoice INV-3402 · $8,400', status: '8d overdue', warn: true },
+        ]
+      },
+      { id: 'trip-park-halverson', name: 'Park-Halverson | Bali', advisor: 'Maya Chen', dates: 'May 14 – May 24', stage: 'Booking Complete', tags: ['VVIP', 'Honeymoon', 'On trip'], destination: 'Bali', clientName: 'Sam Park & Lee Halverson', clientTier: 'VVIP', clientPastTrips: 2, linkedTasks: ['tsk-008', 'tsk-015', 'tsk-017'],
+        itinerary: [
+          { day: 'May 14 (Wed)', event: 'Depart SFO · Singapore Airlines First', status: 'completed' },
+          { day: 'May 14–23',     event: 'Como Shambhala Estate · Ocean View Villa × 9 nights', status: 'on-trip' },
+        ],
+        bookings: [
+          { type: 'Flight', label: 'SQ001 SFO-SIN-DPS · First', status: 'Completed' },
+          { type: 'Hotel',  label: 'Como Shambhala · Ocean View Villa × 9 nights', status: 'On-trip · upgraded' },
+        ]
+      },
+      { id: 'trip-aboud', name: 'Aboud | London May 22', advisor: 'Maya Chen', dates: 'May 22 – May 26', stage: 'Booking Complete', tags: ['VVIP'], destination: 'London', clientName: 'Hassan Aboud', clientTier: 'VVIP', clientPastTrips: 4, linkedTasks: ['tsk-001', 'tsk-020'],
+        itinerary: [
+          { day: 'May 22 (Thu)', event: 'Depart AUH · Etihad First class', status: 'confirmed' },
+          { day: 'May 22–25',     event: "Claridge's · Suite × 3 nights", status: 'confirmed' },
+          { day: 'May 23 (Fri)', event: 'Dinner · Brat 8pm (vegetarian brief sent)', status: 'pending-confirm' },
+        ],
+        bookings: [
+          { type: 'Flight', label: 'EY11 AUH-LHR May 22 · First', status: 'Confirmed' },
+          { type: 'Hotel',  label: "Claridge's · Suite × 3 nights", status: 'Confirmed' },
+          { type: 'Dining', label: 'Brat · Friday 8pm', status: 'Pending vendor confirm' },
+        ]
+      },
+      { id: 'trip-halverson', name: 'Halverson | Croatia draft', advisor: 'Maya Chen', dates: 'Aug 12 – Aug 22', stage: 'Outline', tags: ['Standard'], destination: 'Croatia', clientName: 'Beth Halverson', clientTier: 'Standard', clientPastTrips: 2, linkedTasks: ['tsk-002', 'tsk-021'],
+        itinerary: [{ day: 'Aug 12 – Aug 22', event: 'Coastal Croatia · 3 villa options sent', status: 'planning' }],
+        bookings: []
+      },
+      { id: 'trip-thompson', name: 'Thompson | Maldives 2027', advisor: 'Jordan Singh', dates: '(date TBD)', stage: 'Not Started', tags: ['Standard'], destination: 'Maldives', clientName: 'Anna Thompson', clientTier: 'Standard', clientPastTrips: 0, linkedTasks: [], itinerary: [], bookings: [] },
+      { id: 'trip-zhang', name: 'Zhang | Iceland Winter 2027', advisor: 'Maya Chen', dates: '(date TBD)', stage: 'Not Started', tags: ['Standard'], destination: 'Iceland', clientName: 'Wei Zhang', clientTier: 'Standard', clientPastTrips: 0, linkedTasks: [], itinerary: [], bookings: [] },
+    ];
+
+    function getTrip() {
+      // Read from hash (dev server strips ?query=) AND fall back to ?query= for completeness
+      const hashParams = new URLSearchParams((window.location.hash || '').replace(/^#/, ''));
+      const id = hashParams.get('id') || new URLSearchParams(window.location.search).get('id') || 'trip-whitman';
+      return TRIPS.find(t => t.id === id) || TRIPS[0];
+    }
+
+    function tripPendingTasks(trip) {
+      return trip.linkedTasks
+        .map(id => TaskFilters.byId(id))
+        .filter(t => t && t.approval_state === 'pending-review' && t.status !== 'dismissed');
+    }
+
+    function renderTripHeader(t) {
+      document.getElementById('trip-title').textContent = t.name;
+      document.getElementById('trip-meta').innerHTML = `
+        <span>📅 ${t.dates}</span>
+        <span class="text-slate-700">·</span>
+        <span>${t.advisor}</span>
+        <span class="text-slate-700">·</span>
+        <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">${t.stage}</span>
+        ${t.tags.map(tag => {
+          const isWarn = /disruption|overdue|attention/i.test(tag);
+          const isVVIP = /vvip/i.test(tag);
+          const cls = isWarn ? 'bg-red-500/10 text-red-400 border-red-500/30' : isVVIP ? 'bg-orange-500/10 text-orange-300 border-orange-500/30' : 'bg-slate-800 text-slate-400 border-slate-700';
+          return `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] border ${cls}">${tag}</span>`;
+        }).join('')}
+      `;
+    }
+
+    function renderAIBanner(t) {
+      const pending = tripPendingTasks(t);
+      const banner = document.getElementById('ai-banner');
+      if (pending.length === 0) {
+        banner.classList.add('hidden');
+        return;
+      }
+      banner.classList.remove('hidden');
+      banner.innerHTML = `
+        <div class="bg-orange-500/10 border border-orange-500/40 rounded-lg overflow-hidden">
+          <div class="px-4 py-3 border-b border-orange-500/20 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+            <span class="text-sm font-semibold text-orange-300">${pending.length} AI suggestion${pending.length === 1 ? '' : 's'} for this trip</span>
+            <span class="text-[11px] text-slate-400">· approve in place or open the source</span>
+            <div class="flex-1"></div>
+            <a href="task-board.html#tab=needs-review" class="text-[11px] text-orange-400 hover:text-orange-300">Go to Tasks · Needs Review →</a>
+          </div>
+          <div class="divide-y divide-slate-800">
+            ${pending.map(task => {
+              const tier = TIER_STYLES[task.routing_tier];
+              const src = SOURCE_CHANNELS[task.source_channel] || SOURCE_CHANNELS['system'];
+              return `
+                <div class="px-4 py-3">
+                  <div class="flex items-start gap-3">
+                    <span class="${src.color} mt-0.5 flex-shrink-0" title="${src.label}">${src.svg}</span>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-baseline gap-2 mb-1 flex-wrap">
+                        <a href="task-board.html#task=${task.id}" class="task-id-link text-sm text-slate-100 hover:text-orange-300">${task.title}</a>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
+                        ${task.confidence ? `<span class="text-[10px] text-amber-400 font-mono">${task.confidence}%</span>` : ''}
+                        <span class="text-[10px] text-slate-500">· <a href="task-board.html#task=${task.id}" class="task-id-link font-mono text-slate-500 hover:text-orange-400">${task.id}</a></span>
+                      </div>
+                      <p class="text-[11px] text-slate-400 leading-relaxed mb-2">${task.rationale}</p>
+                      ${task.draft ? `<div class="bg-slate-950 border border-slate-800 rounded p-2 text-[11px] text-slate-300 italic mb-2">"${task.draft.replace(/^"|"$/g,'')}"</div>` : ''}
+                      <div class="flex items-center gap-1.5">
+                        <button class="banner-approve px-2 py-0.5 rounded-md bg-green-500/15 text-green-300 border border-green-500/40 hover:bg-green-500/25 text-[11px] font-medium" data-id="${task.id}">✓ Approve</button>
+                        ${task.draft ? `<a href="inline-create.html#from-task=${task.id}" class="px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 text-[11px]">Edit + send →</a>` : ''}
+                        <button class="banner-dismiss px-2 py-0.5 rounded-md text-slate-500 hover:text-red-400 text-[11px]" data-id="${task.id}">Dismiss</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      // Wire approve / dismiss
+      banner.querySelectorAll('.banner-approve').forEach(b => {
+        b.addEventListener('click', () => {
+          const task = TaskFilters.byId(b.dataset.id);
+          if (!task) return;
+          task.approval_state = 'human-approved';
+          task.status = 'completed';
+          showToast(`Approved & sent — task auto-closed.`);
+          rerenderAll();
+        });
+      });
+      banner.querySelectorAll('.banner-dismiss').forEach(b => {
+        b.addEventListener('click', () => {
+          const task = TaskFilters.byId(b.dataset.id);
+          if (!task) return;
+          task.status = 'dismissed';
+          showToast(`Dismissed.`);
+          rerenderAll();
+        });
+      });
+    }
+
+    function renderItinerary(t) {
+      const root = document.getElementById('itinerary-list');
+      if (t.itinerary.length === 0) {
+        root.innerHTML = '<div class="text-[11px] text-slate-600 italic py-4 text-center">No itinerary yet · trip is in early planning</div>';
+        return;
+      }
+      root.innerHTML = t.itinerary.map(item => {
+        const statusCls = item.status === 'confirmed' ? 'text-green-400' : item.status === 'on-trip' ? 'text-orange-300' : item.status === 'completed' ? 'text-slate-500' : item.status === 'disrupted' ? 'text-red-400' : 'text-amber-400';
+        const statusLabel = { confirmed: '✓', 'on-trip': '◯', completed: '✓', disrupted: '⚠', 'on-hold': '◐', 'pending-ticket': '◐', 'pending-confirm': '◐', planning: '·' }[item.status] || '·';
+        return `
+          <div class="flex items-start gap-3 py-2 border-b border-slate-800 last:border-b-0">
+            <span class="text-base ${statusCls} flex-shrink-0">${statusLabel}</span>
+            <div class="flex-1 min-w-0">
+              <div class="text-[11px] text-slate-500 font-mono">${item.day}</div>
+              <div class="text-sm text-slate-200 mt-0.5">${item.event}</div>
+            </div>
+            <span class="text-[10px] uppercase tracking-wider ${statusCls} flex-shrink-0">${item.status}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderBookings(t) {
+      const root = document.getElementById('bookings-list');
+      if (t.bookings.length === 0) {
+        root.innerHTML = '<div class="text-[11px] text-slate-600 italic py-4 text-center">No bookings yet</div>';
+        return;
+      }
+      root.innerHTML = t.bookings.map(b => `
+        <div class="flex items-center justify-between gap-3 px-3 py-2 bg-slate-950 border border-slate-800 rounded">
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="text-[10px] uppercase tracking-wider text-slate-500 w-14 flex-shrink-0">${b.type}</span>
+            <span class="text-sm text-slate-200 truncate">${b.label}</span>
+          </div>
+          <span class="text-[11px] ${b.warn ? 'text-red-400' : 'text-slate-400'} flex-shrink-0">${b.status}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderTripTasks(t) {
+      const root = document.getElementById('trip-tasks-list');
+      if (t.linkedTasks.length === 0) {
+        root.innerHTML = '<div class="text-[11px] text-slate-600 italic py-2">No linked tasks</div>';
+        return;
+      }
+      root.innerHTML = t.linkedTasks.map(tid => {
+        const task = TaskFilters.byId(tid);
+        if (!task) return '';
+        const tier = TIER_STYLES[task.routing_tier];
+        const isPending = task.approval_state === 'pending-review' && task.status !== 'dismissed';
+        return `
+          <a href="task-board.html#task=${tid}" class="task-id-link block bg-slate-950 border border-slate-800 rounded p-2 hover:border-orange-500/40 transition-colors group relative">
+            ${isPending ? '<span class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-orange-500" title="AI suggestion pending"></span>' : ''}
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <span class="text-[10px] font-mono text-slate-500 group-hover:text-orange-400">${tid}</span>
+              <span class="px-1.5 py-0.5 rounded text-[9px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
+            </div>
+            <div class="text-[11px] text-slate-200 leading-snug pr-4">${task.title}</div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function renderClientSnapshot(t) {
+      const root = document.getElementById('client-snapshot');
+      root.innerHTML = `
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-8 h-8 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[10px] font-semibold flex-shrink-0">${t.clientName.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase()}</div>
+          <div class="min-w-0">
+            <div class="text-sm font-medium text-slate-100 truncate">${t.clientName}</div>
+            <div class="text-[10px] text-slate-500">${t.clientTier} · ${t.clientPastTrips} past trip${t.clientPastTrips === 1 ? '' : 's'}</div>
+          </div>
+        </div>
+        <a href="inline-create.html" class="block text-[11px] text-orange-400 hover:text-orange-300 mt-2">Open conversation →</a>
+      `;
+    }
+
+    function rerenderAll() {
+      const t = getTrip();
+      renderTripHeader(t);
+      renderAIBanner(t);
+      renderItinerary(t);
+      renderBookings(t);
+      renderTripTasks(t);
+      renderClientSnapshot(t);
+      TopNav.init(); // refresh counts
+    }
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'fixed bottom-6 right-6 z-[70] bg-slate-800 border border-slate-700 rounded-lg shadow-xl px-4 py-2.5 text-sm text-slate-200';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.transition = 'opacity .25s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 280); }, 2500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      rerenderAll();
+      if (window.onTaskMutated) window.onTaskMutated(rerenderAll);
+    });
+  </script>
+
+</body>
+</html>

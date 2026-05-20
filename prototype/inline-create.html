@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat — Conductor Task Mgmt Prototype</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../theme.js"></script>
+  <script src="task-data.js"></script>
+  <script>window.CURRENT_APP_TAB = 'chat';</script>
+  <script src="topnav.js"></script>
+  <script src="task-drawer.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    body { background: #020617; }
+
+    /* Modal */
+    .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .15s ease-out; }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .toast { animation: toast-in .2s ease-out; }
+    @keyframes toast-in { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .kbd { display: inline-block; padding: 0.0625rem 0.3125rem; background: rgb(30 41 59); border: 1px solid rgb(51 65 85); border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; color: rgb(252 211 77); }
+
+    /* Hover affordance on message bubbles */
+    .msg-actions { opacity: 0; transition: opacity .15s; pointer-events: none; }
+    .msg-row:hover .msg-actions { opacity: 1; pointer-events: auto; }
+
+    /* AI suggestion pulse */
+    .ai-suggestion { animation: pulse-border 2s ease-in-out infinite; }
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(255, 94, 50, 0.5); }
+      50%      { border-color: rgba(255, 94, 50, 0.2); }
+    }
+
+    /* Conversation item */
+    .conv-item {
+      cursor: pointer;
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid rgb(15 23 42);
+      border-left: 2px solid transparent;
+      transition: all .12s;
+    }
+    .conv-item:hover { background: rgba(30, 41, 59, 0.4); }
+    .conv-item.active { background: rgba(30, 41, 59, 0.6); border-left-color: rgb(255 94 50); }
+
+    .priority-chip, .due-chip {
+      display: inline-flex; align-items: center;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.6875rem;
+      color: rgb(203 213 225);
+      background: rgb(2 6 23);
+      border: 1px solid rgb(30 41 59);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all .12s ease-out;
+    }
+    .priority-chip:hover, .due-chip:hover { color: rgb(241 245 249); border-color: rgb(51 65 85); background: rgb(30 41 59); }
+    .priority-chip.active, .due-chip.active { color: rgb(255 247 237); background: rgba(255, 94, 50, 0.15); border-color: rgba(255, 94, 50, 0.5); }
+    #more-chevron.expanded { transform: rotate(90deg); }
+
+    /* Tab strip */
+    .top-tab {
+      padding: 0.625rem 0.875rem;
+      font-size: 0.8125rem;
+      color: rgb(148 163 184);
+      cursor: pointer;
+      transition: color .12s;
+      border-bottom: 2px solid transparent;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .top-tab:hover { color: rgb(241 245 249); }
+    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+
+    /* Toggle */
+    .toggle { position: relative; width: 28px; height: 16px; background: rgb(30 41 59); border-radius: 9999px; cursor: pointer; transition: background .12s; flex-shrink: 0; }
+    .toggle.on { background: rgba(255, 94, 50, 0.5); }
+    .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 9999px; background: rgb(203 213 225); transition: transform .12s; }
+    .toggle.on::after { transform: translateX(12px); background: rgb(255 247 237); }
+
+    /* AI is drafting indicator */
+    @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .ai-thinking-dot { animation: pulse 1s ease-in-out infinite; }
+  </style>
+</head>
+
+<body class="text-slate-300 font-sans min-h-screen antialiased">
+
+  <!-- Top nav (shared via topnav.js) -->
+  <div id="topnav-root"></div>
+
+  <!-- Prototype helper strip -->
+  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2">
+    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Prototype mock of Conductor chat surface · <a href="../index.html" class="text-orange-400 hover:text-orange-300 underline">PRD outline</a> · <a href="index.html" class="text-orange-400 hover:text-orange-300 underline">prototype index</a></span>
+  </div>
+
+  <!-- ─── 3-column chat layout ─── -->
+  <div class="flex" style="height: calc(100vh - 12px - 48px - 30px);">
+
+    <!-- ── LEFT: Conversation list ── -->
+    <aside class="w-[300px] border-r border-slate-800 bg-slate-950 flex flex-col flex-shrink-0">
+      <!-- Search + filters -->
+      <div class="p-3 border-b border-slate-800">
+        <div class="relative mb-2">
+          <input type="text" placeholder="Search conversations…" class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-orange-500" />
+          <svg class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button class="px-2 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-slate-300 hover:border-slate-700">All status ▾</button>
+          <button class="px-2 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-slate-300 hover:border-slate-700">All cat ▾</button>
+        </div>
+      </div>
+      <!-- List -->
+      <div id="conv-list" class="flex-1 overflow-y-auto">
+        <!-- rendered by JS -->
+      </div>
+    </aside>
+
+    <!-- ── MIDDLE: Chat thread ── -->
+    <main class="flex-1 flex flex-col min-w-0 bg-slate-950">
+      <!-- Thread header -->
+      <div class="h-14 px-4 border-b border-slate-800 flex items-center gap-3 flex-shrink-0">
+        <div class="flex items-baseline gap-2 min-w-0">
+          <h2 id="chat-title" class="text-base font-semibold text-slate-100 truncate">—</h2>
+          <span id="chat-status" class="text-[11px] px-1.5 py-0.5 rounded text-slate-400 border border-slate-800">New ▾</span>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            <span class="text-[11px] text-slate-400">Auto-reply</span>
+            <div id="auto-reply-toggle" class="toggle on"></div>
+          </div>
+          <div class="w-px h-5 bg-slate-800 mx-1"></div>
+          <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Search in thread"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Assigned + chip placeholder (matches live conductor) -->
+      <div class="px-4 py-2 border-b border-slate-800 flex items-center gap-2 text-[11px] text-slate-500 flex-shrink-0">
+        <span class="font-semibold uppercase tracking-wider">Assigned:</span>
+        <span id="chat-assignee" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">—</span>
+        <button class="text-orange-400 hover:text-orange-300">+ watcher</button>
+      </div>
+
+      <!-- Messages -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3">
+        <!-- rendered by JS -->
+      </div>
+
+      <!-- AI draft card (appears via from-task deep link OR AI Draft button click) -->
+      <div id="ai-draft-card" class="hidden border-t border-slate-800 px-3 py-3 bg-slate-950 flex-shrink-0">
+        <div class="bg-orange-500/5 border border-orange-500/40 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2 flex-wrap">
+            <div class="w-5 h-5 rounded-full bg-orange-500/25 text-orange-300 flex items-center justify-center text-[10px] font-bold flex-shrink-0">AI</div>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-orange-300">AI draft</span>
+            <span class="text-[10px] text-slate-500">·</span>
+            <span id="ai-draft-source" class="text-[10px] text-slate-400">—</span>
+            <div class="flex-1"></div>
+            <a id="ai-draft-view-task" href="#" class="task-id-link hidden text-[11px] text-slate-400 hover:text-orange-300 inline-flex items-center gap-1 transition-colors" title="Open the task drawer to see rationale, evidence, activity history">
+              View task
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+          <div id="ai-draft-text" class="bg-slate-950 border border-slate-800 rounded p-2.5 text-sm text-slate-200 leading-relaxed mb-2.5 whitespace-pre-line">—</div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button id="ai-draft-send-as-is" class="px-2.5 py-1 rounded-md bg-green-500/15 text-green-300 border border-green-500/40 hover:bg-green-500/25 text-[11px] font-medium" title="PRD §7.1: one-click fires the message and closes the task">
+              ✓ Send as-is
+            </button>
+            <button id="ai-draft-insert" class="px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-slate-700" title="Push into composer for edits">
+              Insert &amp; edit
+            </button>
+            <button id="ai-draft-dismiss" class="px-2.5 py-1 rounded-md text-[11px] text-slate-500 hover:text-red-400">Dismiss</button>
+            <div class="flex-1"></div>
+            <span class="text-[10px] text-slate-600 hidden md:inline">Type below to write your own</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI drafting indicator (shows while AI Draft button is generating) -->
+      <div id="ai-drafting" class="hidden border-t border-slate-800 px-4 py-2 bg-orange-500/5 flex items-center gap-2 flex-shrink-0">
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-orange-400 ai-thinking-dot"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-orange-400 ai-thinking-dot" style="animation-delay: 0.2s"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-orange-400 ai-thinking-dot" style="animation-delay: 0.4s"></span>
+        </div>
+        <span class="text-[11px] text-orange-300">AI is drafting a reply…</span>
+      </div>
+
+      <!-- Composer -->
+      <div class="border-t border-slate-800 p-3 bg-slate-950 flex-shrink-0">
+        <div class="flex flex-col gap-2 px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg">
+          <textarea id="composer-input" rows="2" placeholder="Reply to…" class="bg-transparent text-sm text-slate-200 placeholder-slate-500 focus:outline-none resize-none leading-relaxed"></textarea>
+          <div class="flex items-center gap-1 -mt-1">
+            <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Attach"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg></button>
+            <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Emoji"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
+            <button id="ai-draft-btn" class="px-2 py-1 rounded-md bg-orange-500/15 border border-orange-500/40 text-orange-300 hover:bg-orange-500/25 text-[11px] font-medium inline-flex items-center gap-1.5" title="Generate AI draft reply (on-demand AI auto-reply)">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              AI Draft
+            </button>
+            <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Schedule send"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
+            <div class="flex-1"></div>
+            <button id="composer-send" class="p-1.5 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors" title="Send"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── RIGHT: Client details panel ── -->
+    <aside class="w-[300px] border-l border-slate-800 bg-slate-950 flex flex-col flex-shrink-0 overflow-y-auto">
+      <div id="client-panel" class="p-4 space-y-4">
+        <!-- rendered by JS -->
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Manual create modal (same shape as task-board) -->
+  <div id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-md shadow-2xl">
+      <div class="p-5 border-b border-slate-800">
+        <h3 class="text-base font-semibold text-slate-100">Create task</h3>
+        <p class="text-xs text-slate-500 mt-0.5" id="modal-subtitle">Title is required. Owner defaults to you. Everything else is filled silently.</p>
+      </div>
+      <div class="p-5 space-y-4">
+        <div id="context-chip" class="hidden bg-slate-800/50 border border-slate-700 rounded-lg p-2.5 flex items-center gap-2">
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          <span class="text-[11px] text-slate-400">From: <span id="context-label" class="text-slate-200">—</span></span>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Title</label>
+          <input id="modal-title" type="text" placeholder="e.g. Follow up with Greer about JAL upgrade"
+            class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-orange-500 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Owner <span class="text-slate-600 normal-case">(optional)</span></label>
+          <select id="modal-owner" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-orange-500 transition-colors">
+            <option value="mc" selected>Maya Chen (you)</option>
+            <option value="js">Jordan Singh</option>
+            <option value="rp">Rae Park</option>
+            <option value="tk">Tomás Kovac</option>
+          </select>
+        </div>
+
+        <button type="button" id="more-toggle" class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300 transition-colors">
+          <svg id="more-chevron" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          More options <span class="text-slate-600">(priority, due, type)</span>
+        </button>
+
+        <div id="more-fields" class="hidden space-y-4 pt-1 border-t border-slate-800/60">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Priority</label>
+            <div class="flex items-center gap-1.5">
+              <button type="button" class="priority-chip" data-priority="urgent"><span class="w-1.5 h-1.5 rounded-full bg-red-500 inline-block mr-1.5"></span>Urgent</button>
+              <button type="button" class="priority-chip" data-priority="high"><span class="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block mr-1.5"></span>High</button>
+              <button type="button" class="priority-chip active" data-priority="medium"><span class="w-1.5 h-1.5 rounded-full bg-sky-500 inline-block mr-1.5"></span>Medium</button>
+              <button type="button" class="priority-chip" data-priority="low"><span class="w-1.5 h-1.5 rounded-full bg-slate-500 inline-block mr-1.5"></span>Low</button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Due</label>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" class="due-chip active" data-due="">No due</button>
+              <button type="button" class="due-chip" data-due="today">Today</button>
+              <button type="button" class="due-chip" data-due="tomorrow">Tomorrow</button>
+              <button type="button" class="due-chip" data-due="in 3d">In 3d</button>
+              <button type="button" class="due-chip" data-due="in 1w">In 1w</button>
+              <input type="date" id="modal-due-custom" class="bg-slate-950 border border-slate-800 rounded-md px-2 py-1 text-[11px] text-slate-300 focus:outline-none focus:border-orange-500 ml-1" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Task type <span class="text-slate-600 normal-case">(otherwise inferred from title)</span></label>
+            <select id="modal-type" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-orange-500 transition-colors">
+              <option value="" selected>Infer from title</option>
+              <option value="messaging">Messaging</option>
+              <option value="booking-action">Booking action</option>
+              <option value="trip-prep">Trip prep</option>
+              <option value="disruption-response">Disruption response</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 border-t border-slate-800 flex items-center justify-between">
+        <span class="text-[11px] text-slate-500">Press <kbd class="kbd">Enter</kbd> to create · <kbd class="kbd">Esc</kbd> to cancel</span>
+        <div class="flex items-center gap-2">
+          <button id="modal-cancel" class="px-3 py-1.5 rounded-lg text-sm text-slate-400 hover:text-slate-200 transition-colors">Cancel</button>
+          <button id="modal-create" class="px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 text-sm font-medium transition-colors">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[70] flex flex-col gap-2 items-end"></div>
+
+  <script>
+    // ──────────────────────────────────────────────────────────
+    //  CONVERSATIONS — derived from TASKS fixtures
+    // ──────────────────────────────────────────────────────────
+    const CONVERSATIONS = [
+      // NEW: AI auto-reply demo conversation — AI suggestion is the most recent message,
+      // visible immediately after scroll-to-bottom. Shows the "client message → AI drafts
+      // → TA approves in one click" pattern (PRD §7.1).
+      {
+        id: 'conv-aboud',
+        title: 'Aboud | London May 22',
+        avatar: 'AB', avatarColor: 'bg-rose-500/20 text-rose-300',
+        channel: 'whatsapp', tier: 'VVIP', status: 'New', category: 'Trip',
+        lastMsg: 'AI auto-drafted a reply · awaiting approval',
+        lastTime: '1 min ago', unread: 1,
+        client: {
+          name: 'Hassan Aboud', email: 'h.aboud@aboudcap.ae', tier: 'VVIP',
+          since: '2023', pastTrips: 4, birthday: 'Dec 12',
+          family: '+ wife Layla (vegetarian), 2 daughters',
+          cabinPref: 'Etihad First / Emirates First for ME→Europe',
+          hotels: 'Aman, Claridge\'s, Connaught preferred',
+          linkedTasks: ['tsk-001', 'tsk-020'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'ops', name: 'Maya', time: 'May 16 3:20 PM', text: 'Confirmed Claridge\'s suite for May 22 arrival. Driver booked from LHR. All set on logistics.' },
+          { sender: 'client', name: 'Hassan Aboud', time: 'May 17 9:15 AM', text: 'Perfect, thank you. Quick question — restaurant rec for Friday night? Just Layla and me.', actions: true, ctx: 'Aboud restaurant rec · May 17' },
+          { sender: 'ops', name: 'Maya', time: 'May 17 9:42 AM', text: 'Sent 3 picks: Sketch (theatrical, Mayfair), Core by Clare Smyth (Notting Hill, intimate), Brat (Shoreditch, smoke kitchen). All can do Friday — let me know.' },
+          { sender: 'client', name: 'Hassan Aboud', time: '1 min ago', text: 'Brat please. 8pm if possible. Layla\'s vegetarian — will they handle?', actions: true, ctx: 'Aboud Brat booking · 1 min ago' },
+          { sender: 'ai-suggestion',
+            confidence: 96,
+            draft: 'Booked Brat for Friday 8pm. Confirmed with the team — they have an excellent vegetarian tasting menu and were happy to brief the chef on Layla. Will send the reservation confirmation in the next hour.',
+            reasoning: 'High-confidence reply: direct restaurant pick + time + dietary requirement. Cross-referenced Brat\'s vegetarian handling (verified via past Maestro bookings, Sep 2025) and confirmed avail for Friday 8pm via OpenTable.' },
+        ],
+      },
+      {
+        id: 'conv-greer',
+        title: 'Greer family | Tokyo Apr 30',
+        avatar: 'GR', avatarColor: 'bg-orange-500/20 text-orange-300',
+        channel: 'whatsapp', tier: 'VVIP', status: 'New', category: 'Trip',
+        lastMsg: 'Hey Maya — quick one. Saw on Seats.aero that JAL First is open…',
+        lastTime: '2:14 PM', unread: 4,
+        client: {
+          name: 'Sarah Greer', email: 'sarah@greerfamily.com', tier: 'VVIP',
+          since: '2023', pastTrips: 3, birthday: 'May 20',
+          family: 'Mike (husband), Henry (4)',
+          cabinPref: 'JAL First / ANA First for Asia routes',
+          hotels: 'Aman, Como, Belmond preferred',
+          linkedTasks: ['tsk-001', 'tsk-020', 'tsk-024'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'client', name: 'Sarah Greer', time: '2:14 PM', text: 'Hey Maya — quick one. Saw on Seats.aero that JAL First is open for our Apr 30. Any chance we can grab those seats? Happy to use points.', actions: true, ctx: 'Greer message · 2:14 PM' },
+          { sender: 'ai-suggestion', taskId: 'tsk-001', confidence: 92, draft: 'Confirmed — JAL First (JL061) showing 2 award seats Apr 30, IAD → HND. Holding now. Need passport scans by Mon to ticket.', reasoning: 'Conversation watcher matched booking-intent keywords ("JAL", "First", date "Apr 30"); cross-referenced supplier availability via Seats.aero.' },
+          { sender: 'client', name: 'Sarah Greer', time: '2:15 PM', text: 'Also — our flight back is Wednesday, can someone confirm car pickup at Narita 6 AM? Driver should know about Henry\'s car seat.', actions: true, ctx: 'Greer pickup ask · 2:15 PM' },
+          { sender: 'ops', name: 'Maya', time: '2:17 PM', text: 'On it. Holding 2 seats now — will confirm in 30. Re: pickup, I\'ll set up the car seat brief, expect a note from the driver before Wed.' },
+        ],
+      },
+      {
+        id: 'conv-halverson',
+        title: 'Halverson | Croatia draft',
+        avatar: 'HV', avatarColor: 'bg-sky-500/20 text-sky-300',
+        channel: 'stream-chat', tier: 'Standard', status: 'Idle', category: 'General',
+        lastMsg: '(client silent 5d)',
+        lastTime: 'May 10', unread: 0,
+        client: {
+          name: 'Beth Halverson', email: 'beth@halverson.io', tier: 'Standard',
+          since: '2024', pastTrips: 2, birthday: '—',
+          family: 'Single traveler',
+          cabinPref: 'Business class for long-haul',
+          hotels: 'Boutique villas / unique stays',
+          linkedTasks: ['tsk-002', 'tsk-021'],
+        },
+        autoReply: false,
+        messages: [
+          { sender: 'ops', name: 'Maya', time: 'May 10 4:30 PM', text: 'Sent 3 villa options for late August. Let me know which catches your eye and I\'ll dig deeper.' },
+          { sender: 'system', text: 'No reply for 5 days. AI scheduled-query promoted a follow-up suggestion → see Needs Review tab.' },
+        ],
+      },
+      {
+        id: 'conv-whitman',
+        title: 'Whitman | Frankfurt May 16',
+        avatar: 'WH', avatarColor: 'bg-red-500/20 text-red-300',
+        channel: 'whatsapp', tier: 'VVIP', status: 'Urgent', category: 'Trip',
+        lastMsg: 'LH441 just got cancelled — sending rebook options now.',
+        lastTime: '6 min ago', unread: 1,
+        client: {
+          name: 'James Whitman', email: 'j.whitman@whitmancap.com', tier: 'VVIP',
+          since: '2022', pastTrips: 5, birthday: 'Aug 14',
+          family: 'Solo on this trip',
+          cabinPref: 'First only ≥7hr transatlantic',
+          hotels: 'Aman, Como, Belmond preferred · Severe shellfish allergy',
+          linkedTasks: ['tsk-003', 'tsk-013', 'tsk-022'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'ops', name: 'Tomás', time: '6 min ago', text: 'LH441 just got cancelled — sending rebook options now. Will call you in 5.' },
+          { sender: 'ai-system', text: 'AI signal-monitor detected LH441 cancellation 8 min ago. 3 alternative routings auto-suggested in Tasks (tsk-003).' },
+        ],
+      },
+      {
+        id: 'conv-castelli',
+        title: 'Castelli | Tokyo May 25',
+        avatar: 'CA', avatarColor: 'bg-emerald-500/20 text-emerald-300',
+        channel: 'whatsapp', tier: 'VVIP', status: 'In progress', category: 'Trip',
+        lastMsg: 'Pre-arrival message scheduled for May 18 4PM',
+        lastTime: 'yesterday', unread: 0,
+        client: {
+          name: 'Lorenzo Castelli', email: 'lc@castelliholdings.com', tier: 'VVIP',
+          since: '2022', pastTrips: 4, birthday: 'Mar 3',
+          family: '+ wife Elena',
+          cabinPref: 'JAL First / ANA First for Asia routes',
+          hotels: 'Aman, Como properties',
+          linkedTasks: ['tsk-004', 'tsk-009', 'tsk-010', 'tsk-012', 'tsk-016'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'client', name: 'Lorenzo Castelli', time: 'yesterday 3:42 PM', text: 'Looking forward to Tokyo! Quick Q — can you confirm the Aman transfer is locked in?', actions: true, ctx: 'Castelli transfer Q · yesterday' },
+          { sender: 'ops', name: 'Jordan', time: 'yesterday 4:01 PM', text: 'Confirmed — Tokyo Royal Transport, same driver as last year. Pre-arrival message goes out May 18.' },
+        ],
+      },
+      {
+        id: 'conv-patel',
+        title: 'Patel | Tuscany Jun 22',
+        avatar: 'PA', avatarColor: 'bg-fuchsia-500/20 text-fuchsia-300',
+        channel: 'whatsapp', tier: 'Standard', status: 'New', category: 'Trip',
+        lastMsg: 'We need 4 villas for Tuscany Jun 22–Jul 4. Party of 8 + dog.',
+        lastTime: '1h 42m ago', unread: 2,
+        client: {
+          name: 'Anika Patel', email: 'anika@patelco.in', tier: 'Standard',
+          since: '2025', pastTrips: 1, birthday: 'Oct 8',
+          family: 'Extended family group of 8',
+          cabinPref: 'Business class · prefers daytime flights',
+          hotels: 'Villas / private estates · dog-friendly',
+          linkedTasks: ['tsk-005', 'tsk-019'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'client', name: 'Anika Patel', time: '1h 42m ago', text: 'We need 4 villas for Tuscany Jun 22–Jul 4. Party of 8 plus a dog. Repeat clients of yours from last year.', actions: true, ctx: 'Patel Tuscany ask · 1h 42m ago' },
+        ],
+      },
+      {
+        id: 'conv-bowman',
+        title: 'Bowman | Patagonia Aug',
+        avatar: 'BO', avatarColor: 'bg-amber-500/20 text-amber-300',
+        channel: 'stream-chat', tier: 'Standard', status: 'Open', category: 'Trip',
+        lastMsg: 'Sent invoice INV-3402 — deposit due May 21.',
+        lastTime: 'May 7', unread: 0,
+        client: {
+          name: 'David Bowman', email: 'david@bowmanlaw.com', tier: 'Standard',
+          since: '2024', pastTrips: 1, birthday: 'Jan 22',
+          family: '+ partner',
+          cabinPref: 'Business class for long-haul',
+          hotels: 'Adventure lodges / unique stays',
+          linkedTasks: ['tsk-007', 'tsk-014', 'tsk-023'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'ops', name: 'Maya', time: 'May 7', text: 'Sent invoice INV-3402 — deposit due May 21. Looking forward to locking in Patagonia for you.' },
+          { sender: 'system', text: 'Payment 8 days overdue. AI scheduled-query promoted payment-chase suggestion → tsk-007.' },
+        ],
+      },
+      {
+        id: 'conv-park-halverson',
+        title: 'Park-Halverson | Bali (in-trip)',
+        avatar: 'PH', avatarColor: 'bg-purple-500/20 text-purple-300',
+        channel: 'whatsapp', tier: 'VVIP', status: 'In progress', category: 'Trip',
+        lastMsg: 'Day 1 in Bali. Honeymoon couple.',
+        lastTime: '6 min ago', unread: 0,
+        client: {
+          name: 'Sam Park & Lee Halverson', email: 'sam@parkhalverson.com', tier: 'VVIP',
+          since: '2024', pastTrips: 2, birthday: 'Honeymoon',
+          family: 'Honeymooners',
+          cabinPref: 'First / Business · daytime preferred',
+          hotels: 'Como, Aman, special-occasion properties',
+          linkedTasks: ['tsk-008', 'tsk-015', 'tsk-017'],
+        },
+        autoReply: true,
+        messages: [
+          { sender: 'ai-system', text: 'AI scheduled-query proposes T+24h check-in (tsk-008) and vendor-change confirm (tsk-017).' },
+        ],
+      },
+    ];
+
+    // ──────────────────────────────────────────────────────────
+    //  State + selection
+    // ──────────────────────────────────────────────────────────
+    const State = {
+      activeConvId: 'conv-aboud',  // Default to AI auto-suggestion demo (most recent activity)
+      composerFromDraftTaskId: null,
+    };
+
+    function conv() { return CONVERSATIONS.find(c => c.id === State.activeConvId) || CONVERSATIONS[0]; }
+
+    // ──────────────────────────────────────────────────────────
+    //  Render: conversation list
+    // ──────────────────────────────────────────────────────────
+    function renderConvList() {
+      const root = document.getElementById('conv-list');
+      root.innerHTML = CONVERSATIONS.map(c => `
+        <div class="conv-item ${c.id === State.activeConvId ? 'active' : ''}" data-id="${c.id}">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 rounded-full ${c.avatarColor} flex items-center justify-center text-[10px] font-semibold flex-shrink-0">${c.avatar}</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2 mb-0.5">
+                <div class="text-sm font-medium text-slate-100 truncate">${c.title}</div>
+                <div class="text-[10px] text-slate-500 flex-shrink-0 font-mono">${c.lastTime}</div>
+              </div>
+              <div class="text-[11px] text-slate-500 truncate mb-1">${c.lastMsg}</div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-800">${c.category}</span>
+                ${c.status === 'Urgent' ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500/15 text-red-400 border border-red-500/30">' + c.status + '</span>' : c.status === 'New' ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-orange-500/15 text-orange-300 border border-orange-500/30">' + c.status + '</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] text-slate-500 border border-slate-800">' + c.status + '</span>'}
+                ${c.unread ? `<div class="flex-1 text-right"><span class="inline-block w-4 h-4 leading-4 text-center rounded-full bg-orange-500 text-white text-[10px] font-bold">${c.unread}</span></div>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      root.querySelectorAll('.conv-item').forEach(item => {
+        item.addEventListener('click', () => selectConv(item.dataset.id));
+      });
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Render: chat thread (header + messages + composer state)
+    // ──────────────────────────────────────────────────────────
+    function renderChat() {
+      const c = conv();
+      document.getElementById('chat-title').textContent = c.title;
+      document.getElementById('chat-status').innerHTML = c.status + ' ▾';
+      document.getElementById('chat-assignee').textContent = 'Maya · ' + (c.tier === 'VVIP' ? 'VVIP queue' : 'Standard queue');
+      const toggle = document.getElementById('auto-reply-toggle');
+      toggle.classList.toggle('on', c.autoReply);
+
+      // Composer placeholder
+      document.getElementById('composer-input').placeholder = 'Reply to ' + c.client.name.split(' ')[0] + '…';
+
+      // Hide any prior AI draft card on conversation switch
+      document.getElementById('ai-draft-card').classList.add('hidden');
+      document.getElementById('ai-drafting').classList.add('hidden');
+      State.composerFromDraftTaskId = null;
+
+      // Messages
+      const root = document.getElementById('chat-messages');
+      root.innerHTML = c.messages.map(m => renderMessage(m, c)).join('');
+
+      // Bind hover-to-create
+      root.querySelectorAll('.msg-action-btn[data-action="create-task"]').forEach(b => {
+        b.addEventListener('click', () => openCreateModal(b.dataset.context));
+      });
+
+      // Bind AI suggestion actions (if present)
+      root.querySelectorAll('.ai-approve').forEach(b => {
+        b.addEventListener('click', () => {
+          const sugg = b.closest('.ai-suggestion');
+          showToast('AI suggestion approved — JAL First held, draft reply sent. Task auto-closed in one step.');
+          sugg.style.transition = 'opacity .3s';
+          sugg.style.opacity = '0.4';
+        });
+      });
+      root.querySelectorAll('.ai-edit-suggestion').forEach(b => {
+        b.addEventListener('click', () => {
+          const taskId = b.dataset.taskId;
+          const draft = b.dataset.draft;
+          openDraftCardFromTask({ taskId, draft, sourceLabel: 'AI inline suggestion · ' + c.title });
+        });
+      });
+      root.querySelectorAll('.ai-dismiss-suggestion').forEach(b => {
+        b.addEventListener('click', () => {
+          const sugg = b.closest('.ai-suggestion');
+          showToast('Suggestion dismissed — won\'t resurface for this thread.');
+          sugg.style.transition = 'opacity .3s';
+          sugg.style.opacity = '0.3';
+        });
+      });
+
+      // Scroll to bottom
+      root.scrollTop = root.scrollHeight;
+    }
+
+    function renderMessage(m, c) {
+      if (m.sender === 'ai-suggestion') {
+        const draftAttr = m.draft.replace(/"/g, '&quot;');
+        const taskLink = m.taskId ? `
+          <a href="task-board.html#task=${m.taskId}" class="task-id-link text-[11px] text-slate-400 hover:text-orange-300 inline-flex items-center gap-1">${m.taskId} <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
+        ` : `
+          <span class="text-[10px] text-slate-600 italic">Task created on Approve</span>
+        `;
+        return `
+          <div class="ai-suggestion bg-orange-500/5 border border-orange-500/50 rounded-lg p-3 ml-9">
+            <div class="flex items-start gap-2.5">
+              <div class="w-6 h-6 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[10px] font-bold flex-shrink-0">AI</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium text-orange-300">AI auto-suggested reply</span>
+                  <span class="text-[10px] text-slate-500">·</span>
+                  <span class="text-[10px] text-amber-400 font-mono">${m.confidence}% confidence</span>
+                  <span class="text-[10px] text-slate-500">·</span>
+                  <span class="text-[10px] text-slate-500">${m.confidence >= 90 ? 'Auto tier' : 'Assist tier'}</span>
+                  <div class="flex-1"></div>
+                  ${taskLink}
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-sm text-slate-200 leading-relaxed mb-2 italic">
+                  "${m.draft}"
+                </div>
+                <div class="text-[10px] text-slate-500 mb-3 leading-relaxed border-l-2 border-slate-800 pl-2">
+                  <span class="uppercase tracking-wider text-slate-600">AI reasoning:</span> ${m.reasoning}
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <button class="ai-approve px-2.5 py-1 rounded-md bg-green-500/15 text-green-300 border border-green-500/30 text-[11px] font-medium hover:bg-green-500/25 transition-colors" title="PRD §7.1: one-click fires the message and auto-closes the task in the same step">
+                    ✓ Approve &amp; send
+                  </button>
+                  <button class="ai-edit-suggestion px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-slate-700 transition-colors" data-task-id="${m.taskId || ''}" data-draft="${draftAttr}">
+                    Edit + send
+                  </button>
+                  <button class="ai-dismiss-suggestion px-2.5 py-1 rounded-md text-[11px] text-slate-500 hover:text-red-400 transition-colors">
+                    Dismiss
+                  </button>
+                  <div class="flex-1"></div>
+                  <span class="text-[10px] text-slate-600">Or it lands in Tasks → Needs Review</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      if (m.sender === 'system') {
+        return `
+          <div class="flex items-center gap-2 text-[11px] text-slate-500 italic justify-center py-2">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ${m.text}
+          </div>
+        `;
+      }
+      if (m.sender === 'ai-system') {
+        return `
+          <div class="bg-slate-900 border-l-2 border-orange-500/40 px-3 py-2 text-[11px] text-slate-400 italic flex items-center gap-2 ml-9">
+            <div class="w-4 h-4 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[9px] font-bold flex-shrink-0">AI</div>
+            ${m.text}
+          </div>
+        `;
+      }
+      if (m.sender === 'client') {
+        return `
+          <div class="msg-row group flex items-start gap-2">
+            <div class="w-7 h-7 rounded-full ${c.avatarColor} flex items-center justify-center font-semibold text-[10px] flex-shrink-0">${c.avatar}</div>
+            <div class="flex-1 min-w-0 max-w-[80%]">
+              <div class="flex items-baseline gap-2 mb-1">
+                <span class="text-xs font-medium text-slate-200">${m.name}</span>
+                <span class="text-[10px] text-slate-500">${m.time}</span>
+              </div>
+              <div class="bg-slate-800 rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm text-slate-200 leading-relaxed">
+                ${m.text}
+              </div>
+              ${m.actions ? `
+                <div class="msg-actions mt-1.5 flex items-center gap-1.5">
+                  <button class="msg-action-btn inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-orange-500/20 hover:border-orange-500/40 hover:text-orange-300 transition-colors" data-action="create-task" data-context="${m.ctx || m.name}">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    Create task
+                  </button>
+                  <button class="msg-action-btn inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-slate-700 transition-colors">Reply</button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }
+      // ops (outbound)
+      return `
+        <div class="msg-row group flex items-start gap-2 flex-row-reverse">
+          <div class="w-7 h-7 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center font-semibold text-[10px] flex-shrink-0">${(m.name||'OP').slice(0,2).toUpperCase()}</div>
+          <div class="flex-1 min-w-0 max-w-[80%] flex flex-col items-end">
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-[10px] text-slate-500">${m.time}</span>
+              <span class="text-xs font-medium text-slate-200">${m.name}</span>
+            </div>
+            <div class="bg-orange-500/15 border border-orange-500/25 rounded-2xl rounded-tr-sm px-3.5 py-2.5 text-sm text-slate-200 leading-relaxed">
+              ${m.text}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Render: client details panel (right)
+    // ──────────────────────────────────────────────────────────
+    function renderClientPanel() {
+      const c = conv();
+      const cl = c.client;
+      const root = document.getElementById('client-panel');
+      const tierBadge = cl.tier === 'VVIP'
+        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-orange-500/15 text-orange-300 border border-orange-500/30">VVIP</span>'
+        : '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-800 text-slate-400 border border-slate-700">Standard</span>';
+      root.innerHTML = `
+        <!-- Avatar block -->
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full ${c.avatarColor} flex items-center justify-center text-base font-semibold flex-shrink-0">${c.avatar}</div>
+          <div class="min-w-0">
+            <div class="text-sm font-semibold text-slate-100 truncate">${cl.name}</div>
+            <div class="text-[11px] text-slate-500 truncate">${cl.email}</div>
+            <div class="mt-1">${tierBadge}</div>
+          </div>
+        </div>
+
+        <!-- Quick stats -->
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800">
+          <div class="bg-slate-900 border border-slate-800 rounded p-2">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500">Past trips</div>
+            <div class="text-sm text-slate-200 font-mono mt-0.5">${cl.pastTrips}</div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded p-2">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500">Client since</div>
+            <div class="text-sm text-slate-200 font-mono mt-0.5">${cl.since}</div>
+          </div>
+        </div>
+
+        <!-- Preferences -->
+        <div class="space-y-2.5 pt-2 border-t border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Preferences</div>
+          <div>
+            <div class="text-[10px] text-slate-500 mb-0.5">Cabin</div>
+            <div class="text-xs text-slate-300 leading-relaxed">${cl.cabinPref}</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-500 mb-0.5">Hotels</div>
+            <div class="text-xs text-slate-300 leading-relaxed">${cl.hotels}</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-500 mb-0.5">Party</div>
+            <div class="text-xs text-slate-300 leading-relaxed">${cl.family}</div>
+          </div>
+          ${cl.birthday !== '—' ? `<div><div class="text-[10px] text-slate-500 mb-0.5">Birthday</div><div class="text-xs text-slate-300">${cl.birthday}</div></div>` : ''}
+        </div>
+
+        <!-- Linked tasks -->
+        <div class="space-y-2 pt-2 border-t border-slate-800">
+          <div class="flex items-center justify-between">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500">Linked tasks</div>
+            <a href="task-board.html" class="text-[10px] text-orange-400 hover:text-orange-300">View all →</a>
+          </div>
+          ${cl.linkedTasks.map(tid => {
+            const t = TaskFilters.byId(tid);
+            if (!t) return '';
+            const tierStyle = TIER_STYLES[t.routing_tier];
+            return `
+              <a href="task-board.html#task=${tid}" class="task-id-link block bg-slate-900 border border-slate-800 rounded p-2 hover:border-orange-500/40 transition-colors group">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <span class="text-[10px] font-mono text-slate-500 group-hover:text-orange-400">${tid}</span>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] font-mono ${tierStyle.bg} ${tierStyle.text} border ${tierStyle.border}">${tierStyle.label}</span>
+                </div>
+                <div class="text-[11px] text-slate-200 leading-snug">${t.title}</div>
+              </a>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function selectConv(id) {
+      State.activeConvId = id;
+      document.querySelectorAll('.conv-item').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+      renderChat();
+      renderClientPanel();
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  AI draft card
+    // ──────────────────────────────────────────────────────────
+    function openDraftCardFromTask({ taskId, draft, sourceLabel, viewTaskHref }) {
+      const card = document.getElementById('ai-draft-card');
+      card.classList.remove('hidden');
+      document.getElementById('ai-draft-source').textContent = sourceLabel;
+      document.getElementById('ai-draft-text').textContent = draft;
+      const viewBtn = document.getElementById('ai-draft-view-task');
+      if (taskId) {
+        viewBtn.classList.remove('hidden');
+        viewBtn.setAttribute('href', viewTaskHref || ('task-board.html#task=' + taskId));
+      } else {
+        viewBtn.classList.add('hidden');
+      }
+      State.composerFromDraftTaskId = taskId || 'on-demand';
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'end' }), 50);
+    }
+    function closeDraftCard() { document.getElementById('ai-draft-card').classList.add('hidden'); }
+
+    // ──────────────────────────────────────────────────────────
+    //  On-demand AI Draft (composer button)
+    // ──────────────────────────────────────────────────────────
+    function generateOnDemandDraft() {
+      const c = conv();
+      // Show "thinking" indicator
+      const thinking = document.getElementById('ai-drafting');
+      thinking.classList.remove('hidden');
+      // Hide any prior card
+      document.getElementById('ai-draft-card').classList.add('hidden');
+      // Pick a plausible draft based on the conversation
+      const drafts = {
+        'conv-greer':  'Confirmed — JAL First (JL061) showing 2 award seats Apr 30, IAD → HND. Holding now. Also got the car-seat brief to the Narita driver. Need passport scans by Mon to ticket.',
+        'conv-halverson': 'Hey — circling back on the Croatia options. No pressure, just want to make sure they didn\'t get lost in your inbox. Happy to hop on a quick call if easier.',
+        'conv-whitman': 'James — three options for the FRA leg attached: LH444 (next day, MUC connection, comp\'d), UA960+LH107 (+8h, comp\'d), LX65+LX1066 (+14h, J avail). All in First where available. Which works?',
+        'conv-castelli': 'Lorenzo — Aman transfer locked, same driver. Pre-arrival prep going out Sun. Anything else to brief the property on?',
+        'conv-patel':   'Got it — pulling 4 Tuscany villas for Jun 22–Jul 4, party of 8 + dog. Will have shortlist with photos + floor plans by tomorrow EOD.',
+        'conv-bowman':  'David — quick nudge on the Patagonia deposit (INV-3402). 8 days past due — wanted to make sure nothing\'s blocking it. We void the booking at 14d if unpaid.',
+        'conv-park-halverson': 'Hope the first sunset at Como Shambhala did it for you. Anything we can fix or add now you\'re on the ground? Don\'t miss the cliff temple at sunrise — magical.',
+      };
+      const draft = drafts[c.id] || 'AI-generated draft reply based on recent conversation context.';
+      setTimeout(() => {
+        thinking.classList.add('hidden');
+        openDraftCardFromTask({
+          taskId: null,
+          draft,
+          sourceLabel: 'On-demand · generated just now',
+        });
+      }, 1100);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Manual create modal (unchanged shape)
+    // ──────────────────────────────────────────────────────────
+    const ModalState = { priority: 'medium', due: '', type: '' };
+    function resetModal() {
+      ModalState.priority = 'medium'; ModalState.due = ''; ModalState.type = '';
+      document.getElementById('modal-title').value = '';
+      document.getElementById('modal-owner').value = 'mc';
+      document.getElementById('modal-type').value = '';
+      document.getElementById('modal-due-custom').value = '';
+      document.querySelectorAll('.priority-chip').forEach(c => c.classList.toggle('active', c.dataset.priority === 'medium'));
+      document.querySelectorAll('.due-chip').forEach(c => c.classList.toggle('active', c.dataset.due === ''));
+      document.getElementById('more-fields').classList.add('hidden');
+      document.getElementById('more-chevron').classList.remove('expanded');
+    }
+    function openCreateModal(context) {
+      resetModal();
+      document.getElementById('modal-backdrop').classList.add('open');
+      const chip = document.getElementById('context-chip');
+      if (context) {
+        chip.classList.remove('hidden');
+        document.getElementById('context-label').textContent = context;
+      } else chip.classList.add('hidden');
+      setTimeout(() => document.getElementById('modal-title').focus(), 50);
+    }
+    function closeCreateModal() { document.getElementById('modal-backdrop').classList.remove('open'); }
+    function submitCreate() {
+      const title = document.getElementById('modal-title').value.trim();
+      if (!title) return;
+      const ownerId = document.getElementById('modal-owner').value;
+      const owner = memberById(ownerId);
+      const type = document.getElementById('modal-type').value || 'inferred';
+      const extras = [];
+      if (ModalState.priority !== 'medium') extras.push(ModalState.priority);
+      if (ModalState.due) extras.push('due ' + ModalState.due);
+      if (type !== 'inferred') extras.push(type);
+      const extrasStr = extras.length ? ' · ' + extras.join(' · ') : '';
+      showToast(`Created “${truncate(title, 40)}” · owner ${owner.name.split(' ')[0]}${extrasStr} · landed on task board`);
+      closeCreateModal();
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Toast (no undo, simpler than task-board)
+    // ──────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast bg-slate-800 border border-slate-700 rounded-lg shadow-xl px-4 py-2.5 min-w-[280px] max-w-[420px] flex items-center gap-3';
+      toast.innerHTML = `<div class="flex-1 text-sm text-slate-200">${msg}</div>`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.style.transition = 'opacity .25s'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 280); }, 3500);
+    }
+    function truncate(s, n) { return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+
+    // ──────────────────────────────────────────────────────────
+    //  Page bindings + deep-link
+    // ──────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      renderConvList();
+      renderChat();
+      renderClientPanel();
+
+      // Refresh chat + client panel + nav counts when shared drawer mutates a task
+      if (window.onTaskMutated) window.onTaskMutated(() => {
+        renderClientPanel();
+        renderChat();
+        if (window.TopNav) window.TopNav.init();
+      });
+
+      // ?from-task / #from-task handoff from task-board
+      function getFromTaskId() {
+        const hash = (window.location.hash || '').replace(/^#/, '');
+        const hashParams = new URLSearchParams(hash);
+        return hashParams.get('from-task') || new URLSearchParams(window.location.search).get('from-task');
+      }
+      const fromTaskId = getFromTaskId();
+      if (fromTaskId) {
+        const t = TaskFilters.byId(fromTaskId);
+        if (t && t.draft) {
+          // Try to auto-select the matching conversation by primary_context label
+          const match = CONVERSATIONS.find(c =>
+            t.primary_context.label.toLowerCase().includes(c.client.name.split(' ')[0].toLowerCase()) ||
+            t.primary_context.label.toLowerCase().includes(c.title.split('|')[0].trim().toLowerCase().split(' ')[0])
+          );
+          if (match) selectConv(match.id);
+          openDraftCardFromTask({
+            taskId: fromTaskId,
+            draft: t.draft.replace(/^"|"$/g, ''),
+            sourceLabel: 'from task: ' + t.title,
+          });
+        }
+      }
+
+      // AI draft card buttons
+      document.getElementById('ai-draft-send-as-is').addEventListener('click', () => {
+        const c = conv();
+        const draft = document.getElementById('ai-draft-text').textContent;
+        showToast(`Sent AI draft to ${c.client.name.split(' ')[0]} · ${State.composerFromDraftTaskId !== 'on-demand' ? 'task auto-closed' : 'one-click send'}`);
+        document.getElementById('ai-draft-card').classList.add('hidden');
+        // Append a simulated outbound message
+        c.messages.push({ sender: 'ops', name: 'Maya', time: 'just now', text: draft });
+        renderChat();
+      });
+      document.getElementById('ai-draft-insert').addEventListener('click', () => {
+        const composer = document.getElementById('composer-input');
+        composer.value = document.getElementById('ai-draft-text').textContent;
+        composer.rows = Math.max(2, Math.min(6, composer.value.split('\n').length + 1));
+        document.getElementById('ai-draft-card').classList.add('hidden');
+        composer.focus();
+        composer.setSelectionRange(composer.value.length, composer.value.length);
+      });
+      document.getElementById('ai-draft-dismiss').addEventListener('click', () => {
+        document.getElementById('ai-draft-card').classList.add('hidden');
+        State.composerFromDraftTaskId = null;
+        showToast('AI draft dismissed.');
+      });
+
+      // Composer Send
+      document.getElementById('composer-send').addEventListener('click', () => {
+        const composer = document.getElementById('composer-input');
+        const text = composer.value.trim();
+        if (!text) return;
+        const c = conv();
+        c.messages.push({ sender: 'ops', name: 'Maya', time: 'just now', text });
+        composer.value = '';
+        composer.rows = 2;
+        showToast(State.composerFromDraftTaskId ? 'Sent — task auto-closed.' : 'Message sent.');
+        State.composerFromDraftTaskId = null;
+        renderChat();
+      });
+
+      // AI Draft button (on-demand)
+      document.getElementById('ai-draft-btn').addEventListener('click', generateOnDemandDraft);
+
+      // Auto-reply toggle
+      document.getElementById('auto-reply-toggle').addEventListener('click', (e) => {
+        const c = conv();
+        c.autoReply = !c.autoReply;
+        e.currentTarget.classList.toggle('on', c.autoReply);
+        showToast('Auto-reply ' + (c.autoReply ? 'ON' : 'OFF') + ' for ' + c.title);
+      });
+
+      // Modal bindings
+      document.getElementById('modal-cancel').addEventListener('click', closeCreateModal);
+      document.getElementById('modal-create').addEventListener('click', submitCreate);
+      document.getElementById('modal-title').addEventListener('keydown', (e) => { if (e.key === 'Enter') submitCreate(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCreateModal(); });
+      document.getElementById('more-toggle').addEventListener('click', () => {
+        document.getElementById('more-fields').classList.toggle('hidden');
+        document.getElementById('more-chevron').classList.toggle('expanded');
+      });
+      document.querySelectorAll('.priority-chip').forEach(c => {
+        c.addEventListener('click', () => {
+          ModalState.priority = c.dataset.priority;
+          document.querySelectorAll('.priority-chip').forEach(x => x.classList.toggle('active', x === c));
+        });
+      });
+      document.querySelectorAll('.due-chip').forEach(c => {
+        c.addEventListener('click', () => {
+          ModalState.due = c.dataset.due;
+          document.querySelectorAll('.due-chip').forEach(x => x.classList.toggle('active', x === c));
+          document.getElementById('modal-due-custom').value = '';
+        });
+      });
+      document.getElementById('modal-due-custom').addEventListener('change', (e) => {
+        if (!e.target.value) return;
+        const d = new Date(e.target.value);
+        ModalState.due = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        document.querySelectorAll('.due-chip').forEach(x => x.classList.remove('active'));
+      });
+    });
+  </script>
+
+</body>
+</html>

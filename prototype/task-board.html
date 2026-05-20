@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Board — Conductor Task Mgmt Prototype</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../theme.js"></script>
+  <script src="../data.js"></script>
+  <script>window.CURRENT_PAGE = 'proto-task-board';</script>
+  <script src="../nav.js"></script>
+  <script src="task-data.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    /* Drawer slide */
+    .drawer { transform: translateX(100%); transition: transform .25s ease-out; }
+    .drawer.open { transform: translateX(0); }
+
+    /* Modal fade */
+    .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .15s ease-out; }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* Row hover focus */
+    tr.row-focused { background: rgba(30, 41, 59, 0.5); outline: 1px solid rgba(255, 94, 50, 0.35); outline-offset: -1px; }
+
+    /* Toast slide-in */
+    .toast { animation: toast-in .2s ease-out; }
+    @keyframes toast-in {
+      from { transform: translateY(8px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+
+  <div id="nav-root"></div>
+
+  <main class="ml-0 lg:ml-[260px] min-h-screen">
+    <div class="max-w-[1400px] mx-auto px-6 py-8 pt-14 lg:pt-8">
+
+      <!-- Header row: title + AI assistant + Create -->
+      <div class="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Tasks</h2>
+          <p class="text-sm text-slate-500 mt-1">All tasks across surfaces. Press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300 border border-slate-700">c</kbd> to create.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- AI inline assistant -->
+          <div class="relative">
+            <input id="ai-assistant" type="text" placeholder="Ask: 'overdue', 'what to work on first'…"
+              class="w-[340px] bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-orange-500 transition-colors" />
+            <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          </div>
+          <button id="create-btn"
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 text-sm font-medium transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            New task
+            <kbd class="ml-1 px-1 py-0.5 bg-orange-700/60 rounded text-[10px] font-mono">c</kbd>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs (mirrors live Conductor: All / My Tasks / Urgent / Needs Review) -->
+      <div class="flex items-center gap-1 mb-4 border-b border-slate-800">
+        <button class="tab active" data-tab="all">
+          All Tasks <span class="tab-count">0</span>
+        </button>
+        <button class="tab" data-tab="my">
+          My Tasks <span class="tab-count">0</span>
+        </button>
+        <button class="tab" data-tab="urgent">
+          Urgent <span class="tab-count">0</span>
+        </button>
+        <button class="tab" data-tab="needs-review">
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+            Needs Review <span class="tab-count">0</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 mb-4">
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Status quick filters -->
+          <div class="flex items-center gap-1 mr-2">
+            <button class="filter-chip filter-status active" data-status="all">All <span class="filter-count">—</span></button>
+            <button class="filter-chip filter-status" data-status="open">Open</button>
+            <button class="filter-chip filter-status" data-status="in-progress">In progress</button>
+            <button class="filter-chip filter-status" data-status="snoozed">Snoozed</button>
+            <button class="filter-chip filter-status" data-status="completed">Completed</button>
+          </div>
+
+          <div class="w-px h-5 bg-slate-800"></div>
+
+          <!-- Tier filters -->
+          <div class="flex items-center gap-1 ml-2">
+            <button class="filter-chip filter-tier" data-tier="auto">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5"></span>Auto
+            </button>
+            <button class="filter-chip filter-tier" data-tier="assist">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"></span>Assist
+            </button>
+            <button class="filter-chip filter-tier" data-tier="escalate">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-400 mr-1.5"></span>Escalate
+            </button>
+          </div>
+
+          <div class="w-px h-5 bg-slate-800"></div>
+
+          <!-- Owner filter -->
+          <div class="relative ml-2">
+            <button id="owner-dropdown-btn" class="filter-chip">
+              <span class="text-slate-500">Owner:</span> <span id="owner-label">Anyone</span>
+              <svg class="w-3 h-3 inline ml-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+          </div>
+
+          <div class="w-px h-5 bg-slate-800"></div>
+
+          <!-- View toggles -->
+          <button id="handoff-toggle" class="filter-chip ml-2">
+            <svg class="w-3.5 h-3.5 inline mr-1 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            End-of-shift handoff
+          </button>
+
+          <div class="w-px h-5 bg-slate-800"></div>
+
+          <!-- Group dropdown -->
+          <div class="ml-2 flex items-center gap-1.5">
+            <label class="text-[11px] text-slate-500">Group:</label>
+            <select id="group-select" class="bg-slate-950 border border-slate-800 rounded-md px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-orange-500">
+              <option value="none" selected>None</option>
+              <option value="owner">Owner</option>
+              <option value="tier">Tier</option>
+              <option value="source">Source</option>
+              <option value="type">Task type</option>
+              <option value="context">Context</option>
+            </select>
+          </div>
+
+          <!-- Sort dropdown -->
+          <div class="ml-1 flex items-center gap-1.5">
+            <label class="text-[11px] text-slate-500">Sort:</label>
+            <select id="sort-select" class="bg-slate-950 border border-slate-800 rounded-md px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-orange-500">
+              <option value="priority" selected>Priority</option>
+              <option value="due">Due date</option>
+              <option value="created">Created</option>
+              <option value="owner">Owner</option>
+            </select>
+          </div>
+
+          <div class="flex-1"></div>
+
+          <!-- View mode toggle: Table | Kanban -->
+          <div class="flex items-center bg-slate-950 border border-slate-800 rounded-md overflow-hidden">
+            <button id="view-table" class="view-toggle px-2 py-1 text-[11px] inline-flex items-center gap-1 active" data-view="table" title="Table view">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 6h18M3 14h18M3 18h18"/></svg>
+              Table
+            </button>
+            <button id="view-kanban" class="view-toggle px-2 py-1 text-[11px] inline-flex items-center gap-1" data-view="kanban" title="Kanban view">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h4v14H4zm6 0h4v8h-4zm6 0h4v11h-4z"/></svg>
+              Kanban
+            </button>
+          </div>
+
+          <!-- Kanban axis dropdown — only meaningful in Kanban mode -->
+          <div id="kanban-axis-wrap" class="hidden flex items-center gap-1.5">
+            <label class="text-[11px] text-slate-500">By:</label>
+            <select id="kanban-axis-select" class="bg-slate-950 border border-slate-800 rounded-md px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-orange-500">
+              <option value="tier" selected>Tier</option>
+              <option value="status">Status</option>
+              <option value="owner">Owner</option>
+              <option value="priority">Priority</option>
+            </select>
+          </div>
+
+          <button id="clear-filters" class="text-xs text-slate-500 hover:text-slate-300 px-2 transition-colors hidden">Clear filters</button>
+        </div>
+      </div>
+
+      <!-- Bulk actions toolbar (hidden until selection) -->
+      <div id="bulk-bar" class="hidden bg-slate-800 border border-orange-500/40 rounded-lg p-3 mb-4 flex items-center gap-3 sticky top-2 z-30">
+        <span class="text-sm text-slate-100"><span id="bulk-count">0</span> selected</span>
+        <div class="w-px h-5 bg-slate-700"></div>
+        <button class="bulk-action text-sm text-slate-300 hover:text-orange-400 transition-colors" data-action="assign">Assign</button>
+        <button class="bulk-action text-sm text-slate-300 hover:text-orange-400 transition-colors" data-action="reassign">Reassign</button>
+        <button class="bulk-action text-sm text-slate-300 hover:text-orange-400 transition-colors" data-action="snooze">Snooze</button>
+        <button class="bulk-action text-sm text-slate-300 hover:text-orange-400 transition-colors" data-action="complete">Complete</button>
+        <button class="bulk-action text-sm text-red-400 hover:text-red-300 transition-colors" data-action="dismiss">Dismiss</button>
+        <div class="flex-1"></div>
+        <button id="bulk-clear" class="text-xs text-slate-500 hover:text-slate-300 transition-colors">Clear</button>
+      </div>
+
+      <!-- Task table (visible in Table view) -->
+      <div id="task-table-wrap" class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-800/30">
+                <th class="w-10 px-4 py-3">
+                  <input type="checkbox" id="select-all" class="rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500 focus:ring-offset-slate-900" />
+                </th>
+                <th class="text-left px-4 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Task</th>
+                <th class="w-12 px-2 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Src</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tier</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Owner</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Context</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Due</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Priority</th>
+                <th class="w-24 px-3 py-3"></th>
+              </tr>
+            </thead>
+            <tbody id="task-tbody" class="divide-y divide-slate-800">
+              <!-- rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="empty-state" class="hidden text-center py-16 text-sm text-slate-500">
+          No tasks match the current filters.
+          <button id="empty-clear" class="ml-2 text-orange-400 hover:text-orange-300">Clear filters</button>
+        </div>
+      </div>
+
+      <!-- Kanban container (visible in Kanban view) -->
+      <div id="task-kanban-wrap" class="hidden">
+        <div id="task-kanban" class="flex gap-3 overflow-x-auto pb-3 min-h-[400px]">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Keyboard hint footer -->
+      <div class="mt-4 flex items-center gap-4 text-[11px] text-slate-500">
+        <span>Shortcuts:</span>
+        <span><kbd class="kbd">c</kbd> create</span>
+        <span><kbd class="kbd">j</kbd>/<kbd class="kbd">k</kbd> navigate</span>
+        <span><kbd class="kbd">Enter</kbd> open</span>
+        <span><kbd class="kbd">x</kbd> dismiss</span>
+        <span><kbd class="kbd">Esc</kbd> close</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── Detail drawer ─── -->
+  <div id="drawer-backdrop" class="modal-backdrop fixed inset-0 bg-black/40 z-40"></div>
+  <aside id="drawer" class="drawer fixed top-0 right-0 h-full w-full max-w-[520px] bg-slate-900 border-l border-slate-800 z-50 overflow-y-auto">
+    <div id="drawer-content"><!-- rendered by JS --></div>
+  </aside>
+
+  <!-- ─── Manual create modal ─── -->
+  <div id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-md shadow-2xl">
+      <div class="p-5 border-b border-slate-800">
+        <h3 class="text-base font-semibold text-slate-100">Create task</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Title is required. Owner defaults to you. Everything else is filled silently.</p>
+      </div>
+      <div class="p-5 space-y-4">
+        <div>
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Title</label>
+          <input id="modal-title" type="text" placeholder="e.g. Follow up with Greer about JAL upgrade"
+            class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-orange-500 transition-colors" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Owner <span class="text-slate-600 normal-case">(optional)</span></label>
+          <select id="modal-owner"
+            class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-orange-500 transition-colors">
+            <option value="mc" selected>Maya Chen (you)</option>
+            <option value="js">Jordan Singh</option>
+            <option value="rp">Rae Park</option>
+            <option value="tk">Tomás Kovac</option>
+          </select>
+        </div>
+
+        <!-- More options toggle -->
+        <button type="button" id="more-toggle" class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300 transition-colors">
+          <svg id="more-chevron" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          More options <span class="text-slate-600">(priority, due, type)</span>
+        </button>
+
+        <!-- Collapsible: priority + due + task_type -->
+        <div id="more-fields" class="hidden space-y-4 pt-1 border-t border-slate-800/60">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Priority</label>
+            <div class="flex items-center gap-1.5" id="priority-chips">
+              <button type="button" class="priority-chip" data-priority="urgent"><span class="w-1.5 h-1.5 rounded-full bg-red-500 inline-block mr-1.5"></span>Urgent</button>
+              <button type="button" class="priority-chip" data-priority="high"><span class="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block mr-1.5"></span>High</button>
+              <button type="button" class="priority-chip active" data-priority="medium"><span class="w-1.5 h-1.5 rounded-full bg-sky-500 inline-block mr-1.5"></span>Medium</button>
+              <button type="button" class="priority-chip" data-priority="low"><span class="w-1.5 h-1.5 rounded-full bg-slate-500 inline-block mr-1.5"></span>Low</button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Due</label>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" class="due-chip active" data-due="">No due</button>
+              <button type="button" class="due-chip" data-due="today">Today</button>
+              <button type="button" class="due-chip" data-due="tomorrow">Tomorrow</button>
+              <button type="button" class="due-chip" data-due="in 3d">In 3d</button>
+              <button type="button" class="due-chip" data-due="in 1w">In 1w</button>
+              <input type="date" id="modal-due-custom" class="bg-slate-950 border border-slate-800 rounded-md px-2 py-1 text-[11px] text-slate-300 focus:outline-none focus:border-orange-500 ml-1" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Task type <span class="text-slate-600 normal-case">(otherwise inferred from title)</span></label>
+            <select id="modal-type"
+              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-orange-500 transition-colors">
+              <option value="" selected>Infer from title</option>
+              <option value="messaging">Messaging</option>
+              <option value="booking-action">Booking action</option>
+              <option value="trip-prep">Trip prep</option>
+              <option value="disruption-response">Disruption response</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 border-t border-slate-800 flex items-center justify-between">
+        <span class="text-[11px] text-slate-500">Press <kbd class="kbd">Enter</kbd> to create · <kbd class="kbd">Esc</kbd> to cancel</span>
+        <div class="flex items-center gap-2">
+          <button id="modal-cancel" class="px-3 py-1.5 rounded-lg text-sm text-slate-400 hover:text-slate-200 transition-colors">Cancel</button>
+          <button id="modal-create" class="px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 text-sm font-medium transition-colors">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Evidence popover (simulated content per type — message thread, tool result, vendor email, etc.) ─── -->
+  <div id="evidence-backdrop" class="modal-backdrop fixed inset-0 bg-black/60 z-[65] flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-2xl shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div id="evidence-icon" class="w-7 h-7 rounded-md bg-slate-800 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="min-w-0">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500" id="evidence-kind">Evidence</div>
+            <div class="text-sm font-semibold text-slate-100 truncate" id="evidence-title">—</div>
+          </div>
+        </div>
+        <button id="evidence-close" class="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="evidence-body" class="p-5 overflow-y-auto flex-1">
+        <!-- rendered per template -->
+      </div>
+      <div class="px-5 py-3 border-t border-slate-800 flex items-center justify-between flex-shrink-0">
+        <span class="text-[11px] text-slate-500">Simulated for prototype · in production this opens the source system</span>
+        <button id="evidence-dismiss" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 text-sm">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Toast container ─── -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[70] flex flex-col gap-2 items-end"></div>
+
+  <!-- ─── Owner dropdown popover (positioned dynamically) ─── -->
+  <div id="owner-popover" class="hidden absolute bg-slate-900 border border-slate-800 rounded-lg shadow-xl min-w-[180px] py-1 z-40">
+    <button class="owner-opt block w-full text-left px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800" data-owner="all">Anyone</button>
+    <div class="border-t border-slate-800 my-1"></div>
+    <button class="owner-opt block w-full text-left px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800" data-owner="mc">Maya Chen (TA)</button>
+    <button class="owner-opt block w-full text-left px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800" data-owner="js">Jordan Singh (TA)</button>
+    <button class="owner-opt block w-full text-left px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800" data-owner="rp">Rae Park (Ops)</button>
+    <button class="owner-opt block w-full text-left px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800" data-owner="tk">Tomás Kovac (Ops Manager)</button>
+  </div>
+
+  <!-- Tailwind chip + kbd shared styles applied via JS-injected classes -->
+  <style>
+    .filter-chip {
+      display: inline-flex; align-items: center;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      color: rgb(203 213 225);
+      background: rgb(15 23 42);
+      border: 1px solid rgb(30 41 59);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all .12s ease-out;
+    }
+    .filter-chip:hover {
+      color: rgb(241 245 249);
+      border-color: rgb(51 65 85);
+      background: rgb(30 41 59);
+    }
+    .filter-chip.active {
+      color: rgb(255 247 237);
+      background: rgba(255, 94, 50, 0.15);
+      border-color: rgba(255, 94, 50, 0.5);
+    }
+    .filter-count {
+      margin-left: 0.375rem;
+      font-size: 0.625rem;
+      color: rgb(100 116 139);
+    }
+    .filter-chip.active .filter-count { color: rgba(255, 94, 50, 0.8); }
+    .kbd {
+      display: inline-block;
+      padding: 0.0625rem 0.3125rem;
+      background: rgb(30 41 59);
+      border: 1px solid rgb(51 65 85);
+      border-radius: 0.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      color: rgb(252 211 77);
+    }
+    .priority-chip, .due-chip {
+      display: inline-flex; align-items: center;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.6875rem;
+      color: rgb(203 213 225);
+      background: rgb(2 6 23);
+      border: 1px solid rgb(30 41 59);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all .12s ease-out;
+    }
+    .priority-chip:hover, .due-chip:hover {
+      color: rgb(241 245 249);
+      border-color: rgb(51 65 85);
+      background: rgb(30 41 59);
+    }
+    .priority-chip.active, .due-chip.active {
+      color: rgb(255 247 237);
+      background: rgba(255, 94, 50, 0.15);
+      border-color: rgba(255, 94, 50, 0.5);
+    }
+    #more-chevron.expanded { transform: rotate(90deg); }
+
+    /* Top tabs (live Conductor style) */
+    .tab {
+      position: relative;
+      padding: 0.625rem 1rem 0.875rem;
+      font-size: 0.8125rem;
+      color: rgb(148 163 184);
+      cursor: pointer;
+      transition: color .12s;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tab:hover { color: rgb(241 245 249); }
+    .tab.active {
+      color: rgb(241 245 249);
+      border-bottom-color: rgb(255 94 50);
+    }
+    .tab-count {
+      display: inline-block;
+      margin-left: 0.375rem;
+      padding: 0.0625rem 0.4375rem;
+      font-size: 0.6875rem;
+      background: rgb(30 41 59);
+      color: rgb(148 163 184);
+      border-radius: 9999px;
+      font-variant-numeric: tabular-nums;
+    }
+    .tab.active .tab-count {
+      background: rgba(255, 94, 50, 0.2);
+      color: rgb(255 183 153);
+    }
+    /* View toggle (table/kanban) */
+    .view-toggle {
+      color: rgb(148 163 184);
+      background: transparent;
+      transition: all .12s;
+      cursor: pointer;
+    }
+    .view-toggle:hover { color: rgb(241 245 249); background: rgb(30 41 59); }
+    .view-toggle.active {
+      color: rgb(255 247 237);
+      background: rgba(255, 94, 50, 0.18);
+    }
+    /* Kanban columns */
+    .kanban-col {
+      flex: 0 0 280px;
+      max-width: 320px;
+      background: rgb(15 23 42);
+      border: 1px solid rgb(30 41 59);
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      max-height: 70vh;
+    }
+    .kanban-col-header {
+      padding: 0.625rem 0.875rem;
+      border-bottom: 1px solid rgb(30 41 59);
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 0.5rem 0.5rem 0 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      flex-shrink: 0;
+    }
+    .kanban-col-body {
+      padding: 0.625rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .kanban-card {
+      background: rgb(2 6 23);
+      border: 1px solid rgb(30 41 59);
+      border-radius: 0.375rem;
+      padding: 0.625rem 0.75rem;
+      cursor: pointer;
+      transition: all .12s;
+    }
+    .kanban-card:hover {
+      border-color: rgb(51 65 85);
+      background: rgb(15 23 42);
+    }
+  </style>
+
+  <script>
+    // ──────────────────────────────────────────────────────────
+    //  State + render for Task Board
+    // ──────────────────────────────────────────────────────────
+    const State = {
+      activeTab: 'all',
+      filters: { status: 'all', tiers: new Set(), owner: 'all', handoff: false },
+      group: 'none',
+      sort: 'priority',
+      view: 'table',         // 'table' | 'kanban'
+      kanbanAxis: 'tier',    // 'tier' | 'status' | 'owner' | 'priority'
+      selected: new Set(),
+      drawerTaskId: null,
+      rowFocus: -1,
+      dismissedHistory: [],
+      tasks: [...TaskFilters.all()],
+    };
+
+    const CURRENT_USER = 'mc';
+
+    function sortBy(arr, sortKey) {
+      const prioOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
+      const dueOrder = (t) => {
+        const d = (t.due_at || '').toLowerCase();
+        if (d.includes('m') && d.includes('in')) return 0; // in 22m, in 30m
+        if (d.includes('today') || d.includes('h')) return 1;
+        if (d.includes('tomorrow') || d.includes('1d')) return 2;
+        if (d.includes('d')) return 3;
+        if (d.includes('w')) return 4;
+        return 9;
+      };
+      const sorted = arr.slice();
+      if (sortKey === 'priority') sorted.sort((a, b) => (prioOrder[a.priority] ?? 9) - (prioOrder[b.priority] ?? 9));
+      else if (sortKey === 'due') sorted.sort((a, b) => dueOrder(a) - dueOrder(b));
+      else if (sortKey === 'created') sorted.sort((a, b) => (a.age_min ?? 0) - (b.age_min ?? 0));
+      else if (sortKey === 'owner') sorted.sort((a, b) => (memberById(a.primary_owner).name).localeCompare(memberById(b.primary_owner).name));
+      return sorted;
+    }
+
+    function visibleTasks() {
+      // Tab filter first
+      let t = TaskFilters.forTab(State.activeTab);
+      // Hide dismissed unless explicitly filtering for them
+      if (State.filters.status !== 'dismissed') t = t.filter(x => x.status !== 'dismissed');
+      // Status / tier / owner / handoff filters
+      if (State.filters.status !== 'all') t = t.filter(x => x.status === State.filters.status);
+      if (State.filters.tiers.size > 0)   t = t.filter(x => State.filters.tiers.has(x.routing_tier));
+      if (State.filters.owner !== 'all')  t = t.filter(x => x.primary_owner === State.filters.owner);
+      if (State.filters.handoff) {
+        t = t.filter(x => x.primary_owner === CURRENT_USER && ['open','in-progress','snoozed'].includes(x.status));
+      }
+      return sortBy(t, State.sort);
+    }
+
+    function groupedTasks() {
+      const list = visibleTasks();
+      if (State.group === 'none') return [{ key: null, label: null, items: list }];
+      const groups = new Map();
+      list.forEach(t => {
+        let key, label;
+        if (State.group === 'owner')        { key = t.primary_owner; label = memberById(t.primary_owner).name; }
+        else if (State.group === 'tier')    { key = t.routing_tier;  label = TIER_STYLES[t.routing_tier].label; }
+        else if (State.group === 'source')  { key = t.source_channel; label = (SOURCE_CHANNELS[t.source_channel] || {}).label || t.source_channel; }
+        else if (State.group === 'type')    { key = t.task_type;     label = TASK_TYPE_LABELS[t.task_type]; }
+        else if (State.group === 'context') { key = t.primary_context.type; label = t.primary_context.type; }
+        if (!groups.has(key)) groups.set(key, { key, label, items: [] });
+        groups.get(key).items.push(t);
+      });
+      return Array.from(groups.values());
+    }
+
+    function updateTabCounts() {
+      document.querySelector('[data-tab="all"] .tab-count').textContent           = TaskFilters.all().filter(t => t.status !== 'dismissed').length;
+      document.querySelector('[data-tab="my"] .tab-count').textContent            = TaskFilters.myTasks().length;
+      document.querySelector('[data-tab="urgent"] .tab-count').textContent        = TaskFilters.urgent().length;
+      document.querySelector('[data-tab="needs-review"] .tab-count').textContent  = TaskFilters.needsReview().length;
+    }
+
+    function rowHtml(t, idx) {
+      const tier = TIER_STYLES[t.routing_tier];
+      const prio = PRIORITY_STYLES[t.priority];
+      const owner = memberById(t.primary_owner);
+      const checked = State.selected.has(t.id);
+      const focused = idx === State.rowFocus;
+      const dueColor = t.due_at && (t.due_at.includes('overdue') || t.due_at.includes('30m') || t.due_at.includes('22m')) ? 'text-red-400' : 'text-slate-300';
+      const ctxIcon = CONTEXT_ICONS[t.primary_context.type];
+      const src = SOURCE_CHANNELS[t.source_channel] || SOURCE_CHANNELS['system'];
+      const reviewBadge = t.approval_state === 'pending-review'
+        ? '<span class="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-500/15 text-orange-300 border border-orange-500/30">Needs Review</span>'
+        : '';
+      return `
+          <tr data-id="${t.id}" data-idx="${idx}" class="task-row hover:bg-slate-800/30 transition-colors cursor-pointer ${focused ? 'row-focused' : ''} ${t.status === 'snoozed' ? 'opacity-60' : ''} ${t.status === 'dismissed' ? 'opacity-40' : ''}">
+            <td class="px-4 py-3" onclick="event.stopPropagation()">
+              <input type="checkbox" class="row-check rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500 focus:ring-offset-slate-900" ${checked ? 'checked' : ''} />
+            </td>
+            <td class="px-4 py-3">
+              <div class="text-sm text-slate-100 leading-snug">${t.title}${reviewBadge}</div>
+              <div class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1.5">
+                <a href="task-board.html#task=${t.id}" class="task-id-link font-mono text-slate-600 hover:text-orange-400 transition-colors" title="Open task / copy link">${t.id}</a>
+                <span class="text-slate-700">·</span>
+                <span>${TASK_TYPE_LABELS[t.task_type]} · ${t.subtype}</span>
+              </div>
+            </td>
+            <td class="px-2 py-3" title="${src.label}">
+              <span class="inline-flex items-center justify-center ${src.color}">${src.svg}</span>
+            </td>
+            <td class="px-3 py-3">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
+            </td>
+            <td class="px-3 py-3">
+              <div class="flex items-center gap-1.5">
+                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full ${owner.color} text-[10px] font-semibold">${owner.initials}</span>
+                <span class="text-xs text-slate-400">${owner.name.split(' ')[0]}</span>
+              </div>
+            </td>
+            <td class="px-3 py-3">
+              <span class="inline-flex items-center gap-1 text-xs text-slate-300">
+                <span class="text-slate-500">${ctxIcon}</span>${t.primary_context.label}
+              </span>
+            </td>
+            <td class="px-3 py-3">
+              <span class="text-xs ${dueColor}">${t.due_at}</span>
+            </td>
+            <td class="px-3 py-3">
+              <span class="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                <span class="inline-block w-1.5 h-1.5 rounded-full ${prio.dot}"></span>${prio.label}
+              </span>
+            </td>
+            <td class="px-3 py-3" onclick="event.stopPropagation()">
+              <div class="flex items-center gap-1 justify-end opacity-60 group-hover:opacity-100">
+                <button class="row-action p-1 rounded hover:bg-slate-700 text-slate-400" data-action="snooze" data-id="${t.id}" title="Snooze">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </button>
+                <button class="row-action p-1 rounded hover:bg-slate-700 text-slate-400" data-action="mute" data-id="${t.id}" title="Mute trip signal">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                </button>
+                <button class="row-action p-1 rounded hover:bg-slate-700 text-red-400" data-action="dismiss" data-id="${t.id}" title="Dismiss (x)">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+    }
+
+    function kanbanColumns() {
+      const list = visibleTasks();
+      const axis = State.kanbanAxis;
+      // Define canonical column order per axis so empty cols still show
+      const ORDERS = {
+        tier:     [['auto', TIER_STYLES.auto.label], ['assist', TIER_STYLES.assist.label], ['escalate', TIER_STYLES.escalate.label]],
+        status:   [['open', 'Open'], ['in-progress', 'In progress'], ['snoozed', 'Snoozed'], ['completed', 'Completed']],
+        priority: [['urgent', 'Urgent'], ['high', 'High'], ['medium', 'Medium'], ['low', 'Low']],
+        owner:    TEAM.filter(m => m.id !== 'ai').map(m => [m.id, m.name]),
+      };
+      const keyFn = {
+        tier:     (t) => t.routing_tier,
+        status:   (t) => t.status,
+        priority: (t) => t.priority,
+        owner:    (t) => t.primary_owner,
+      }[axis];
+      const cols = ORDERS[axis].map(([key, label]) => ({ key, label, items: [] }));
+      list.forEach(t => {
+        const col = cols.find(c => c.key === keyFn(t));
+        if (col) col.items.push(t);
+      });
+      return cols;
+    }
+
+    function kanbanCardHtml(t) {
+      const tier = TIER_STYLES[t.routing_tier];
+      const prio = PRIORITY_STYLES[t.priority];
+      const owner = memberById(t.primary_owner);
+      const src = SOURCE_CHANNELS[t.source_channel] || SOURCE_CHANNELS['system'];
+      const isPending = t.approval_state === 'pending-review';
+      return `
+        <div class="kanban-card" data-id="${t.id}">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
+            <span class="${src.color} flex-shrink-0" title="${src.label}">${src.svg}</span>
+          </div>
+          <div class="text-sm text-slate-100 leading-snug mb-2 line-clamp-3">${t.title}</div>
+          ${isPending ? '<div class="mb-2"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-500/15 text-orange-300 border border-orange-500/30">Needs Review</span></div>' : ''}
+          <div class="flex items-center justify-between text-[10px] text-slate-500">
+            <div class="flex items-center gap-1.5">
+              <span class="inline-flex items-center justify-center w-5 h-5 rounded-full ${owner.color} text-[9px] font-semibold">${owner.initials}</span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full ${prio.dot}"></span>
+              <span>${prio.label}</span>
+            </div>
+            <span class="font-mono">${t.due_at}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderKanban() {
+      const root = document.getElementById('task-kanban');
+      const cols = kanbanColumns();
+      root.innerHTML = cols.map(col => `
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-300">${col.label}</div>
+            <span class="text-[10px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded">${col.items.length}</span>
+          </div>
+          <div class="kanban-col-body">
+            ${col.items.length === 0
+              ? '<div class="text-[11px] text-slate-600 text-center py-4 italic">empty</div>'
+              : col.items.map(kanbanCardHtml).join('')}
+          </div>
+        </div>
+      `).join('');
+      root.querySelectorAll('.kanban-card').forEach(card => {
+        card.addEventListener('click', () => openDrawer(card.dataset.id));
+      });
+    }
+
+    function renderRows() {
+      // View switcher: render Table or Kanban
+      const tableWrap = document.getElementById('task-table-wrap');
+      const kanbanWrap = document.getElementById('task-kanban-wrap');
+      if (State.view === 'kanban') {
+        tableWrap.classList.add('hidden');
+        kanbanWrap.classList.remove('hidden');
+        renderKanban();
+        updateTabCounts();
+        document.querySelector('[data-status="all"] .filter-count').textContent = visibleTasks().length;
+        return;
+      }
+      tableWrap.classList.remove('hidden');
+      kanbanWrap.classList.add('hidden');
+
+      const tbody = document.getElementById('task-tbody');
+      const empty = document.getElementById('empty-state');
+      const groups = groupedTasks();
+      const totalVisible = groups.reduce((s, g) => s + g.items.length, 0);
+
+      if (totalVisible === 0) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      let globalIdx = 0;
+      tbody.innerHTML = groups.map(g => {
+        const header = g.label
+          ? `<tr class="group-header"><td colspan="9" class="px-4 py-2 text-[10px] uppercase tracking-wider text-slate-500 bg-slate-800/40 border-y border-slate-800">${g.label} <span class="text-slate-600 ml-1">${g.items.length}</span></td></tr>`
+          : '';
+        const rows = g.items.map(t => rowHtml(t, globalIdx++)).join('');
+        return header + rows;
+      }).join('');
+
+      // Bind row events
+      tbody.querySelectorAll('.task-row').forEach(tr => {
+        tr.addEventListener('click', () => openDrawer(tr.dataset.id));
+      });
+      tbody.querySelectorAll('.row-check').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const id = e.target.closest('tr').dataset.id;
+          if (e.target.checked) State.selected.add(id);
+          else State.selected.delete(id);
+          updateBulkBar();
+        });
+      });
+      tbody.querySelectorAll('.row-action').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const action = btn.dataset.action;
+          const id = btn.dataset.id;
+          if (action === 'snooze') doSnooze(id);
+          else if (action === 'mute') doMute(id);
+          else if (action === 'dismiss') doDismiss(id);
+        });
+      });
+
+      // Update count chips
+      document.querySelector('[data-status="all"] .filter-count').textContent = visibleTasks().length;
+      updateTabCounts();
+    }
+
+    function updateBulkBar() {
+      const bar = document.getElementById('bulk-bar');
+      const count = State.selected.size;
+      if (count > 0) {
+        bar.classList.remove('hidden');
+        bar.classList.add('flex');
+        document.getElementById('bulk-count').textContent = count;
+      } else {
+        bar.classList.add('hidden');
+        bar.classList.remove('flex');
+      }
+      // Master checkbox indeterminate
+      const master = document.getElementById('select-all');
+      const visibleIds = visibleTasks().map(t => t.id);
+      const selectedVisible = visibleIds.filter(id => State.selected.has(id)).length;
+      master.indeterminate = selectedVisible > 0 && selectedVisible < visibleIds.length;
+      master.checked = selectedVisible === visibleIds.length && visibleIds.length > 0;
+    }
+
+    function renderFilterChips() {
+      document.querySelectorAll('.filter-status').forEach(b => {
+        b.classList.toggle('active', b.dataset.status === State.filters.status);
+      });
+      document.querySelectorAll('.filter-tier').forEach(b => {
+        b.classList.toggle('active', State.filters.tiers.has(b.dataset.tier));
+      });
+      document.getElementById('handoff-toggle').classList.toggle('active', State.filters.handoff);
+      // Owner label
+      const ownerLabel = State.filters.owner === 'all' ? 'Anyone' :
+                         State.filters.owner === CURRENT_USER ? 'Me' :
+                         memberById(State.filters.owner).name;
+      document.getElementById('owner-label').textContent = ownerLabel;
+      // Clear filters visibility
+      const anyFilter = State.filters.status !== 'all' || State.filters.tiers.size > 0 ||
+                       State.filters.owner !== 'all' || State.filters.handoff;
+      document.getElementById('clear-filters').classList.toggle('hidden', !anyFilter);
+    }
+
+    function rerender() {
+      renderFilterChips();
+      renderRows();
+      updateBulkBar();
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Drawer
+    // ──────────────────────────────────────────────────────────
+    function openDrawer(id) {
+      State.drawerTaskId = id;
+      const t = TaskFilters.byId(id);
+      if (!t) return;
+      const tier = TIER_STYLES[t.routing_tier];
+      const owner = memberById(t.primary_owner);
+      const src = SOURCE_CHANNELS[t.source_channel] || SOURCE_CHANNELS['system'];
+      const isPending = t.approval_state === 'pending-review';
+
+      // Tasks with a drafted message (reply-draft or any task whose action is "send this draft")
+      // get the PRD §7.1 one-click "Approve & send" action set. Applies to messaging/reply-draft,
+      // trip-prep/day-1-check-in, anything with a `.draft` field.
+      const isReplyDraft = !!t.draft;
+
+      // Prominent Review block (only for pending-review tasks — matches live Conductor)
+      // For reply-draft tasks, primary action is "Approve & open in composer" (sends you
+      // to inline-create.html with the draft pre-loaded), since approving a draft without
+      // sending it is incomplete.
+      const reviewBlock = isPending ? `
+        <div class="bg-orange-500/10 border border-orange-500/40 rounded-lg p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-orange-300">Review</span>
+            <span class="text-[10px] text-orange-300/70">AI FLAGGED THIS — ACCEPT OR DROP</span>
+          </div>
+          <div class="flex items-center gap-2 mb-3 flex-wrap">
+            ${isReplyDraft ? `
+              <button class="drawer-action px-3 py-1.5 rounded-lg bg-green-500/20 text-green-300 border border-green-500/40 hover:bg-green-500/30 text-sm font-medium inline-flex items-center gap-1.5" data-action="approve-send" data-id="${t.id}" title="One click: fires the draft message and auto-closes the task (PRD §7.1)">
+                ✓ Approve &amp; send
+              </button>
+              <button class="drawer-action px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 text-sm inline-flex items-center gap-1.5" data-action="edit-in-composer" data-id="${t.id}" title="PR-review path: opens composer with draft loaded for edits">
+                Edit + approve
+                <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            ` : `
+              <button class="drawer-action px-3 py-1.5 rounded-lg bg-green-500/20 text-green-300 border border-green-500/40 hover:bg-green-500/30 text-sm font-medium" data-action="approve" data-id="${t.id}">✓ Approve</button>
+              <button class="drawer-action px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 text-sm" data-action="approve-edit" data-id="${t.id}">Edit + approve</button>
+            `}
+            <button class="drawer-action px-3 py-1.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 text-sm" data-action="dismiss" data-id="${t.id}">Dismiss</button>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            ${isReplyDraft
+              ? 'Per PRD §7.1: one-click <strong class="text-slate-200">Approve &amp; send</strong> fires the draft immediately and auto-closes the task (Claude-style "yes" flow). Use <strong class="text-slate-200">Edit + approve</strong> only when the draft needs changes.'
+              : 'Approving keeps the task in the active list. Dismissing removes it from default queues but the audit trail is preserved.'}
+          </p>
+        </div>
+      ` : '';
+
+      // Type-aware top section
+      let typeBlock = '';
+      if (t.task_type === 'messaging' && t.draft) {
+        typeBlock = `
+          <div class="bg-slate-950 border border-slate-800 rounded-lg p-3 mt-2">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-1">Drafted reply</div>
+            <p class="text-sm text-slate-200 leading-relaxed font-mono whitespace-pre-line">${t.draft}</p>
+          </div>
+        `;
+      } else if (t.task_type === 'booking-action') {
+        typeBlock = `
+          <div class="grid grid-cols-2 gap-2 mt-2">
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-3">
+              <div class="text-[10px] uppercase tracking-wider text-slate-500">Action</div>
+              <div class="text-sm text-slate-200 mt-0.5">${t.subtype}</div>
+            </div>
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-3">
+              <div class="text-[10px] uppercase tracking-wider text-slate-500">Vendor / supplier</div>
+              <div class="text-sm text-slate-200 mt-0.5">${(t.evidence[0] && t.evidence[0].label) || 'TBD'}</div>
+            </div>
+          </div>
+        `;
+      } else if (t.task_type === 'disruption-response') {
+        typeBlock = `
+          <div class="bg-red-500/5 border border-red-500/30 rounded-lg p-3 mt-2">
+            <div class="text-[10px] uppercase tracking-wider text-red-400 mb-1">Trigger event</div>
+            <div class="text-sm text-slate-100">${t.subtype}</div>
+            <div class="text-xs text-slate-400 mt-1">Suggested action: see rationale below</div>
+          </div>
+        `;
+      } else if (t.task_type === 'trip-prep') {
+        typeBlock = `
+          <div class="bg-slate-950 border border-slate-800 rounded-lg p-3 mt-2">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-1">Trip-prep step</div>
+            <div class="text-sm text-slate-200">${t.subtype}</div>
+          </div>
+        `;
+      }
+
+      // Activity log entries (detail text gets tsk-ID linkification)
+      const activityHtml = t.activity.map(a => `
+        <div class="flex gap-3 py-2.5 border-b border-slate-800 last:border-b-0">
+          <div class="w-1.5 h-1.5 rounded-full bg-slate-600 mt-1.5 flex-shrink-0"></div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-baseline justify-between gap-2">
+              <div class="text-xs text-slate-200">${a.actor} · <span class="text-slate-400">${a.event}</span></div>
+              <div class="text-[10px] text-slate-500 font-mono flex-shrink-0">${a.ts}</div>
+            </div>
+            ${a.detail ? `<div class="text-[11px] text-slate-500 mt-0.5">${linkifyTaskIds(a.detail)}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      // Evidence chips — clicking opens a simulated evidence popover (Phase B)
+      const evidenceHtml = (t.evidence || []).map(e => `
+        <a href="#evidence" class="evidence-chip inline-flex items-center gap-1.5 px-2 py-1 rounded bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:text-orange-300 hover:border-orange-500/40 transition-colors mr-2 mb-1" data-label="${e.label}">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+          ${e.label}
+        </a>
+      `).join('');
+
+      document.getElementById('drawer-content').innerHTML = `
+        <div class="sticky top-0 bg-slate-900 border-b border-slate-800 px-5 py-4 flex items-center justify-between z-10">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 ${src.color}">${src.svg}<span class="text-slate-300">${src.label}</span></span>
+            <span class="text-[11px] text-slate-500">${TASK_TYPE_LABELS[t.task_type]} · ${t.subtype}</span>
+          </div>
+          <button id="drawer-close" class="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="p-5 space-y-5">
+          <!-- Title + meta -->
+          <div>
+            <h3 class="text-lg font-semibold text-slate-100 leading-snug">${t.title}</h3>
+            <div class="flex items-center gap-3 mt-2 text-xs text-slate-400 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full ${owner.color} text-[9px] font-semibold">${owner.initials}</span>
+                <span>${owner.name}</span>
+              </div>
+              <span class="text-slate-700">·</span>
+              <span>Due: <span class="text-slate-200">${t.due_at}</span></span>
+              <span class="text-slate-700">·</span>
+              <span>Priority: <span class="text-slate-200">${PRIORITY_STYLES[t.priority].label}</span></span>
+            </div>
+          </div>
+
+          ${reviewBlock}
+
+          ${typeBlock}
+
+          <!-- Rationale (why this matters) -->
+          <div class="bg-slate-800/40 border border-slate-800 rounded-lg p-4">
+            <div class="flex items-start gap-2 mb-2">
+              <svg class="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <div class="flex-1">
+                <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-1">Rationale</div>
+                <p class="text-sm text-slate-200 leading-relaxed">${linkifyTaskIds(t.rationale)}</p>
+              </div>
+            </div>
+            ${evidenceHtml ? `<div class="mt-3 pt-3 border-t border-slate-800"><div class="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Evidence</div><div>${evidenceHtml}</div></div>` : ''}
+          </div>
+
+          ${t.ai_reasoning ? `
+            <!-- AI reasoning (separate from rationale — debug / trust block) -->
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-4">
+              <div class="flex items-start gap-2 mb-1.5">
+                <svg class="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                <div class="flex-1">
+                  <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-1">AI reasoning</div>
+                  <p class="text-xs text-slate-400 leading-relaxed">${linkifyTaskIds(t.ai_reasoning)}</p>
+                  ${t.confidence !== null ? `<div class="text-[10px] text-slate-500 mt-2">Confidence: <span class="font-mono text-amber-400">${t.confidence}%</span></div>` : ''}
+                </div>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Activity log -->
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-2">Activity</div>
+            <div class="bg-slate-950 border border-slate-800 rounded-lg px-4">
+              ${activityHtml}
+            </div>
+          </div>
+        </div>
+
+        ${isPending ? '' : `
+        <!-- Footer actions (approved tasks only — pending uses Review block above) -->
+        <div class="sticky bottom-0 bg-slate-900 border-t border-slate-800 p-4 flex items-center gap-2 flex-wrap">
+          ${isReplyDraft && t.status !== 'completed' ? `
+            <button class="drawer-action px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 text-sm font-medium" data-action="send-draft" data-id="${t.id}" title="One click: fires the draft and closes the task">Send draft now</button>
+            <button class="drawer-action px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 text-sm inline-flex items-center gap-1.5" data-action="open-composer" data-id="${t.id}" title="Edit before sending">
+              Edit in composer
+              <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          ` : `
+            <button class="drawer-action px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 text-sm font-medium" data-action="complete" data-id="${t.id}">Complete</button>
+          `}
+          <button class="drawer-action px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 text-sm" data-action="snooze" data-id="${t.id}">Snooze</button>
+          <button class="drawer-action px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 text-sm" data-action="reassign" data-id="${t.id}">Reassign</button>
+          <div class="flex-1"></div>
+          <button class="drawer-action px-3 py-1.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 text-sm" data-action="dismiss" data-id="${t.id}">Dismiss</button>
+        </div>
+        `}
+      `;
+
+      document.getElementById('drawer').classList.add('open');
+      document.getElementById('drawer-backdrop').classList.add('open');
+      document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+      document.querySelectorAll('.drawer-action').forEach(b => {
+        b.addEventListener('click', (e) => {
+          const action = b.dataset.action;
+          const id = b.dataset.id;
+          const tt = TaskFilters.byId(id);
+          if (action === 'approve') { doApprove(id); closeDrawer(); }
+          else if (action === 'approve-send' || action === 'send-draft') {
+            // PRD §7.1: one-click approve fires the draft + auto-closes the task
+            doApproveAndSend(id);
+            closeDrawer();
+          }
+          else if (action === 'edit-in-composer' || action === 'open-composer') {
+            // PR-review path (PRD §6.5): land in composer with draft, send from there
+            if (tt.approval_state === 'pending-review') tt.approval_state = 'human-approved';
+            window.location.href = 'inline-create.html#from-task=' + encodeURIComponent(id);
+          }
+          else if (action === 'approve-edit') { showToast('Edit drawer would open inline (mocked).'); }
+          else if (action === 'complete') { showToast(`Marked “${truncate(tt.title, 40)}” as complete`); closeDrawer(); }
+          else if (action === 'snooze') { doSnooze(id); closeDrawer(); }
+          else if (action === 'reassign') { showToast('Reassign popover would open here (not wired in v1 mock)'); }
+          else if (action === 'dismiss') { doDismiss(id); closeDrawer(); }
+        });
+      });
+    }
+    function doApprove(id) {
+      const t = TaskFilters.byId(id);
+      if (!t) return;
+      const prev = t.approval_state;
+      t.approval_state = 'human-approved';
+      rerender();
+      showToast(`Approved “${truncate(t.title, 40)}” — moved to active list`, () => {
+        t.approval_state = prev;
+        rerender();
+      });
+    }
+    function doApproveAndSend(id) {
+      // PRD §7.1: "TA approves inline ('yes'), the action (send the message) fires
+      // immediately, the canonical task is created and auto-closed in the same step.
+      // The whole interaction takes one click."
+      const t = TaskFilters.byId(id);
+      if (!t) return;
+      const prevApproval = t.approval_state;
+      const prevStatus = t.status;
+      t.approval_state = 'human-approved';
+      t.status = 'completed';
+      rerender();
+      showToast(`Sent — “${truncate(t.title, 40)}” auto-closed`, () => {
+        t.approval_state = prevApproval;
+        t.status = prevStatus;
+        rerender();
+      });
+    }
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('open');
+      document.getElementById('drawer-backdrop').classList.remove('open');
+      State.drawerTaskId = null;
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Modal (manual create)
+    // ──────────────────────────────────────────────────────────
+    const ModalState = { priority: 'medium', due: '', type: '' };
+    function resetModal() {
+      ModalState.priority = 'medium'; ModalState.due = ''; ModalState.type = '';
+      document.getElementById('modal-title').value = '';
+      document.getElementById('modal-owner').value = 'mc';
+      document.getElementById('modal-type').value = '';
+      document.getElementById('modal-due-custom').value = '';
+      document.querySelectorAll('.priority-chip').forEach(c => c.classList.toggle('active', c.dataset.priority === 'medium'));
+      document.querySelectorAll('.due-chip').forEach(c => c.classList.toggle('active', c.dataset.due === ''));
+      document.getElementById('more-fields').classList.add('hidden');
+      document.getElementById('more-chevron').classList.remove('expanded');
+    }
+    function openCreateModal() {
+      resetModal();
+      document.getElementById('modal-backdrop').classList.add('open');
+      setTimeout(() => document.getElementById('modal-title').focus(), 50);
+    }
+    function closeCreateModal() {
+      document.getElementById('modal-backdrop').classList.remove('open');
+    }
+    function submitCreate() {
+      const title = document.getElementById('modal-title').value.trim();
+      if (!title) return;
+      const ownerId = document.getElementById('modal-owner').value;
+      const owner = memberById(ownerId);
+      const type = document.getElementById('modal-type').value || 'inferred';
+      const extras = [];
+      if (ModalState.priority !== 'medium') extras.push(ModalState.priority);
+      if (ModalState.due) extras.push('due ' + ModalState.due);
+      if (type !== 'inferred') extras.push(type);
+      const extrasStr = extras.length ? ' · ' + extras.join(' · ') : '';
+      showToast(`Created “${truncate(title, 40)}” · owner ${owner.name.split(' ')[0]}${extrasStr}`);
+      closeCreateModal();
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Row actions (simulated)
+    // ──────────────────────────────────────────────────────────
+    function doSnooze(id) {
+      const t = TaskFilters.byId(id);
+      if (!t) return;
+      // Snooze popover would be richer; simulate via toast
+      const choice = prompt(`Snooze “${truncate(t.title, 50)}” for…`, 'end of shift') || '2h';
+      showToast(`Snoozed for ${choice}`, () => showToast('Snooze cancelled'));
+    }
+    function doMute(id) {
+      const t = TaskFilters.byId(id);
+      if (!t) return;
+      showToast(`Muted signals for ${t.primary_context.label}`, () => showToast('Mute reversed'));
+    }
+    function doDismiss(id) {
+      const t = TaskFilters.byId(id);
+      if (!t) return;
+      const prevStatus = t.status;
+      t.status = 'dismissed';
+      rerender();
+      showToast(`Dismissed “${truncate(t.title, 40)}”`, () => {
+        t.status = prevStatus;
+        rerender();
+      });
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Toast with 10-second undo
+    // ──────────────────────────────────────────────────────────
+    function showToast(msg, undoFn) {
+      const container = document.getElementById('toast-container');
+      const id = 't-' + Date.now() + '-' + Math.random();
+      const toast = document.createElement('div');
+      toast.className = 'toast bg-slate-800 border border-slate-700 rounded-lg shadow-xl px-4 py-2.5 min-w-[280px] max-w-[420px] flex items-center gap-3';
+      toast.id = id;
+      toast.innerHTML = `
+        <div class="flex-1 text-sm text-slate-200">${msg}</div>
+        ${undoFn ? `<button class="text-xs font-medium text-orange-400 hover:text-orange-300 transition-colors">Undo</button>` : ''}
+        <div class="text-[10px] text-slate-500 font-mono countdown">10s</div>
+      `;
+      container.appendChild(toast);
+
+      let remaining = 10;
+      const undoBtn = toast.querySelector('button');
+      const countdown = toast.querySelector('.countdown');
+      if (undoBtn) {
+        undoBtn.addEventListener('click', () => {
+          if (undoFn) undoFn();
+          clearInterval(timer);
+          toast.remove();
+        });
+      }
+      const timer = setInterval(() => {
+        remaining--;
+        if (countdown) countdown.textContent = remaining + 's';
+        if (remaining <= 0) {
+          clearInterval(timer);
+          toast.style.transition = 'opacity .2s';
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 250);
+        }
+      }, 1000);
+    }
+
+    function truncate(s, n) { return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+
+    // ──────────────────────────────────────────────────────────
+    //  Bindings
+    // ──────────────────────────────────────────────────────────
+    // ──────────────────────────────────────────────────────────
+    //  Evidence popover — simulated content per evidence type
+    //  (Phase B: stops the "every link 404s" credibility hit during walkthrough)
+    // ──────────────────────────────────────────────────────────
+    const EVIDENCE_TEMPLATES = {
+      message: (label) => `
+        <div class="text-[11px] text-slate-500 mb-3">Message thread excerpt · ${label}</div>
+        <div class="space-y-3">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[10px] font-bold flex-shrink-0">${(label.match(/(\w+)/)||[])[1]?.slice(0,2).toUpperCase() || 'CL'}</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-2 mb-1">
+                <span class="text-xs font-medium text-slate-200">Client</span>
+                <span class="text-[10px] text-slate-500">${label.includes('·') ? label.split('·')[1].trim() : '2:14 PM'}</span>
+              </div>
+              <div class="bg-slate-800 rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm text-slate-200 leading-relaxed">
+                ${getMessageStub(label)}
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-600 text-center pt-2 border-t border-slate-800">
+            Scroll past this snippet in production to see the rest of the thread.
+          </div>
+        </div>
+      `,
+      tool: (label) => {
+        if (label.toLowerCase().includes('seats.aero')) {
+          return `
+            <div class="text-[11px] text-slate-500 mb-3">Award search · ${label}</div>
+            <div class="bg-slate-950 border border-slate-800 rounded-lg overflow-hidden">
+              <div class="px-3 py-2 border-b border-slate-800 bg-slate-800/30 text-[11px] text-slate-400 flex items-center justify-between">
+                <span>IAD → HND · 2026-04-30 · 2 pax · First</span>
+                <span class="font-mono text-green-400">2 award seats found</span>
+              </div>
+              <table class="w-full text-xs">
+                <thead class="bg-slate-800/20 text-slate-500 text-[10px] uppercase tracking-wider">
+                  <tr><th class="px-3 py-2 text-left">Flight</th><th class="px-3 py-2 text-left">Route</th><th class="px-3 py-2 text-left">Time</th><th class="px-3 py-2 text-left">Cabin</th><th class="px-3 py-2 text-right">Miles</th></tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                  <tr class="hover:bg-slate-800/30"><td class="px-3 py-2 font-mono text-slate-200">JL061</td><td class="px-3 py-2 text-slate-300">IAD-HND</td><td class="px-3 py-2 text-slate-400">11:55a → 3:35p+1</td><td class="px-3 py-2"><span class="px-1.5 py-0.5 rounded text-[10px] bg-orange-500/15 text-orange-300 border border-orange-500/30">First</span></td><td class="px-3 py-2 font-mono text-right text-amber-400">82,500</td></tr>
+                  <tr class="hover:bg-slate-800/30"><td class="px-3 py-2 font-mono text-slate-200">JL061</td><td class="px-3 py-2 text-slate-300">IAD-HND</td><td class="px-3 py-2 text-slate-400">11:55a → 3:35p+1</td><td class="px-3 py-2"><span class="px-1.5 py-0.5 rounded text-[10px] bg-amber-500/15 text-amber-300 border border-amber-500/30">Business</span></td><td class="px-3 py-2 font-mono text-right text-amber-400">65,000</td></tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+        if (label.toLowerCase().includes('ita') || label.toLowerCase().includes('alt')) {
+          return `
+            <div class="text-[11px] text-slate-500 mb-3">Alternative routings · ITA Matrix</div>
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-3 space-y-2">
+              <div class="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span class="text-sm text-slate-200"><span class="font-mono">LH444</span> · IAD → MUC → FRA</span>
+                <span class="text-[11px] font-mono text-slate-400">+1d · Y avail</span>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span class="text-sm text-slate-200"><span class="font-mono">UA960 + LH107</span> · IAD → MUC → FRA</span>
+                <span class="text-[11px] font-mono text-slate-400">+8h · Y avail</span>
+              </div>
+              <div class="flex items-center justify-between p-2 rounded bg-slate-800/30">
+                <span class="text-sm text-slate-200"><span class="font-mono">LX65 + LX1066</span> · IAD → ZRH → FRA</span>
+                <span class="text-[11px] font-mono text-slate-400">+14h · J avail</span>
+              </div>
+            </div>
+          `;
+        }
+        return `
+          <div class="text-[11px] text-slate-500 mb-3">External tool result · ${label}</div>
+          <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 text-sm text-slate-300">
+            Generic tool result panel. In production this opens the corresponding tool view.
+          </div>
+        `;
+      },
+      email: (label) => `
+        <div class="text-[11px] text-slate-500 mb-3">Vendor / system notification · ${label}</div>
+        <div class="bg-slate-950 border border-slate-800 rounded-lg overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-800 bg-slate-800/30">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-0.5">From</div>
+            <div class="text-sm text-slate-200">${getEmailSender(label)}</div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 mt-2 mb-0.5">Subject</div>
+            <div class="text-sm text-slate-200">${getEmailSubject(label)}</div>
+          </div>
+          <div class="p-4 text-sm text-slate-300 leading-relaxed">
+            ${getEmailBody(label)}
+          </div>
+        </div>
+      `,
+      page: (label) => `
+        <div class="text-[11px] text-slate-500 mb-3">Internal page · ${label}</div>
+        <div class="bg-slate-950 border border-slate-800 rounded-lg p-4">
+          <div class="flex items-start justify-between mb-3 pb-3 border-b border-slate-800">
+            <div>
+              <div class="text-base font-semibold text-slate-100">${label}</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">${getPageMeta(label)}</div>
+            </div>
+            <span class="text-[10px] font-mono text-slate-600">cc://${label.toLowerCase().replace(/[^a-z0-9]+/g,'-')}</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            ${getPageFields(label).map(f => `<div><div class="text-[10px] uppercase tracking-wider text-slate-500">${f[0]}</div><div class="text-slate-300 mt-0.5">${f[1]}</div></div>`).join('')}
+          </div>
+        </div>
+      `,
+      dashboard: (label) => `
+        <div class="text-[11px] text-slate-500 mb-3">Dashboard · ${label}</div>
+        <div class="bg-slate-950 border border-slate-800 rounded-lg p-4">
+          ${getDashboardContent(label)}
+        </div>
+      `,
+    };
+
+    function classifyEvidence(label) {
+      const l = label.toLowerCase();
+      if (/thread|msg|message|sent message|draft preview/.test(l)) return 'message';
+      if (/seats\.aero|ita matrix|alt flights|award search/.test(l)) return 'tool';
+      if (/email|alert|advisory|ticket|notification/.test(l)) return 'email';
+      if (/dashboard|chart/.test(l)) return 'dashboard';
+      return 'page'; // trips, profiles, supplier lists, vendors, invoices etc.
+    }
+
+    function getMessageStub(label) {
+      if (label.toLowerCase().includes('greer')) return 'Hey Maya — quick one. Saw on Seats.aero that JAL First is open for our Apr 30. Any chance we can grab those seats? Happy to use points.';
+      if (label.toLowerCase().includes('patel')) return 'We need 4 villas for Tuscany Jun 22–Jul 4. Party of 8 plus a dog. Repeat clients of yours from last year.';
+      if (label.toLowerCase().includes('halverson')) return 'No more Bali pings for 6 months please, we just got back. Will reach out when ready to plan the next one.';
+      if (label.toLowerCase().includes('bowman')) return 'Following up on the Patagonia deposit — payment will go through tomorrow latest. Sorry for the delay.';
+      return 'Sample client message excerpt. Full thread accessible via the conversation surface.';
+    }
+    function getEmailSender(label) {
+      const l = label.toLowerCase();
+      if (l.includes('como')) return 'reservations@comohotels.com · Como Shambhala Estate';
+      if (l.includes('lh') || l.includes('lufthansa')) return 'disruption-ops@lufthansa.com · Lufthansa Disruption Notification';
+      if (l.includes('state dept') || l.includes('advisory')) return 'travel.advisory@state.gov · US Department of State';
+      if (l.includes('ticket')) return 'reissue@lufthansa.com · LH Ticketing';
+      return 'system@notifications · Automated alert';
+    }
+    function getEmailSubject(label) {
+      const l = label.toLowerCase();
+      if (l.includes('como')) return 'Complimentary upgrade available — Park-Halverson booking #CSE-44102';
+      if (l.includes('disruption') || l.includes('lh')) return 'LH441 IAD-FRA cancelled — rebooking options attached';
+      if (l.includes('advisory')) return 'Travel Advisory Level 2 — Italy (Naples civil unrest)';
+      if (l.includes('ticket')) return 'E-ticket re-issued — confirmation LH/8K3M2P';
+      if (l.includes('award')) return 'Award seats opened: ANA F NRT route';
+      return 'Notification from upstream system';
+    }
+    function getEmailBody(label) {
+      const l = label.toLowerCase();
+      if (l.includes('como')) return 'We\'re delighted to offer your guests the Ocean View Villa as a complimentary upgrade for the duration of their stay. Please confirm with the guests before we re-block the room.';
+      if (l.includes('disruption') || (l.includes('lh') && !l.includes('ticket'))) return 'Flight LH441 (IAD-FRA, 18 May 18:30) has been cancelled due to operational reasons. Three rebooking options are available — see attached options table. Comp\'d under disruption policy.';
+      if (l.includes('advisory')) return 'Level 2 advisory issued for Italy citing civil unrest in Naples. Travelers should exercise increased caution. Affected: 3 active Maestro trips.';
+      if (l.includes('ticket')) return 'E-ticket has been successfully re-issued for passenger WHITMAN/J on LH444 IAD-MUC-FRA dated 19 May. Confirmation: LH/8K3M2P.';
+      return 'Notification body content. In production the full source document opens here.';
+    }
+    function getPageMeta(label) {
+      const l = label.toLowerCase();
+      if (l.includes('trip')) return 'Trip · status: confirmed · last updated 2h ago';
+      if (l.includes('profile')) return 'Client profile · 3 past trips · VVIP tier';
+      if (l.includes('supplier') || l.includes('vendor')) return 'Supplier · vetted · 12 past bookings';
+      if (l.includes('invoice')) return 'Invoice · status: sent · due in 6 days';
+      return 'Internal record';
+    }
+    function getPageFields(label) {
+      const l = label.toLowerCase();
+      if (l.includes('castelli')) return [['Destination','Tokyo, JP'],['Dates','May 25 – Jun 2'],['Party','2 adults'],['Property','Aman Tokyo'],['Owner','Maya Chen'],['Confirmation','#AT-44512']];
+      if (l.includes('park-halverson')) return [['Destination','Bali, ID'],['Dates','May 14 – May 24'],['Party','2 adults · honeymoon'],['Property','Como Shambhala Estate'],['Owner','Maya Chen'],['Confirmation','#CSE-44102']];
+      if (l.includes('whitman') && l.includes('tuscany')) return [['Destination','Tuscany, IT'],['Dates','Mar 2026'],['Party','4 adults'],['Property','Borgo San Felice'],['Status','Completed']];
+      if (l.includes('whitman')) return [['Cabin pref','First only ≥7hr transatlantic'],['Hotels','Aman, Como, Belmond preferred'],['Allergies','Shellfish (severe)'],['Past trips','5 with Maestro']];
+      if (l.includes('greer')) return [['Cabin pref','JAL First / ANA First for Asia routes'],['VVIP since','2023'],['Birthday','May 20'],['Past trips','3 with Maestro'],['Family','Sarah, Mike, Henry (4)']];
+      if (l.includes('supplier') || l.includes('tuscany')) return [['Region','Tuscany'],['Vetted suppliers','12'],['Notable','Marquees Villa, Tenuta di Spannocchia, Villa Cetinale'],['Lead time','6–8 weeks for peak season']];
+      if (l.includes('tokyo royal') || l.includes('vendor: tokyo')) return [['Service','Private NRT-Tokyo transfer'],['Vehicle','Lexus LS · car seat available'],['Past use','8 bookings, no issues'],['Cost','¥45,000 one-way']];
+      if (l.includes('invoice')) return [['Invoice #','INV-3402'],['Amount','$8,400 USD'],['Sent','May 7, 2026'],['Due','May 21, 2026'],['Status','Sent · 1 reminder']];
+      if (l.includes('draft preview')) return [['To','Castelli family'],['Channel','WhatsApp'],['Scheduled','May 18, 16:00 ET'],['Status','Approved · pending send']];
+      return [['Status','Active'],['Last updated','2h ago']];
+    }
+    function getDashboardContent(label) {
+      const l = label.toLowerCase();
+      if (l.includes('sla')) return `
+        <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-3">SLA timers · VVIP threshold = 2h</div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3"><span class="text-xs text-slate-300 flex-1">Greer family · WhatsApp</span><div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden"><div class="h-full bg-red-500" style="width: 82%"></div></div><span class="text-[11px] font-mono text-red-400">1h 38m</span></div>
+          <div class="flex items-center gap-3"><span class="text-xs text-slate-300 flex-1">Whitman · Stream Chat</span><div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden"><div class="h-full bg-amber-500" style="width: 45%"></div></div><span class="text-[11px] font-mono text-amber-400">54m</span></div>
+          <div class="flex items-center gap-3"><span class="text-xs text-slate-300 flex-1">Patel · WhatsApp</span><div class="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden"><div class="h-full bg-green-500" style="width: 18%"></div></div><span class="text-[11px] font-mono text-green-400">22m</span></div>
+        </div>
+      `;
+      if (l.includes('workload')) return `
+        <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-3">Open tasks per owner · avg = 14</div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3"><span class="text-xs text-slate-300 w-24">Rae Park</span><div class="flex-1 bg-slate-800 rounded h-5 overflow-hidden relative"><div class="h-full bg-red-500/40 border-r border-red-500/60 flex items-center justify-end pr-2 text-[10px] text-red-300" style="width: 100%">32</div></div><span class="text-[10px] text-red-400 font-mono">+18</span></div>
+          <div class="flex items-center gap-3"><span class="text-xs text-slate-300 w-24">Maya Chen</span><div class="flex-1 bg-slate-800 rounded h-5 overflow-hidden relative"><div class="h-full bg-orange-500/40 border-r border-orange-500/60 flex items-center justify-end pr-2 text-[10px] text-orange-300" style="width: 56%">18</div></div><span class="text-[10px] text-orange-400 font-mono">+4</span></div>
+          <div class="flex items-center gap-3"><span class="text-xs text-slate-300 w-24">Jordan Singh</span><div class="flex-1 bg-slate-800 rounded h-5 overflow-hidden relative"><div class="h-full bg-sky-500/40 border-r border-sky-500/60 flex items-center justify-end pr-2 text-[10px] text-sky-300" style="width: 28%">9</div></div><span class="text-[10px] text-slate-500 font-mono">-5</span></div>
+        </div>
+      `;
+      return `<div class="text-sm text-slate-300">Dashboard view. Live chart renders here in production.</div>`;
+    }
+
+    function openEvidence(label) {
+      const kind = classifyEvidence(label);
+      const template = EVIDENCE_TEMPLATES[kind];
+      if (!template) return;
+      document.getElementById('evidence-kind').textContent = ({ message: 'Message thread', tool: 'Tool result', email: 'Email / notification', page: 'Internal page', dashboard: 'Dashboard' })[kind];
+      document.getElementById('evidence-title').textContent = label;
+      document.getElementById('evidence-body').innerHTML = template(label);
+      document.getElementById('evidence-backdrop').classList.add('open');
+    }
+    function closeEvidence() {
+      document.getElementById('evidence-backdrop').classList.remove('open');
+    }
+
+    // Helper: turn any "tsk-XXX" mention into a clickable link
+    function linkifyTaskIds(text) {
+      if (!text) return '';
+      return String(text).replace(/(tsk-\d{3,})/g, '<a href="task-board.html#task=$1" class="task-id-link font-mono text-orange-400 hover:text-orange-300 hover:underline underline-offset-2">$1</a>');
+    }
+
+    // Document-level click delegation for ALL .task-id-link anchors (rows, drawer, anywhere)
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a.task-id-link');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      const m = href && href.match(/task=([^&]+)/);
+      if (!m) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const id = m[1];
+      history.replaceState(null, '', '#task=' + id);
+      openDrawer(id);
+    });
+    // Evidence chip clicks → open the simulated evidence popover
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a.evidence-chip');
+      if (!a) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openEvidence(a.dataset.label);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Honor URL fragment so other pages can deep-link to a specific tab AND/OR auto-open a task.
+      // Hash format: #tab=needs-review or #task=tsk-001 or #tab=needs-review&task=tsk-001
+      // (using hash fragment since dev-server clean URLs strip query strings)
+      const hashParams = new URLSearchParams(window.location.hash.slice(1));
+      const urlTab = hashParams.get('tab') || new URLSearchParams(window.location.search).get('tab');
+      const urlTaskId = hashParams.get('task') || new URLSearchParams(window.location.search).get('task');
+      if (urlTab && ['all','my','urgent','needs-review'].includes(urlTab)) State.activeTab = urlTab;
+      document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === State.activeTab));
+
+      rerender();
+
+      // If we have a #task=ID, open that drawer after render
+      if (urlTaskId && TaskFilters.byId(urlTaskId)) {
+        // Defer so the rest of the page can settle first
+        setTimeout(() => openDrawer(urlTaskId), 50);
+      }
+
+      // Evidence modal close handlers
+      document.getElementById('evidence-close').addEventListener('click', closeEvidence);
+      document.getElementById('evidence-dismiss').addEventListener('click', closeEvidence);
+      document.getElementById('evidence-backdrop').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeEvidence();
+      });
+
+      // Tab clicks
+      document.querySelectorAll('.tab').forEach(b => {
+        b.addEventListener('click', () => {
+          State.activeTab = b.dataset.tab;
+          document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === b));
+          State.selected.clear();
+          rerender();
+        });
+      });
+
+      // Group + Sort dropdowns
+      document.getElementById('group-select').addEventListener('change', (e) => { State.group = e.target.value; rerender(); });
+      document.getElementById('sort-select').addEventListener('change',  (e) => { State.sort  = e.target.value; rerender(); });
+
+      // View toggle (table | kanban)
+      document.querySelectorAll('.view-toggle').forEach(b => {
+        b.addEventListener('click', () => {
+          State.view = b.dataset.view;
+          document.querySelectorAll('.view-toggle').forEach(x => x.classList.toggle('active', x === b));
+          document.getElementById('kanban-axis-wrap').classList.toggle('hidden', State.view !== 'kanban');
+          // Group dropdown only relevant in table view
+          document.getElementById('group-select').disabled = State.view === 'kanban';
+          rerender();
+        });
+      });
+      document.getElementById('kanban-axis-select').addEventListener('change', (e) => {
+        State.kanbanAxis = e.target.value;
+        if (State.view === 'kanban') rerender();
+      });
+
+      // Filter chips
+      document.querySelectorAll('.filter-status').forEach(b => {
+        b.addEventListener('click', () => { State.filters.status = b.dataset.status; rerender(); });
+      });
+      document.querySelectorAll('.filter-tier').forEach(b => {
+        b.addEventListener('click', () => {
+          const t = b.dataset.tier;
+          if (State.filters.tiers.has(t)) State.filters.tiers.delete(t);
+          else State.filters.tiers.add(t);
+          rerender();
+        });
+      });
+      document.getElementById('handoff-toggle').addEventListener('click', () => {
+        State.filters.handoff = !State.filters.handoff;
+        if (State.filters.handoff) State.filters.owner = CURRENT_USER;
+        rerender();
+      });
+      document.getElementById('clear-filters').addEventListener('click', () => {
+        State.filters = { status: 'all', tiers: new Set(), owner: 'all', handoff: false };
+        rerender();
+      });
+      document.getElementById('empty-clear').addEventListener('click', () => {
+        State.filters = { status: 'all', tiers: new Set(), owner: 'all', handoff: false };
+        rerender();
+      });
+
+      // Owner dropdown
+      const ownerBtn = document.getElementById('owner-dropdown-btn');
+      const ownerPop = document.getElementById('owner-popover');
+      ownerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const rect = ownerBtn.getBoundingClientRect();
+        ownerPop.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+        ownerPop.style.left = (rect.left + window.scrollX) + 'px';
+        ownerPop.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.owner-opt').forEach(b => {
+        b.addEventListener('click', () => {
+          State.filters.owner = b.dataset.owner;
+          ownerPop.classList.add('hidden');
+          rerender();
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!ownerPop.contains(e.target) && e.target !== ownerBtn) ownerPop.classList.add('hidden');
+      });
+
+      // Select all
+      document.getElementById('select-all').addEventListener('change', (e) => {
+        const ids = visibleTasks().map(t => t.id);
+        if (e.target.checked) ids.forEach(id => State.selected.add(id));
+        else ids.forEach(id => State.selected.delete(id));
+        rerender();
+      });
+
+      // Bulk actions
+      document.querySelectorAll('.bulk-action').forEach(b => {
+        b.addEventListener('click', () => {
+          const action = b.dataset.action;
+          const count = State.selected.size;
+          if (action === 'dismiss' || action === 'complete') {
+            if (!confirm(`${action[0].toUpperCase() + action.slice(1)} ${count} tasks?`)) return;
+          }
+          const removed = [];
+          if (action === 'dismiss' || action === 'complete') {
+            State.selected.forEach(id => {
+              const idx = State.tasks.findIndex(x => x.id === id);
+              if (idx >= 0) removed.push({ task: State.tasks.splice(idx, 1)[0], idx });
+            });
+          }
+          showToast(`Bulk ${action}: ${count} tasks`, removed.length ? () => {
+            removed.forEach(r => State.tasks.splice(r.idx, 0, r.task));
+            rerender();
+          } : null);
+          State.selected.clear();
+          rerender();
+        });
+      });
+      document.getElementById('bulk-clear').addEventListener('click', () => {
+        State.selected.clear();
+        rerender();
+      });
+
+      // Create button + modal
+      document.getElementById('create-btn').addEventListener('click', openCreateModal);
+      document.getElementById('modal-cancel').addEventListener('click', closeCreateModal);
+      document.getElementById('modal-create').addEventListener('click', submitCreate);
+      document.getElementById('modal-title').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitCreate();
+      });
+
+      // More options toggle + chips
+      document.getElementById('more-toggle').addEventListener('click', () => {
+        const fields = document.getElementById('more-fields');
+        const chev = document.getElementById('more-chevron');
+        fields.classList.toggle('hidden');
+        chev.classList.toggle('expanded');
+      });
+      document.querySelectorAll('.priority-chip').forEach(c => {
+        c.addEventListener('click', () => {
+          ModalState.priority = c.dataset.priority;
+          document.querySelectorAll('.priority-chip').forEach(x => x.classList.toggle('active', x === c));
+        });
+      });
+      document.querySelectorAll('.due-chip').forEach(c => {
+        c.addEventListener('click', () => {
+          ModalState.due = c.dataset.due;
+          document.querySelectorAll('.due-chip').forEach(x => x.classList.toggle('active', x === c));
+          document.getElementById('modal-due-custom').value = '';
+        });
+      });
+      document.getElementById('modal-due-custom').addEventListener('change', (e) => {
+        if (!e.target.value) return;
+        const d = new Date(e.target.value);
+        ModalState.due = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        document.querySelectorAll('.due-chip').forEach(x => x.classList.remove('active'));
+      });
+
+      // Drawer backdrop close
+      document.getElementById('drawer-backdrop').addEventListener('click', closeDrawer);
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        const inField = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+        const modalOpen = document.getElementById('modal-backdrop').classList.contains('open');
+        const drawerOpen = document.getElementById('drawer').classList.contains('open');
+        const evidenceOpen = document.getElementById('evidence-backdrop').classList.contains('open');
+
+        if (e.key === 'Escape') {
+          if (evidenceOpen) closeEvidence();
+          else if (modalOpen) closeCreateModal();
+          else if (drawerOpen) closeDrawer();
+          return;
+        }
+
+        if (inField) return; // don't intercept typing
+
+        if (e.key === 'c' && !drawerOpen && !modalOpen) {
+          e.preventDefault();
+          openCreateModal();
+        } else if (e.key === 'j') {
+          const list = visibleTasks();
+          State.rowFocus = Math.min(State.rowFocus + 1, list.length - 1);
+          renderRows();
+          scrollRowIntoView();
+        } else if (e.key === 'k') {
+          State.rowFocus = Math.max(State.rowFocus - 1, 0);
+          renderRows();
+          scrollRowIntoView();
+        } else if (e.key === 'Enter' && State.rowFocus >= 0) {
+          const list = visibleTasks();
+          if (list[State.rowFocus]) openDrawer(list[State.rowFocus].id);
+        } else if (e.key === 'x' && State.rowFocus >= 0) {
+          const list = visibleTasks();
+          if (list[State.rowFocus]) doDismiss(list[State.rowFocus].id);
+        }
+      });
+
+      function scrollRowIntoView() {
+        const row = document.querySelector(`[data-idx="${State.rowFocus}"]`);
+        if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // AI assistant input (simulated)
+      const aiInput = document.getElementById('ai-assistant');
+      aiInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const q = aiInput.value.trim().toLowerCase();
+          if (!q) return;
+          let response = '';
+          if (q.includes('overdue')) response = 'Filtering to tasks overdue or due today…';
+          else if (q.includes('first') || q.includes('priority')) response = 'Sorted by priority + due. Start with the urgent disruption-response tasks.';
+          else if (q.includes('end of day') || q.includes('summary')) response = 'End-of-day summary: 3 tasks completed, 4 escalated to ops, 6 pending review.';
+          else response = `I would ${q}, but this is a mockup so showing simulated response.`;
+          showToast('AI: ' + response);
+          aiInput.value = '';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -40,6 +40,19 @@ const NAV_CONFIG = [
     ],
   },
   { type: 'link', id: 'changelog', section: 'Log', label: 'Changelog', href: 'changelog.html' },
+  {
+    type: 'group',
+    id: 'prototype',
+    section: 'UI',
+    label: 'Prototype (clickable)',
+    items: [
+      { id: 'proto-index',         section: '', label: 'Prototype index',     href: 'prototype/index.html' },
+      { id: 'proto-overview',      section: '', label: 'App · Overview',      href: 'prototype/overview.html' },
+      { id: 'proto-trips',         section: '', label: 'App · Trips',         href: 'prototype/trips.html' },
+      { id: 'proto-task-board',    section: '', label: 'App · Tasks',         href: 'prototype/task-board.html' },
+      { id: 'proto-inline-create', section: '', label: 'App · Chat',          href: 'prototype/inline-create.html' },
+    ],
+  },
 ];
 
 const PAGE_DATA = {
