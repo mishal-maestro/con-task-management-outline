@@ -5,26 +5,26 @@ function initNav() {
   if (!root) return;
 
   const currentPage = window.CURRENT_PAGE || 'index';
-  // Path-prefix shim: when the browser's base URL is a subfolder (e.g. /prototype/),
-  // rewrite hrefs so sibling pages resolve correctly. Keeps data.js paths root-relative.
+  // Path-prefix shim. data.js hrefs are written relative to the SITE ROOT
+  // (e.g. "definitions.html", "prototype/index.html"). They resolve correctly
+  // as-is on every outline page — whether the site is served at "/" (localhost)
+  // or "/con-task-management-outline/" (GitHub Pages), because the browser's
+  // base URL on those pages IS the site root.
   //
-  // The browser's base path for relative URL resolution is the URL up to and
-  // including the LAST `/`. So:
-  //   /prototype           → base = /         (no trailing slash; "prototype" is the filename)
-  //   /prototype/          → base = /prototype/
-  //   /prototype/task-board → base = /prototype/   ("task-board" is the filename)
-  //   /prototype/index.html → base = /prototype/
-  // We need to rewrite only when the base is inside a subfolder.
+  // The ONLY pages where rewriting is needed are ones served from inside the
+  // prototype/ subfolder, where the base URL is ".../prototype/". We detect
+  // that precisely — by checking if the page's immediate folder is literally
+  // "prototype" — instead of guessing from path-segment count (which breaks on
+  // GitHub Pages because the repo name is itself a path segment).
   const basePath = window.location.pathname.endsWith('/')
     ? window.location.pathname
     : window.location.pathname.replace(/[^/]*$/, '');
-  const baseSegments = basePath.split('/').filter(Boolean);
-  const inSubFolder = baseSegments.length > 0;
-  const currentFolder = inSubFolder ? baseSegments[baseSegments.length - 1] : null;
+  const immediateFolder = basePath.replace(/\/+$/, '').split('/').filter(Boolean).pop();
+  const inPrototypeFolder = immediateFolder === 'prototype';
   function rewriteHref(href) {
-    if (!inSubFolder) return href;
-    if (href.startsWith(currentFolder + '/')) return href.slice(currentFolder.length + 1);
-    return '../' + href;
+    if (!inPrototypeFolder) return href;       // outline pages: data.js paths already resolve right
+    if (href.startsWith('prototype/')) return href.slice('prototype/'.length); // strip redundant prefix
+    return '../' + href;                        // outline link from inside prototype/: up one level
   }
 
   function renderLink(item, isSubItem) {
