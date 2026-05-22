@@ -74,6 +74,13 @@
         </div>
       </div>
 
+      <!-- Full flow: all steps laid out for reading end to end -->
+      <div class="mt-8 mb-3">
+        <div class="font-mono text-[11px] uppercase tracking-widest text-orange-500">The full flow, step by step</div>
+        <p class="text-sm text-slate-500 mt-1">All nine steps in sequence, laid out to read end to end.</p>
+      </div>
+      <div id="full-flow" class="space-y-3"></div>
+
       <p class="text-xs text-slate-600 mt-6">The stories these steps prove are in <a href="agent-epics.html" class="text-orange-400 hover:text-orange-300">Epics &amp; Stories</a>.</p>
 
     </div>
@@ -123,7 +130,25 @@
              + (n < TOTAL ? '<span class="flex-1 h-px bg-slate-800"></span>' : '');
       }).join('');
     }
+    // Static companion to the stepper — every step laid out at once.
+    function renderFullList() {
+      document.getElementById('full-flow').innerHTML = HERO_STEPS.map((s, i) => {
+        const num = (i + 1) < 10 ? '0' + (i + 1) : '' + (i + 1);
+        const chips = s.proves.map(p =>
+          `<a href="agent-epics.html" class="font-mono text-[10px] text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5 hover:bg-orange-500/25">${Theme.escapeHtml(p)}</a>`).join('');
+        return `
+          <div class="flex items-start gap-4 bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <div class="font-mono text-xl font-semibold text-orange-500 flex-shrink-0 w-9">${num}</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-sm font-semibold text-slate-100">${Theme.escapeHtml(s.title)}</h3>
+              <p class="text-sm text-slate-400 leading-relaxed mt-1">${Theme.escapeHtml(s.caption)}</p>
+              <div class="mt-2.5 flex flex-wrap gap-1.5">${chips}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
     render();
+    renderFullList();
   </script>
 
 </body>
