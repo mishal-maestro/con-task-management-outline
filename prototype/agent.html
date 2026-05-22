@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent — Conductor Task Mgmt Prototype</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../theme.js"></script>
+  <script src="task-data.js"></script>
+  <script src="agent-data.js"></script>
+  <script>window.CURRENT_APP_TAB = 'agent';</script>
+  <script src="topnav.js"></script>
+  <script src="task-drawer.js"></script>
+  <script src="agent-context-panel.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    body { background: #020617; }
+
+    .top-tab {
+      padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: rgb(148 163 184);
+      cursor: pointer; transition: color .12s; border-bottom: 2px solid transparent;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .top-tab:hover { color: rgb(241 245 249); }
+    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+
+    /* left rail */
+    .proj-row { display: block; width: 100%; text-align: left; padding: 8px 16px; border-left: 2px solid transparent; cursor: pointer; }
+    .proj-row:hover { background: rgba(30,41,59,.4); }
+    .proj-row.active { background: rgba(30,41,59,.6); border-left-color: #ff5e32; }
+    .thread-row { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 7px 16px; border-left: 2px solid transparent; cursor: pointer; }
+    .thread-row:hover { background: rgba(30,41,59,.35); }
+    .thread-row.active { background: rgba(255,94,50,.08); border-left-color: #ff5e32; }
+
+    /* messages */
+    .a-sys { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #64748b; padding: 6px 0; }
+    .a-sys a { color: #fb923c; text-decoration: underline; text-underline-offset: 2px; }
+    .a-msg { display: flex; gap: 10px; margin-bottom: 16px; }
+    .a-av { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+    .a-av.advisor { background: #334155; color: #e2e8f0; }
+    .a-av.ai { background: #ff5e32; color: #fff; }
+    .a-name { font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 3px; }
+    .a-bubble { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 9px 13px; font-size: 13px; color: #e2e8f0; line-height: 1.55; }
+    .a-msg.advisor .a-bubble { background: #0f172a; }
+
+    .a-rec { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 13px; }
+    .a-rec.added { border-color: #ff5e32; box-shadow: 0 0 0 3px rgba(255,94,50,.12); }
+
+    .src-chip { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #34d399; background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); border-radius: 5px; padding: 2px 7px; cursor: pointer; }
+    .hf-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; border-radius: 6px; padding: 3px 9px; border: 1px solid; cursor: pointer; }
+    .hf-chip .d { width: 6px; height: 6px; border-radius: 50%; }
+    .hf-pass { color: #34d399; background: rgba(52,211,153,.1); border-color: rgba(52,211,153,.35); }
+    .hf-pass .d { background: #34d399; }
+    .hf-factual { color: #fbbf24; background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.35); }
+    .hf-factual .d { background: #fbbf24; }
+    .hf-intent { color: #60a5fa; background: rgba(96,165,250,.1); border-color: rgba(96,165,250,.35); }
+    .hf-intent .d { background: #60a5fa; }
+
+    .a-event { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; border-radius: 7px; padding: 6px 10px; }
+    .a-event.task { color: #c4b5fd; background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.3); }
+    .a-event.trip { color: #34d399; background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); }
+    .a-event a { cursor: pointer; }
+
+    .panel-h { font-size: 12px; font-weight: 600; color: #e2e8f0; }
+    .panel-eyebrow { font-size: 10px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 1px; color: #ff5e32; }
+  </style>
+</head>
+
+<body class="text-slate-300 font-sans antialiased h-screen flex flex-col overflow-hidden">
+
+  <div id="topnav-root"></div>
+
+  <!-- Helper strip -->
+  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2 flex-shrink-0">
+    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Agent tab · prototype mock · simulated data ·
+      <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank" class="text-orange-400 hover:text-orange-300 underline">Agent Mode PRD</a> ·
+      <a href="../agent-overview.html" class="text-orange-400 hover:text-orange-300 underline">Agent Mode outline</a> ·
+      <a href="index.html" class="text-orange-400 hover:text-orange-300 underline">prototype index</a></span>
+  </div>
+
+  <!-- 2-column app — left switcher + center (Project Home or Thread).
+       Trip Context / Memory / Tasks live in the slide-in context panel. -->
+  <main class="flex-1 flex min-h-0">
+
+    <!-- LEFT — Projects switcher -->
+    <aside class="w-[300px] bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0">
+      <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+        <span class="panel-h">Agent</span>
+        <span class="text-[10px] text-slate-500 font-mono">/agent</span>
+      </div>
+      <div id="project-list" class="flex-1 overflow-y-auto py-1"></div>
+      <div class="px-4 py-2.5 border-t border-slate-800 text-[10px] text-slate-600">
+        Projects group threads by trip &amp; client · PRD §4
+      </div>
+    </aside>
+
+    <!-- CENTER — Project Home or Thread (rendered by renderCenter) -->
+    <section id="center" class="flex-1 flex flex-col min-w-0"></section>
+
+  </main>
+
+  <script>
+    /* ---------- state ---------- */
+    let curProject = 'p-khan';
+    let curThread  = null;          // null → Project Home; a thread id → Thread view
+    const esc = (s) => Theme.escapeHtml(s == null ? '' : String(s));
+
+    /* ---------- routing — #project=X → Home, #project=X&thread=Y → Thread ---------- */
+    function parseHash() {
+      const h = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+      const t = h.get('thread'), p = h.get('project');
+      if (t && AgentData.thread(t)) { curThread = t; curProject = AgentData.thread(t).project; return; }
+      if (p && AgentData.project(p)) { curProject = p; curThread = null; return; }
+      curProject = 'p-khan'; curThread = null;
+    }
+    function syncHash() {
+      history.replaceState(null, '', '#project=' + curProject + (curThread ? '&thread=' + curThread : ''));
+    }
+
+    /* ---------- navigation ---------- */
+    function selectProject(pid) { curProject = pid; curThread = null; syncHash(); renderAll(); }
+    function openThread(tid) {
+      const t = AgentData.thread(tid); if (!t) return;
+      curThread = tid; curProject = t.project; syncHash(); renderAll();
+    }
+    function backToHome() { curThread = null; syncHash(); renderAll(); }
+
+    // New thread — the PRD entry point. ⌘K and the Project Home starter both land here.
+    function startNewThread(initialAsk) {
+      if (window.closeContextPanel) window.closeContextPanel();
+      const th = AgentData.createThread(curProject);
+      curThread = th.id; syncHash();
+      const ask = (initialAsk || '').trim();
+      if (ask) { sendToThread(th.id, ask); }
+      else { renderAll(); const ci = document.getElementById('composer-input'); if (ci) ci.focus(); }
+    }
+
+    // Composer echo — appends the advisor message; the agent's grounded reply is mocked.
+    function sendToThread(tid, text) {
+      const th = AgentData.thread(tid); if (!th) return;
+      const isFirst = !AgentData.messages(tid).some(m => m.role === 'advisor');
+      AgentData.appendMessage(tid, { role: 'advisor', kind: 'text', body: esc(text) });
+      if (isFirst) {
+        th.title = text.length > 60 ? text.slice(0, 59) + '…' : text;
+        AgentData.appendMessage(tid, { role: 'system', kind: 'context',
+          body: 'Prototype — the agent\'s grounded reply is mocked here. Open the '
+              + '<a href="#project=p-khan&thread=th-aman">find a suite at Aman</a> thread '
+              + 'for the fully-worked example.' });
+      }
+      renderAll();
+      scrollMessagesToBottom();
+    }
+
+    /* ---------- left rail — workspace switcher ---------- */
+    function renderProjectList() {
+      let html = '';
+      const recent = AgentData.recentThreads(4);
+      if (recent.length) {
+        html += `<div class="px-4 pt-3 pb-1 text-[10px] font-mono uppercase tracking-wider text-slate-600">Recent</div>`;
+        recent.forEach(t => {
+          const active = t.id === curThread;
+          const dot = t.status === 'open' ? '#34d399' : t.status === 'paused' ? '#fbbf24' : '#64748b';
+          const pr = AgentData.project(t.project);
+          html += `<button class="thread-row ${active ? 'active' : ''}" onclick="openThread('${t.id}')">
+            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${dot}"></span>
+            <span class="flex-1 min-w-0">
+              <span class="block truncate text-[12px] ${active ? 'text-slate-100' : 'text-slate-300'}">${esc(t.title)}</span>
+              <span class="block truncate text-[10px] text-slate-600">${esc(pr ? pr.name : '')}</span>
+            </span>
+          </button>`;
+        });
+      }
+      [['Trips', 'trip'], ['Clients', 'client']].forEach(([label, kind]) => {
+        const projs = AGENT_PROJECTS.filter(p => p.kind === kind);
+        if (!projs.length) return;
+        html += `<div class="px-4 pt-3 pb-1 text-[10px] font-mono uppercase tracking-wider text-slate-600">${label}</div>`;
+        projs.forEach(p => {
+          const active = p.id === curProject;
+          const tc = AgentData.threadsFor(p.id).length;
+          html += `<button class="proj-row ${active ? 'active' : ''}" onclick="selectProject('${p.id}')">
+            <div class="flex items-center gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm ${active ? 'text-slate-100' : 'text-slate-300'} font-medium truncate">${esc(p.name)}</div>
+                <div class="text-[11px] text-slate-500 truncate">${esc(p.meta)}</div>
+              </div>
+              <span class="text-[10px] font-mono text-slate-600 flex-shrink-0">${tc}</span>
+            </div>
+          </button>`;
+        });
+      });
+      document.getElementById('project-list').innerHTML = html;
+    }
+
+    /* ---------- center — Project Home or Thread ---------- */
+    function renderCenter() {
+      if (curThread && AgentData.thread(curThread)) renderThread();
+      else renderProjectHome();
+    }
+
+    function threadPreview(tid) {
+      const msgs = AgentData.messages(tid);
+      for (let i = msgs.length - 1; i >= 0; i--) {
+        const m = msgs[i];
+        if (m.kind === 'text' || m.kind === 'recs' || m.kind === 'actions' || m.kind === 'draft') {
+          const txt = String(m.body || '').replace(/<[^>]+>/g, '').trim();
+          if (txt) return txt.length > 92 ? txt.slice(0, 91) + '…' : txt;
+        }
+      }
+      return 'Context loaded — no messages yet.';
+    }
+
+    /* ---------- center — Project Home (workspace landing) ---------- */
+    function renderProjectHome() {
+      const p = AgentData.project(curProject);
+      const center = document.getElementById('center');
+      if (!p) { center.innerHTML = ''; return; }
+      const threads = AgentData.threadsFor(curProject);
+      const ctx = AgentData.context(curProject);
+      const mem = AgentData.memory(curProject);
+      const ins = AgentData.insights(curProject);
+      const tasks = AgentData.tasksFor(curProject);
+      const kindLabel = p.kind === 'trip' ? 'Trip' : 'Client';
+      const ctxCount = ctx ? (ctx.trip.length + ctx.org.length) : 0;
+
+      const card = (view, label, count, sub) => `
+        <button onclick="openContextPanel('${view}','${curProject}')" class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-left hover:border-orange-500/50 transition-colors">
+          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500">${label}</div>
+          <div class="text-lg font-semibold text-slate-100 mt-0.5">${count}</div>
+          <div class="text-[11px] text-slate-500">${sub}</div>
+        </button>`;
+
+      const threadRow = (t) => {
+        const dot = t.status === 'open' ? '#34d399' : t.status === 'paused' ? '#fbbf24' : '#64748b';
+        return `<button onclick="openThread('${t.id}')" class="w-full text-left bg-slate-900 border border-slate-800 rounded-lg p-3 hover:border-slate-700 transition-colors flex items-start gap-3">
+          <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:${dot}"></span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-slate-200 truncate">${esc(t.title)}</span>
+              ${t.isNew ? '<span class="text-[9px] font-mono text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5 flex-shrink-0">NEW</span>' : ''}
+            </div>
+            <div class="text-[11px] text-slate-500 truncate mt-0.5">${esc(threadPreview(t.id))}</div>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <span class="text-[9px] font-mono uppercase tracking-wide text-blue-300 bg-blue-500/15 rounded px-1.5 py-0.5">${esc(t.skill)}</span>
+            <div class="text-[10px] text-slate-600 mt-1 capitalize">${esc(t.status)} · ${esc(t.updated)}</div>
+          </div>
+        </button>`;
+      };
+
+      center.innerHTML = `
+        <div class="flex-1 overflow-y-auto">
+          <div class="max-w-[800px] mx-auto px-8 py-8">
+
+            <div class="flex items-center gap-2.5 mb-1">
+              <h1 class="text-xl font-semibold text-slate-100">${esc(p.name)}</h1>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 bg-slate-800 rounded px-1.5 py-0.5">${kindLabel}</span>
+            </div>
+            <div class="text-sm text-slate-500 mb-5">${esc(p.meta)} · the agent workspace for this ${esc(p.kind)}</div>
+
+            <div class="grid grid-cols-3 gap-2 mb-6">
+              ${card('overview', 'Trip Context', ctxCount, 'grounding facts')}
+              ${card('memory', 'Memory', mem.length, ins.length ? ins.length + ' suggested' : 'project-scoped')}
+              ${card('tasks', 'Tasks', tasks.length, 'agent-created')}
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 mb-6">
+              <div class="text-[11px] text-slate-500 mb-2">Start a thread — opens a hotel-search with this ${esc(p.kind)}'s context pre-loaded.</div>
+              <div class="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2">
+                <svg class="w-4 h-4 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                <input id="home-starter" type="text" placeholder="Ask the agent to find a hotel for this trip…" class="flex-1 bg-transparent text-sm text-slate-300 placeholder-slate-600 outline-none">
+                <span class="text-[10px] font-mono text-slate-500 border border-slate-700 rounded px-1.5 py-0.5">⌘K</span>
+                <button id="home-starter-btn" class="px-3 py-1.5 rounded-md bg-orange-500 text-xs text-white font-medium hover:bg-orange-600">New thread</button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-semibold text-slate-200">Threads</span>
+              <span class="text-[11px] text-slate-500 font-mono">${threads.length}</span>
+            </div>
+            <div class="space-y-2">
+              ${threads.length ? threads.map(threadRow).join('')
+                : '<div class="text-xs text-slate-600 py-6 text-center border border-dashed border-slate-800 rounded-lg">No threads yet — start one above.</div>'}
+            </div>
+
+          </div>
+        </div>`;
+
+      const si = document.getElementById('home-starter');
+      const sb = document.getElementById('home-starter-btn');
+      if (sb) sb.addEventListener('click', () => startNewThread(si ? si.value : ''));
+      if (si) si.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); startNewThread(si.value); } });
+    }
+
+    /* ---------- center — Thread ---------- */
+    function threadHeaderHtml(th, proj) {
+      return `
+        <div class="flex-shrink-0">
+          <div class="flex items-center gap-2.5 px-5 py-3 border-b border-slate-800">
+            <button onclick="backToHome()" title="Back to ${esc(proj.name)}" class="p-1 -ml-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-100 flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-semibold text-slate-100 truncate">${esc(th.title)}</div>
+              <div class="flex items-center gap-2 mt-0.5">
+                <span class="text-[9px] font-mono uppercase tracking-wide text-blue-300 bg-blue-500/15 rounded px-1.5 py-0.5">${esc(th.skill)}</span>
+                <button onclick="backToHome()" class="text-[11px] text-slate-500 hover:text-orange-300">in ${esc(proj.name)}</button>
+              </div>
+            </div>
+            <button onclick="openContextPanel('overview','${proj.id}')" class="text-xs px-2.5 py-1.5 rounded-md bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 inline-flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Context
+            </button>
+            <button id="pause-btn" onclick="togglePause()" class="text-xs px-2.5 py-1.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">${th.paused ? 'Resume Agent' : 'Pause Agent'}</button>
+            <button onclick="showSharedToast('Thread archived.')" class="text-xs px-2.5 py-1.5 rounded-md bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700">Archive</button>
+          </div>
+          <div id="pause-banner" class="${th.paused ? '' : 'hidden'} px-5 py-2 bg-amber-500/10 border-b border-amber-500/30 text-[11px] text-amber-300">
+            Agent paused on this thread — manual mode. The AI will not iterate; the advisor handles remaining work.
+          </div>
+        </div>`;
+    }
+
+    function newThreadEmptyState(proj) {
+      return `
+        <div class="max-w-[460px] mx-auto text-center mt-8 mb-2">
+          <div class="w-10 h-10 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          </div>
+          <div class="text-sm font-semibold text-slate-200">New hotel-search thread</div>
+          <p class="text-xs text-slate-500 leading-relaxed mt-1.5">
+            ${esc(proj.name)}'s context is loaded — trip facts, ClientFacts and org insights.
+            Type the advisor's ask below and the agent returns grounded recommendations.
+            Open <span class="text-slate-400">Context</span> any time to see what it knows.
+          </p>
+        </div>`;
+    }
+
+    function renderThread() {
+      const th = AgentData.thread(curThread);
+      const center = document.getElementById('center');
+      if (!th) { center.innerHTML = ''; return; }
+      const proj = AgentData.project(th.project);
+      const msgs = AgentData.messages(curThread);
+      const isNewEmpty = th.isNew && !msgs.some(m => m.role === 'advisor');
+
+      center.innerHTML = `
+        ${threadHeaderHtml(th, proj)}
+        <div id="thread-messages" class="flex-1 overflow-y-auto" style="padding:18px 22px;">
+          ${msgs.map(renderMessage).join('')}
+          ${isNewEmpty ? newThreadEmptyState(proj) : ''}
+        </div>
+        <div class="flex-shrink-0 px-4 py-3 border-t border-slate-800">
+          <div class="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2">
+            <input id="composer-input" type="text" placeholder="Message the agent…" class="flex-1 bg-transparent text-sm text-slate-300 placeholder-slate-600 outline-none">
+            <button id="composer-send" class="px-3 py-1 rounded-md bg-orange-500 text-xs text-white font-medium hover:bg-orange-600">Send</button>
+          </div>
+        </div>`;
+
+      document.getElementById('thread-messages').scrollTop = 0;
+      const ci = document.getElementById('composer-input');
+      const cs = document.getElementById('composer-send');
+      if (cs) cs.addEventListener('click', onComposerSend);
+      if (ci) ci.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); onComposerSend(); } });
+      if (isNewEmpty && ci) ci.focus();
+    }
+
+    function onComposerSend() {
+      const th = AgentData.thread(curThread);
+      const input = document.getElementById('composer-input');
+      if (!th || !input) return;
+      const text = (input.value || '').trim();
+      if (!text) return;
+      if (th.isNew) { input.value = ''; sendToThread(curThread, text); }
+      else showSharedToast('Composer is a mock — this is a finished example thread.');
+    }
+
+    function togglePause() {
+      const th = AgentData.thread(curThread); if (!th) return;
+      th.paused = !th.paused;
+      const b = document.getElementById('pause-banner');
+      const btn = document.getElementById('pause-btn');
+      if (b) b.classList.toggle('hidden', !th.paused);
+      if (btn) btn.textContent = th.paused ? 'Resume Agent' : 'Pause Agent';
+    }
+
+    function scrollMessagesToBottom() {
+      const m = document.getElementById('thread-messages');
+      if (m) m.scrollTop = m.scrollHeight;
+    }
+
+    function renderRec(rid, msgFindings) {
+      const r = AGENT_RECS[rid];
+      const added = rid === 'rec-aman';
+      const f = msgFindings.map(id => AGENT_FINDINGS[id]).find(x => x.target === rid);
+      return `<div class="a-rec ${added ? 'added' : ''}">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-slate-100">${r.name}</span>
+              ${r.lead ? '<span class="text-[9px] font-mono text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5">NAMED BY ADVISOR</span>' : ''}
+            </div>
+            <div class="text-[11px] text-slate-500 mt-0.5">${r.room} · ${r.area}</div>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="text-sm font-semibold text-slate-200">${r.rate}</div>
+            <div class="text-[10px] text-slate-500">${r.total}</div>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed mt-2">${r.why}</p>
+        <div class="flex items-center gap-2 mt-2.5 flex-wrap">
+          <span class="src-chip" onclick="toggleHidden('src-${rid}')">◈ ${r.source.label}</span>
+          ${f ? `<span class="hf-chip hf-factual" onclick="toggleHidden('fd-${f.id}')"><span class="d"></span>${f.helper}: ${f.summary}</span>` : ''}
+          <span class="ml-auto">${added
+            ? '<span class="text-[11px] text-emerald-400 font-medium">✓ Added to trip</span>'
+            : `<button onclick="showSharedToast('${r.name} — added to the trip.')" class="text-[11px] px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 border border-slate-700 hover:bg-orange-500 hover:text-white hover:border-orange-500">Add to Trip</button>`}</span>
+        </div>
+        <div id="src-${rid}" class="hidden mt-2 text-[11px] font-mono text-emerald-300/80 bg-emerald-500/5 border border-emerald-500/20 rounded-md p-2">${r.source.detail}</div>
+        ${f ? `<div id="fd-${f.id}" class="hidden mt-2 text-[11px] text-amber-200/90 bg-amber-500/5 border border-amber-500/20 rounded-md p-2">${f.detail}</div>` : ''}
+      </div>`;
+    }
+
+    function renderMessage(m) {
+      if (m.kind === 'context')
+        return `<div class="a-sys"><span class="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span><span>${m.body}</span></div>`;
+
+      if (m.kind === 'check') {
+        const f = AGENT_FINDINGS[m.findingId];
+        return `<div class="a-sys"><span class="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span><span>${f.helper} ran before any recommendation was emitted (sub-agent, pre-emit)</span></div>
+          <div class="mb-4">
+            <span class="hf-chip hf-pass" onclick="toggleHidden('fd-${f.id}')"><span class="d"></span>${f.helper} ✓ ${f.summary}</span>
+            <div id="fd-${f.id}" class="hidden mt-1.5 text-[11px] text-emerald-200/90 bg-emerald-500/5 border border-emerald-500/20 rounded-md p-2" style="max-width:520px;">${f.detail}</div>
+          </div>`;
+      }
+
+      if (m.kind === 'event') {
+        const inner = m.taskId
+          ? `<a class="task-id-link underline underline-offset-2" href="task-board.html#task=${m.taskId}">${m.body}</a>`
+          : m.body;
+        return `<div class="mb-3.5" style="margin-left:40px;"><span class="a-event ${m.eventKind}">${m.eventKind === 'task' ? '◆' : '✦'} ${inner}</span></div>`;
+      }
+
+      // advisor / ai message rows
+      const av = m.role === 'advisor' ? '<div class="a-av advisor">MC</div>' : '<div class="a-av ai">AI</div>';
+      const name = m.role === 'advisor' ? 'Maya Chen · advisor' : 'Maestro AI';
+      let body = `<div class="a-bubble">${m.body}</div>`;
+
+      if (m.kind === 'recs') {
+        const cards = m.recs.map(rid => renderRec(rid, m.findings || [])).join('');
+        const setF = (m.findings || []).map(id => AGENT_FINDINGS[id]).filter(x => x.target === 'set' && x.severity !== 'pass');
+        const setChips = setF.map(f => `
+          <div class="mt-2">
+            <span class="hf-chip hf-intent" onclick="toggleHidden('fd-${f.id}')"><span class="d"></span>${f.helper}: ${f.summary}</span>
+            <div id="fd-${f.id}" class="hidden mt-1.5 text-[11px] text-blue-200/90 bg-blue-500/5 border border-blue-500/20 rounded-md p-2">${f.detail}</div>
+          </div>`).join('');
+        body += `<div class="mt-2 space-y-2">${cards}</div>${setChips}
+          <div class="text-[10px] text-slate-600 mt-2">Findings are coalesced — one chip per finding kind. Click a chip for detail.</div>`;
+      }
+      if (m.kind === 'actions') {
+        body += `<div class="flex flex-wrap gap-2 mt-2">
+          ${m.actions.map(a => `<button onclick="showSharedToast('Finished thread — this action was already taken.')" class="text-xs px-3 py-1.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">${a}</button>`).join('')}
+        </div>`;
+      }
+      if (m.kind === 'draft') {
+        body += `<div class="mt-2 bg-slate-950 border border-slate-700 rounded-lg p-3">
+          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-1.5">messaging task · draft to Aman Tokyo</div>
+          <p class="text-xs text-slate-300 leading-relaxed">${m.draftText}</p>
+          ${m.sent ? '<div class="mt-2.5 text-[11px] text-emerald-400 font-medium">✓ Sent to Aman Tokyo · messaging task closed</div>' : ''}
+        </div>`;
+      }
+      return `<div class="a-msg ${m.role}">${av}<div style="flex:1;min-width:0;"><div class="a-name">${name}</div>${body}</div></div>`;
+    }
+
+    /* ---------- helpers ---------- */
+    function toggleHidden(id) { const el = document.getElementById(id); if (el) el.classList.toggle('hidden'); }
+
+    function renderAll() {
+      renderProjectList();
+      renderCenter();
+    }
+
+    /* ---------- init ---------- */
+    // Memory edits in the context panel re-render the Project Home so its counts stay live.
+    if (window.onAgentContextMutated) {
+      window.onAgentContextMutated(() => { if (!curThread) renderProjectHome(); });
+    }
+    // ⌘K — the PRD's signature gesture: start a new hotel-search thread on the current project.
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); startNewThread(''); }
+    });
+
+    parseHash();
+    renderAll();
+    window.addEventListener('hashchange', () => { parseHash(); renderAll(); });
+  </script>
+
+</body>
+</html>

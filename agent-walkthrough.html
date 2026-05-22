@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Mode — Hero-flow Walkthrough — Conductor Task Mgmt</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="theme.js"></script>
+  <script src="data.js"></script>
+  <script>window.CURRENT_PAGE = 'agent-walkthrough';</script>
+  <script src="nav.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #334155; transition: background .2s, box-shadow .2s; cursor: pointer; flex-shrink: 0; }
+    .step-dot.done { background: #ff5e32; }
+    .step-dot.active { background: #ff5e32; box-shadow: 0 0 0 4px rgba(255,94,50,.2); }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+
+  <div id="nav-root"></div>
+
+  <main class="ml-0 lg:ml-[260px] min-h-screen">
+    <div class="max-w-[1280px] mx-auto px-6 py-8 pt-14 lg:pt-8">
+
+      <div class="mb-6">
+        <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank"
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Sunthar's PRD §3 — "The 90-second moment"
+        </a>
+      </div>
+
+      <div class="mb-6">
+        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Agent Mode — Hero-flow Walkthrough</h2>
+        <p class="text-sm text-slate-500 mt-1">The 90-second moment, narrated step by step.</p>
+      </div>
+
+      <!-- Demo-aid disclaimer -->
+      <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg px-4 py-2.5 mb-6 text-xs text-slate-300 flex items-start gap-2">
+        <svg class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>This stepper is a <strong class="text-slate-100">guided demo aid</strong>, not a UI element. In the real product the advisor just has a conversation — see it finished in the <a href="prototype/agent.html" class="text-orange-400 hover:text-orange-300">clickable Agent tab</a>.</span>
+      </div>
+
+      <!-- Stepper -->
+      <div class="bg-slate-900 border border-orange-500/40 rounded-lg p-6">
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <span class="font-mono text-[11px] uppercase tracking-widest text-orange-500">Hero flow — the 90-second moment</span>
+          <div class="flex items-center gap-1.5">
+            <button onclick="go(step-1)" class="px-2.5 py-1 rounded-md bg-slate-800 text-xs text-slate-300 hover:bg-slate-700 transition-colors">← Back</button>
+            <span id="counter" class="font-mono text-xs text-slate-400 w-16 text-center"></span>
+            <button onclick="go(step+1)" class="px-2.5 py-1 rounded-md bg-orange-500 text-xs text-white font-medium hover:bg-orange-600 transition-colors">Next →</button>
+          </div>
+        </div>
+        <div id="dots" class="flex items-center gap-2 mb-6"></div>
+
+        <div class="flex items-start gap-4">
+          <div id="step-num" class="font-mono text-3xl font-semibold text-orange-500 flex-shrink-0 w-14"></div>
+          <div class="flex-1">
+            <h3 id="step-title" class="text-lg font-semibold text-slate-100"></h3>
+            <p id="step-caption" class="text-sm text-slate-300 leading-relaxed mt-2"></p>
+            <div id="step-proves" class="mt-3 flex flex-wrap gap-1.5"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-600 mt-6">The stories these steps prove are in <a href="agent-epics.html" class="text-orange-400 hover:text-orange-300">Epics &amp; Stories</a>.</p>
+
+    </div>
+  </main>
+
+  <script>
+    const HERO_STEPS = [
+      { title: 'Cmd-K from the trip', proves: ['E2-S1'],
+        caption: 'On the Khan family’s Tokyo trip the advisor presses Cmd-K — or uses the New thread starter on the Project Home. Either way a new hotel-search thread opens with TripContext, ClientFacts and OrgInsights pre-loaded — the agent starts with everything it needs.' },
+      { title: 'The ask', proves: ['E2-S2'],
+        caption: 'The advisor types a plain-language request: "find a suite at Aman for these dates." No form, no structured query.' },
+      { title: 'Editable assumption chips', proves: ['E2-S4'],
+        caption: 'Rather than stall on a clarifying question, the agent acts on its best-guess assumptions — dates, occupancy, suite category, budget — and surfaces them as editable chips. Editing one aborts the turn and re-fires it.' },
+      { title: 'exclusion-check runs (pre-emit)', proves: ['E3-S1'],
+        caption: 'Before any recommendation renders, the exclusion-check sub-agent verifies the candidate set against client exclusions. "No Maybourne" — clear. This runs in parallel, before emit.' },
+      { title: '3 grounded recommendations', proves: ['E2-S2', 'E2-S3'],
+        caption: 'Three recs render as cards. Each carries a one-line "why we picked" rationale and a clickable source_id chip into DestinationIntelligenceService — an ungrounded rec would be schema-rejected.' },
+      { title: 'Helper finding chips', proves: ['E3-S2', 'E3-S3', 'E3-S4'],
+        caption: 'factual-check and intent-match-verifier fire post-emit. Findings surface as Important-tier chips, coalesced — one chip per finding kind. intent-match flags that connecting-suite coverage for the children is incomplete.' },
+      { title: 'Add to Trip', proves: ['E4-S1'],
+        caption: 'The advisor clicks Add to Trip on the Aman Tokyo suite. A Canonical task and an itinerary component are created — origin: agent-mode. The task is a real record in the shared task layer.' },
+      { title: 'AI proposes next actions', proves: ['E4-S2'],
+        caption: 'The agent proposes downstream actions: book via the Virtuoso portal, or draft a supplier inquiry — Aman Tokyo is an offline vendor, so a messaging task is the proposed path.' },
+      { title: 'Messaging task → send', proves: ['E4-S3', 'E4-S4'],
+        caption: '"Draft inquiry to Aman" creates a messaging task; the AI drafts the supplier inquiry. The advisor reviews and sends with one click. End-to-end, under 90 seconds — and three tasks now sit in the shared task layer.' },
+    ];
+
+    let step = 1;
+    const TOTAL = HERO_STEPS.length;
+
+    function go(n) {
+      step = Math.max(1, Math.min(TOTAL, n));
+      render();
+    }
+    function render() {
+      const s = HERO_STEPS[step - 1];
+      document.getElementById('counter').textContent = 'Step ' + step + ' / ' + TOTAL;
+      document.getElementById('step-num').textContent = step < 10 ? '0' + step : step;
+      document.getElementById('step-title').textContent = s.title;
+      document.getElementById('step-caption').textContent = s.caption;
+      document.getElementById('step-proves').innerHTML = s.proves.map(p =>
+        `<a href="agent-epics.html" class="font-mono text-[10px] text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5 hover:bg-orange-500/25">${p}</a>`).join('');
+      document.getElementById('dots').innerHTML = HERO_STEPS.map((_, i) => {
+        const n = i + 1;
+        const cls = n < step ? 'done' : n === step ? 'active' : '';
+        return `<span class="step-dot ${cls}" onclick="go(${n})" title="Step ${n}"></span>`
+             + (n < TOTAL ? '<span class="flex-1 h-px bg-slate-800"></span>' : '');
+      }).join('');
+    }
+    render();
+  </script>
+
+</body>
+</html>

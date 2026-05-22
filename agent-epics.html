@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Mode — Epics & Stories — Conductor Task Mgmt</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="theme.js"></script>
+  <script src="data.js"></script>
+  <script>window.CURRENT_PAGE = 'agent-epics';</script>
+  <script src="nav.js"></script>
+
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+
+  <div id="nav-root"></div>
+
+  <main class="ml-0 lg:ml-[260px] min-h-screen">
+    <div class="max-w-[1280px] mx-auto px-6 py-8 pt-14 lg:pt-8">
+
+      <div class="mb-6">
+        <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank"
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Sunthar's PRD — Conductor Agent Mode V1
+        </a>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Agent Mode — Epics &amp; Stories</h2>
+        <p class="text-sm text-slate-500 mt-1">Sunthar's PRD V1, broken into 7 epics and 30 stories — the build backbone. The clickable Agent tab demonstrates them in a real system view.</p>
+      </div>
+
+      <div id="epic-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5"></div>
+
+      <p class="text-xs text-slate-600 mt-6">See it working — <a href="prototype/agent.html" class="text-orange-400 hover:text-orange-300">the clickable Agent tab</a> · <a href="agent-walkthrough.html" class="text-orange-400 hover:text-orange-300">the hero-flow walkthrough</a>.</p>
+
+    </div>
+  </main>
+
+  <script>
+    const AGENT_EPICS = [
+      { id: 'E1', title: 'Agent Workspace & IA',
+        summary: 'The /agent route — a left-rail project switcher, a Project Home workspace per trip / client, and the thread workspace.',
+        stories: [
+          'Left rail: a project switcher grouped by trip / client, plus a Recent-threads section',
+          'Project Home: a workspace landing per project — its threads and entry into context',
+          'Thread view: Messages, Composer, Header (Context, Pause Agent, Archive)',
+          'Context panel: Trip Context, Memory and Tasks slide in from the right and traverse',
+          'Threads persist server-side, anchored to a trip or client',
+        ] },
+      { id: 'E2', title: 'Grounded Hotel Recommendations',
+        summary: 'The hotel-search skill — the only skill in v1. Every recommendation is grounded in DestinationIntelligenceService.',
+        stories: [
+          'Cmd-K — or the in-tab New thread starter — opens a hotel-search thread with TripContext + ClientFacts + OrgInsights preloaded',
+          'A natural-language ask returns 3 grounded recommendation cards',
+          'Each rec carries a "why we picked" line + a clickable source_id chip',
+          'Editable assumption chips when the ask is ambiguous',
+          'An ungrounded rec (no source_id) is schema-rejected and routed to a human task',
+        ] },
+      { id: 'E3', title: 'Helper Agents',
+        summary: 'Three helper agents verify the main AI on every operator-visible output — a defense-in-depth QA layer.',
+        stories: [
+          'exclusion-check (sub-agent) runs before emit and can block an exclusion violation',
+          'factual-check posts a chip on a date / price / name mismatch',
+          'intent-match-verifier posts a chip on an uncovered sub-ask',
+          'Findings render as Important-tier chips, coalesced (max one per kind)',
+          'Helper failure degrades gracefully — omit the chip, never block the rec',
+        ] },
+      { id: 'E4', title: 'Task-Layer Integration', overlap: true,
+        summary: 'Agent Mode is a creation surface for the Conductor task layer — it produces AI tasks and human tasks.',
+        stories: [
+          '"Add to Trip" creates a Canonical task + an itinerary component',
+          'The AI proposes next actions (portal booking, manual task, draft inquiry)',
+          '"Draft inquiry" creates a messaging task',
+          'The advisor reviews the AI draft and sends with one click',
+          'An AI ground-out calls create_human_task, deep-linked to the thread',
+          'When the human closes the task, task_completed posts back; the AI resumes',
+        ] },
+      { id: 'E5', title: 'Operator-Curated Memory',
+        summary: 'Project-scoped memory the agent grounds on — operator-curated facts, modelled on how the Claude app does memory.',
+        stories: [
+          'Memory view (in the context panel): operator-curated ClientFacts, grouped, project-scoped',
+          'conversation_insights surface as Promote / Dismiss suggestions from threads',
+          'Facts are editable inline — Remove or Mark stale',
+          'Overrides are logged for the founder weekly review',
+        ] },
+      { id: 'E6', title: 'Agent Docked Panel',
+        summary: 'AgentDockedPanel mounts anywhere via Cmd-K as a right-side sheet.',
+        stories: [
+          'Cmd-K from any Conductor page opens the docked Agent panel',
+          'The docked panel carries the same Thread shape and context',
+          'It replaces the legacy UniversalAIModal',
+        ] },
+      { id: 'E7', title: 'Reliability & Advisor Control',
+        summary: 'Pause Agent, automatic degraded mode on API failure, and streamed AI output.',
+        stories: [
+          'Pause Agent on a thread shows a manual-mode banner',
+          'An API failure flips to degraded mode; read + manual compose are retained',
+          'AI output streams (thinking → tool calls → message → recs → findings)',
+        ] },
+    ];
+
+    document.getElementById('epic-grid').innerHTML = AGENT_EPICS.map(e => {
+      let n = 0;
+      const stories = e.stories.map(s => {
+        n++;
+        return `<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-slate-800/50 transition-colors">
+          <span class="font-mono text-[10px] text-slate-500 pt-0.5 flex-shrink-0">${e.id}-S${n}</span>
+          <span class="text-xs text-slate-300 leading-snug">${Theme.escapeHtml(s)}</span>
+        </div>`;
+      }).join('');
+      return `<div class="bg-slate-900 border ${e.overlap ? 'border-orange-500/50' : 'border-slate-800'} rounded-lg p-5 flex flex-col">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="font-mono text-xs font-semibold text-orange-500">${e.id}</span>
+          <h3 class="text-sm font-semibold text-slate-100">${Theme.escapeHtml(e.title)}</h3>
+          ${e.overlap ? '<span class="ml-auto text-[9px] font-mono uppercase tracking-wider text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5">Task-layer overlap</span>' : ''}
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed mb-3">${Theme.escapeHtml(e.summary)}</p>
+        <div class="space-y-0.5 mt-auto">${stories}</div>
+      </div>`;
+    }).join('');
+  </script>
+
+</body>
+</html>

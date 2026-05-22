@@ -449,6 +449,70 @@ const TASKS = [
       { ts: '4 min ago', actor: 'AI · Signal monitor', event: 'Auto-created', detail: 'SLA timer · VVIP tier · Confidence 99%' },
     ],
   },
+
+  // ───────────────────────────────────────────────────────
+  //  AGENT MODE — created by the Agent tab (agent.html) — 3 tasks.
+  //  creation_surface 'agent' + agent_project: they surface here on the
+  //  board AND in the Agent tab's right-rail Tasks panel.
+  // ───────────────────────────────────────────────────────
+  {
+    id: 'tsk-026',
+    title: 'Book Aman Tokyo · Pool Suite — Khan family',
+    task_type: 'booking-action', subtype: 'hotel-booking',
+    status: 'in-progress', approval_state: 'human-approved', routing_tier: 'assist',
+    priority: 'high', primary_owner: 'mc',
+    primary_context: { type: 'trip', label: 'Khan family · Tokyo' },
+    origin: 'client-driven', creator: 'AI · Agent Mode',
+    creation_surface: 'agent', source_channel: 'agent', due_at: 'in 2d',
+    agent_project: 'p-khan', agent_thread: 'th-aman',
+    rationale: 'Advisor added the Aman Tokyo Pool Suite to the trip from an Agent Mode hotel-search thread. Grounded recommendation — destination_entries / di_8814.',
+    ai_reasoning: 'Agent Mode · hotel-search skill. propose_recommendation emitted with a required source_id; the advisor accepted it via "Add to Trip", which created this canonical task.',
+    evidence: [ { label: 'Agent thread · find a suite at Aman', url: '#' }, { label: 'destination_entries / di_8814', url: '#' } ],
+    confidence: 94, age_min: 8, created_at: '8 min ago',
+    activity: [
+      { ts: '8 min ago', actor: 'AI · Agent Mode', event: 'Created',  detail: 'From hotel-search thread · grounded rec di_8814' },
+      { ts: '8 min ago', actor: 'Maya Chen',       event: 'Approved', detail: 'Added to Trip from the Agent tab' },
+    ],
+  },
+  {
+    id: 'tsk-027',
+    title: 'Draft inquiry to Aman Tokyo — connecting suites',
+    task_type: 'messaging', subtype: 'supplier-inquiry',
+    status: 'completed', approval_state: 'human-approved', routing_tier: 'assist',
+    priority: 'medium', primary_owner: 'mc',
+    primary_context: { type: 'trip', label: 'Khan family · Tokyo' },
+    origin: 'client-driven', creator: 'AI · Agent Mode',
+    creation_surface: 'agent', source_channel: 'agent', due_at: 'completed',
+    agent_project: 'p-khan', agent_thread: 'th-aman',
+    rationale: 'Aman Tokyo is an offline vendor. Agent Mode proposed a messaging task and drafted the supplier inquiry; the advisor reviewed and sent it with one click.',
+    ai_reasoning: 'Agent Mode · propose_action. Offline vendor → a messaging task is the proposed path; the draft is generated for human review before send.',
+    evidence: [ { label: 'Agent thread · find a suite at Aman', url: '#' } ],
+    confidence: 90, age_min: 6, created_at: '6 min ago',
+    draft: '"Dear Aman Tokyo team — we are planning a 7-night stay for a returning Aman family (Sep 12-19, 2026), 2 adults and 2 children (8, 11). Please confirm a Pool Suite, and advise whether a connecting suite or adjacent room can be held for the children."',
+    activity: [
+      { ts: '6 min ago', actor: 'AI · Agent Mode', event: 'Drafted',        detail: 'messaging task · supplier inquiry' },
+      { ts: '5 min ago', actor: 'Maya Chen',       event: 'Approved & sent', detail: 'One-click send from the Agent tab' },
+    ],
+  },
+  {
+    id: 'tsk-028',
+    title: 'Confirm connecting-suite availability for 2 children — Aman Tokyo',
+    task_type: 'booking-action', subtype: 'availability-check',
+    status: 'open', approval_state: 'pending-review', routing_tier: 'escalate',
+    priority: 'high', primary_owner: 'mc',
+    primary_context: { type: 'trip', label: 'Khan family · Tokyo' },
+    origin: 'client-driven', creator: 'AI · Agent Mode',
+    creation_surface: 'agent', source_channel: 'agent', due_at: 'in 1d',
+    agent_project: 'p-khan', agent_thread: 'th-aman',
+    rationale: 'Agent Mode grounded out — no curated source for connecting-room availability. Routed to a human task via create_human_task, deep-linked to the thread. On close, a task_completed message posts back so the agent can resume.',
+    ai_reasoning: 'Agent Mode · create_human_task. intent-match-verifier flagged that connecting-suite coverage for the children was unverifiable from curated sources; the orchestrator routed it to a human.',
+    evidence: [ { label: 'Agent thread · find a suite at Aman', url: '#' } ],
+    confidence: 76, age_min: 6, created_at: '6 min ago',
+    activity: [
+      { ts: '6 min ago', actor: 'AI · intent-match-verifier', event: 'Flagged', detail: 'Connecting-suite coverage < 1.0' },
+      { ts: '6 min ago', actor: 'AI · Agent Mode',             event: 'Created', detail: 'create_human_task · escalate · routed to a human' },
+    ],
+  },
 ];
 
 // ─── Augment tasks with derived source_channel + ai_reasoning ───
@@ -539,6 +603,7 @@ const SOURCE_CHANNELS = {
   'whatsapp':         { label: 'WhatsApp',        color: 'text-green-400',  svg: '<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>' },
   'stream-chat':      { label: 'Stream Chat',     color: 'text-sky-400',    svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' },
   'manual':           { label: 'Manual',          color: 'text-orange-400', svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>' },
+  'agent':            { label: 'Agent Mode',      color: 'text-orange-400', svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>' },
   'system-feed':      { label: 'Signal feed',     color: 'text-red-400',    svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 00-4-5.7V5a2 2 0 00-4 0v.3A6 6 0 006 11v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1"/></svg>' },
   'system-schedule':  { label: 'Scheduled query', color: 'text-purple-400', svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' },
   'system-ops':       { label: 'Ops system',      color: 'text-amber-400',  svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' },

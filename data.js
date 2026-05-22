@@ -39,6 +39,18 @@ const NAV_CONFIG = [
       { id: 'execution-questions', section: '', label: 'Open Questions',      href: 'execution-questions.html' },
     ],
   },
+  {
+    type: 'group',
+    id: 'agent-mode',
+    section: 'AGENT',
+    label: 'Agent Mode',
+    items: [
+      { id: 'agent-overview',    section: '', label: 'Overview',              href: 'agent-overview.html' },
+      { id: 'agent-epics',       section: '', label: 'Epics & Stories',       href: 'agent-epics.html' },
+      { id: 'agent-walkthrough', section: '', label: 'Hero-flow Walkthrough', href: 'agent-walkthrough.html' },
+      { id: 'agent-helpers',     section: '', label: 'Helper Agents',         href: 'agent-helpers.html' },
+    ],
+  },
   { type: 'link', id: 'changelog', section: 'Log', label: 'Changelog', href: 'changelog.html' },
   {
     type: 'group',
@@ -51,6 +63,7 @@ const NAV_CONFIG = [
       { id: 'proto-trips',         section: '', label: 'App · Trips',         href: 'prototype/trips.html' },
       { id: 'proto-task-board',    section: '', label: 'App · Tasks',         href: 'prototype/task-board.html' },
       { id: 'proto-inline-create', section: '', label: 'App · Chat',          href: 'prototype/inline-create.html' },
+      { id: 'proto-agent',         section: '', label: 'App · Agent',         href: 'prototype/agent.html' },
     ],
   },
 ];

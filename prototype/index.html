@@ -50,10 +50,11 @@
         <h3 class="text-base font-semibold text-slate-100 mb-3">What this is</h3>
         <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
           <p>The outline (sections §1 to §8) describes the model. This prototype shows the surfaces that ship — restructured to match what's currently live at <code class="px-1.5 py-0.5 bg-slate-800 rounded text-[11px] font-mono text-slate-300">dev.conductor.askmaestro.ai/tasks</code>.</p>
-          <p>Two surfaces in v1:</p>
+          <p>Three surfaces in v1:</p>
           <ul class="list-disc list-inside space-y-1 text-slate-400 pl-2">
             <li><strong class="text-slate-200">Tasks page</strong> — one shared inbox with tabs: <strong>All Tasks</strong>, <strong>My Tasks</strong>, <strong>Urgent</strong>, <strong>Needs Review</strong>. AI-flagged tasks live in Needs Review tab; clicking one opens the drawer with an "ACCEPT OR DROP" block.</li>
             <li><strong class="text-slate-200">In-context create</strong> — where most tasks actually originate. Hover a client message → "Create task"; AI proactively suggests tasks inline as the conversation happens.</li>
+            <li><strong class="text-slate-200">Agent</strong> — the AI workspace for advisors (Sunthar's Agent Mode PRD). Grounded hotel-search threads, helper-verified recommendations, operator memory; "Add to Trip" and supplier drafts create real tasks in the shared task layer.</li>
           </ul>
           <p>Patterns that overlay:</p>
           <ul class="list-disc list-inside space-y-1 text-slate-400 pl-2">
@@ -64,7 +65,7 @@
       </div>
 
       <!-- Two surfaces, two cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
 
         <!-- Card 1: Tasks (with deep-link tab chips) -->
         <!-- NOTE: hrefs include the `prototype/` prefix so they work when the URL bar is
@@ -105,6 +106,22 @@
           <div class="flex flex-wrap gap-2">
             <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-orange-500/10 text-orange-300 border border-orange-500/30">Composer mock</span>
             <span class="px-2 py-0.5 rounded text-[11px] text-slate-500 border border-slate-800">Greer thread · WhatsApp</span>
+          </div>
+        </a>
+
+        <!-- Card 3: Agent -->
+        <a href="prototype/agent.html" class="proto-link block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-orange-500 hover:bg-slate-800/30 transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">AI workspace · new</div>
+              <div class="text-lg font-semibold text-slate-100 group-hover:text-orange-400 transition-colors">Agent</div>
+            </div>
+            <svg class="w-5 h-5 text-slate-600 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">The <code class="px-1 py-0.5 bg-slate-800 rounded text-[11px] font-mono text-slate-300">/agent</code> route — ProjectList, threads, grounded hotel-search recs, helper findings, operator memory. "Add to Trip" and supplier drafts create real tasks on the board. Press <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">⌘K</code> on any page to dock it.</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-orange-500/10 text-orange-300 border border-orange-500/30">Master-detail app</span>
+            <span class="px-2 py-0.5 rounded text-[11px] text-slate-500 border border-slate-800">Khan family · Tokyo</span>
           </div>
         </a>
 
