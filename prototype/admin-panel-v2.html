@@ -277,6 +277,7 @@
           <div class="text-mtext2 mt-0.5 leading-relaxed">
             Shows creation + editing per <a href="https://www.notion.so/36ed1ecb2189819595eee88d28a6efff" target="_blank" class="text-mwarning hover:text-maccent underline decoration-dotted">§A1.5 of the addendum</a>. Sunthar has not yet reviewed this scope; may push the July 1 ship date. Currently approved design is at <a href="admin-panel.html" class="text-mwarning hover:text-maccent underline decoration-dotted">admin-panel.html (v1)</a>.
             <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] bg-minfol text-minfo border border-minfo ml-2">Entry point decided Jun 8 standup: Settings ▸ Task admin</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] bg-minfol text-minfo border border-minfo ml-2">Jun 10 additions (proposed): editable timing, recurrence presets, next-evaluation display</span>
           </div>
         </div>
       </div>
@@ -544,6 +545,27 @@
     const TASK_TYPES_OPTS = ['trip-prep', 'messaging', 'booking-action', 'disruption-response', 'ops-internal', 'member-context', 'agent-subtask', 'compliance-safety'];
     const ORIGIN_OPTS = ['Trip-lifecycle', 'World-driven', 'Internal operations', 'Relationship', 'Client-driven (explicit)', 'Client-driven (implicit)'];
 
+    const RECURRENCE_OPTS = [
+      { value: 'continuous', label: 'Continuous (engine sweep)' },
+      { value: 'daily', label: 'Daily' },
+      { value: 'weekly', label: 'Weekly' },
+      { value: 'monthly', label: 'Monthly' },
+      { value: 'annual', label: 'Annual' },
+    ];
+
+    function getNextEvaluation(automation) {
+      if (!automation.enabled) return { text: 'Paused — no next run', class: 'text-mtext3' };
+      const r = automation.recurrence || 'continuous';
+      switch (r) {
+        case 'continuous': return { text: 'next engine sweep · ~06:00 ET daily', class: 'text-mtext2' };
+        case 'daily': return { text: 'tomorrow 06:00 ET', class: 'text-mtext2' };
+        case 'weekly': return { text: 'Mon 06:00 ET', class: 'text-mtext2' };
+        case 'monthly': return { text: '1st of next month', class: 'text-mtext2' };
+        case 'annual': return { text: 'on member anniversary', class: 'text-mtext2' };
+        default: return { text: 'next engine sweep · ~06:00 ET daily', class: 'text-mtext2' };
+      }
+    }
+
     // ──────────────────────────────────────────────────────────
     //  State
     // ──────────────────────────────────────────────────────────
@@ -575,6 +597,7 @@
         routing_tier: 'Auto',         // auto-filled per §6.4 (locked unless overridden)
         phase: 'Pre-trip',            // trip stage
         default_owner: 'Unassigned (review queue)', // default owner
+        recurrence: 'continuous',     // recurrence preset
         overrides: { task_type: false, origin_bucket: false, routing_tier: false },
         clone_source: null,           // if cloning, the source automation ID
       },
@@ -646,6 +669,7 @@
               <span class="font-mono text-mtext3">${a.ref}</span>
               <span class="text-mborder">·</span>
               <span class="text-mtext3">${a.trigger}</span>
+              ${a.recurrence && a.recurrence !== 'continuous' ? `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] bg-minfol text-minfo border border-minfo/30">${a.recurrence}</span>` : ''}
             </div>
           </td>
           <td class="px-3 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] ${origin.bg} ${origin.text} border ${origin.border}">${a.origin_bucket}</span></td>
@@ -860,17 +884,24 @@
         </div>
       `;
 
+      const nextEval = getNextEvaluation(a);
       const stateBlock = `
         <div class="px-5 pt-4 pb-3">
-          <div class="bg-msurface border border-mborder rounded-xl p-3 flex items-center justify-between gap-3">
-            <div>
-              <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-0.5">Current state</div>
-              <div class="text-sm font-semibold ${a.enabled ? 'text-msuccess' : 'text-mtext2'}">${a.enabled ? '● Enabled' : '○ Disabled'}</div>
+          <div class="bg-msurface border border-mborder rounded-xl p-3">
+            <div class="flex items-center justify-between gap-3 mb-2">
+              <div>
+                <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-0.5">Current state</div>
+                <div class="text-sm font-semibold ${a.enabled ? 'text-msuccess' : 'text-mtext2'}">${a.enabled ? '● Enabled' : '○ Disabled'}</div>
+              </div>
+              <label class="toggle ${canT ? '' : 'disabled'}">
+                <input type="checkbox" id="drawer-toggle" ${a.enabled ? 'checked' : ''} ${canT ? '' : 'disabled'} />
+                <span class="toggle-slider"></span>
+              </label>
             </div>
-            <label class="toggle ${canT ? '' : 'disabled'}">
-              <input type="checkbox" id="drawer-toggle" ${a.enabled ? 'checked' : ''} ${canT ? '' : 'disabled'} />
-              <span class="toggle-slider"></span>
-            </label>
+            <div class="pt-2 border-t border-mborder flex items-center gap-1.5">
+              <svg class="w-3 h-3 ${nextEval.class} flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="text-[11px] ${nextEval.class}">Next evaluation: ${nextEval.text}</span>
+            </div>
           </div>
         </div>
       `;
@@ -989,17 +1020,23 @@
           routing_tier: a.routing_tier,
           phase: a.phase,
           default_owner: a.default_owner || 'Unassigned (review queue)',
+          query_template: a.query_template || '',
+          n_param: a.n_param || 10,
+          recurrence: a.recurrence || 'continuous',
         };
       }
 
       const d = EditForm.data;
       const m = getAutomationMetrics(a.id);
       const hasFired = m.counts.total > 0 || m.counts.last_fired !== null;
+      const isSchedule = a.query_template ? true : false;
+      const isEvent = a.event_source ? true : false;
+      const selectedQuery = isSchedule ? getQueryTemplate(d.query_template) : null;
 
       return `
         <div class="mt-2 space-y-4">
           <div class="bg-minfol border border-minfo rounded p-2 text-[11px] text-mtext2">
-            <strong class="text-minfo">Configure tab (v2 proposed)</strong> per §A1.5. Each save writes a granular audit event. Trigger type + origin bucket lock once an automation has fired.
+            <strong class="text-minfo">Configure tab (v2 proposed)</strong> per §A1.5. Each save writes a granular audit event. Trigger type locks once an automation has fired; origin bucket is locked once set.
           </div>
 
           <div>
@@ -1013,11 +1050,35 @@
             <p class="text-[11px] text-mtext3 mt-1">Single line. The verb-phrase that fires when the automation runs.</p>
           </div>
 
-          <div>
-            <label class="field-label">Trigger ${hasFired ? '<span class="text-mtext3 normal-case">(type locked after first fire per §A1.5)</span>' : ''}</label>
-            <input type="text" class="field-input ${hasFired ? 'locked' : ''}" id="edit-trigger" value="${d.trigger}" ${hasFired ? 'disabled' : ''}>
-            ${hasFired ? '<p class="text-[11px] text-mwarning mt-1 flex items-center gap-1"><svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Locked: this automation has fired. Trigger type cannot change after first fire (§A1.5).</p>' : '<p class="text-[11px] text-mtext3 mt-1">Human-readable display. Structured query template + N live in the underlying record (see §A1.5).</p>'}
-          </div>
+          ${isSchedule ? `
+            <div class="bg-msurface border border-mborder rounded-lg p-3">
+              <label class="field-label mb-2">Timing ${hasFired ? '' : '<span class="text-mtext3 normal-case">(schedule-driven)</span>'}</label>
+              <div class="space-y-3">
+                <div>
+                  <label class="text-[11px] text-mtext3 mb-1 block">Query template</label>
+                  <select class="field-select" id="edit-query-template">
+                    ${QUERY_TEMPLATES.map(q => `<option value="${q.id}" ${d.query_template === q.id ? 'selected' : ''}>${q.label}</option>`).join('')}
+                  </select>
+                </div>
+                ${selectedQuery && selectedQuery.has_n ? `
+                  <div>
+                    <label class="text-[11px] text-mtext3 mb-1 block">N value</label>
+                    <div class="flex items-center gap-2">
+                      <input type="number" id="edit-n-param" value="${d.n_param}" min="1" class="field-input" style="width: 6rem;">
+                      <span class="text-xs text-mtext2">${selectedQuery.n_unit}</span>
+                      <span class="text-[11px] text-maccenth font-mono ml-2">"${selectedQuery.label.replace(/\bN\b/, d.n_param)}"</span>
+                    </div>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          ` : isEvent ? `
+            <div class="bg-msurface border border-mborder rounded-lg p-3">
+              <label class="field-label mb-1">Event source ${hasFired ? '<span class="text-mtext3 normal-case">(type locked after first fire)</span>' : ''}</label>
+              <div class="text-xs text-mtext2">${a.trigger}</div>
+              ${hasFired ? '<p class="text-[11px] text-mwarning mt-2 flex items-center gap-1"><svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Trigger type locked after first fire (§A1.5). Timing not applicable to event-driven.</p>' : ''}
+            </div>
+          ` : ''}
 
           <div class="grid grid-cols-2 gap-3">
             <div>
@@ -1027,18 +1088,18 @@
               </select>
             </div>
             <div>
-              <label class="field-label">Task type</label>
-              <select class="field-select" id="edit-task-type">
-                ${TASK_TYPES_OPTS.map(t => `<option value="${t}" ${d.task_type === t ? 'selected' : ''}>${TASK_TYPE_LABELS_ADMIN[t] || t}</option>`).join('')}
+              <label class="field-label">Recurrence</label>
+              <select class="field-select" id="edit-recurrence">
+                ${RECURRENCE_OPTS.map(r => `<option value="${r.value}" ${d.recurrence === r.value ? 'selected' : ''}>${r.label}</option>`).join('')}
               </select>
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="field-label">Origin bucket <span class="text-mtext3 normal-case">(locked)</span></label>
-              <select class="field-select locked" disabled>
-                <option>${d.origin_bucket}</option>
+              <label class="field-label">Task type</label>
+              <select class="field-select" id="edit-task-type">
+                ${TASK_TYPES_OPTS.map(t => `<option value="${t}" ${d.task_type === t ? 'selected' : ''}>${TASK_TYPE_LABELS_ADMIN[t] || t}</option>`).join('')}
               </select>
             </div>
             <div>
@@ -1049,11 +1110,19 @@
             </div>
           </div>
 
-          <div>
-            <label class="field-label">Default owner <span class="text-mtext3 normal-case">(person or pool)</span></label>
-            <select class="field-select" id="edit-owner">
-              ${OWNERS.map(o => `<option value="${o}" ${d.default_owner === o ? 'selected' : ''}>${o}</option>`).join('')}
-            </select>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="field-label">Origin bucket <span class="text-mtext3 normal-case">(locked once set, §A1.5)</span></label>
+              <select class="field-select locked" id="edit-origin-bucket" disabled title="Locked: changing the origin bucket breaks the Task Inventory mapping (§A1.5).">
+                ${ORIGIN_OPTS.map(o => `<option value="${o}" ${d.origin_bucket === o ? 'selected' : ''}>${o}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Default owner <span class="text-mtext3 normal-case">(person or pool)</span></label>
+              <select class="field-select" id="edit-owner">
+                ${OWNERS.map(o => `<option value="${o}" ${d.default_owner === o ? 'selected' : ''}>${o}</option>`).join('')}
+              </select>
+            </div>
           </div>
 
           <div class="flex items-center justify-end gap-2 pt-2 border-t border-mborder">
@@ -1071,10 +1140,21 @@
 
       if (byId('edit-name'))        byId('edit-name').addEventListener('input', e => upd('name', e.target.value));
       if (byId('edit-task-action')) byId('edit-task-action').addEventListener('input', e => upd('task_action', e.target.value));
-      if (byId('edit-trigger'))     byId('edit-trigger').addEventListener('input', e => upd('trigger', e.target.value));
       if (byId('edit-phase'))       byId('edit-phase').addEventListener('change', e => upd('phase', e.target.value));
       if (byId('edit-task-type'))   byId('edit-task-type').addEventListener('change', e => upd('task_type', e.target.value));
       if (byId('edit-owner'))       byId('edit-owner').addEventListener('change', e => upd('default_owner', e.target.value));
+      if (byId('edit-recurrence'))  byId('edit-recurrence').addEventListener('change', e => upd('recurrence', e.target.value));
+      if (byId('edit-origin-bucket')) byId('edit-origin-bucket').addEventListener('change', e => upd('origin_bucket', e.target.value));
+
+      if (byId('edit-query-template')) byId('edit-query-template').addEventListener('change', e => {
+        upd('query_template', e.target.value);
+        renderDrawer();
+      });
+      if (byId('edit-n-param')) byId('edit-n-param').addEventListener('input', e => {
+        upd('n_param', Number(e.target.value) || 1);
+        renderDrawer();
+      });
+
       document.querySelectorAll('[data-edit-tier]').forEach(b => b.addEventListener('click', () => {
         upd('routing_tier', b.dataset.editTier);
         document.querySelectorAll('[data-edit-tier]').forEach(x => x.classList.toggle('active', x.dataset.editTier === b.dataset.editTier));
@@ -1090,28 +1170,56 @@
     }
 
     function saveEdit(a) {
+      if (!canEdit()) { toast('Read-only mode. Cannot save.', 'warn'); return; }
       const d = EditForm.data;
       const diffs = [];
       const aTaskAction = a.task_action || a.expected || '';
       const aOwner = a.default_owner || 'Unassigned (review queue)';
+      const aQueryTemplate = a.query_template || '';
+      const aNParam = a.n_param || 10;
+      const aRecurrence = a.recurrence || 'continuous';
+
       if (d.name !== a.name) diffs.push(`name: "${a.name}" → "${d.name}"`);
       if (d.task_action !== aTaskAction) diffs.push(`task_action updated`);
-      if (d.trigger !== a.trigger) diffs.push(`trigger: "${a.trigger}" → "${d.trigger}"`);
       if (d.phase !== a.phase) diffs.push(`phase: ${a.phase} → ${d.phase}`);
       if (d.task_type !== a.task_type) diffs.push(`task_type: ${a.task_type} → ${d.task_type}`);
       if (d.routing_tier !== a.routing_tier) diffs.push(`routing_tier: ${a.routing_tier} → ${d.routing_tier}`);
       if (d.default_owner !== aOwner) diffs.push(`default_owner: ${aOwner} → ${d.default_owner}`);
+      if (d.recurrence !== aRecurrence) diffs.push(`changed recurrence: ${aRecurrence} → ${d.recurrence}`);
+      if (d.origin_bucket !== a.origin_bucket) diffs.push(`origin_bucket: ${a.origin_bucket} → ${d.origin_bucket}`);
+
+      // Timing changes (schedule-driven only)
+      if (a.query_template) {
+        if (d.query_template !== aQueryTemplate) {
+          const oldQ = getQueryTemplate(aQueryTemplate);
+          const newQ = getQueryTemplate(d.query_template);
+          diffs.push(`changed query: ${oldQ ? oldQ.label : aQueryTemplate} → ${newQ ? newQ.label : d.query_template}`);
+        } else if (d.n_param !== aNParam) {
+          diffs.push(`changed timing: T-${aNParam} → T-${d.n_param}`);
+        }
+      }
 
       if (diffs.length === 0) { toast('No changes.', 'info'); return; }
 
       a.name = d.name;
       a.task_action = d.task_action;
       a.expected = d.task_action; // mirror to legacy `expected` for v1-panel back-compat
-      a.trigger = d.trigger;
       a.phase = d.phase;
       a.task_type = d.task_type;
       a.routing_tier = d.routing_tier;
       a.default_owner = d.default_owner;
+      a.recurrence = d.recurrence;
+      a.origin_bucket = d.origin_bucket;
+
+      if (a.query_template) {
+        a.query_template = d.query_template;
+        a.n_param = d.n_param;
+        // Update human-readable trigger
+        const q = getQueryTemplate(d.query_template);
+        if (q) {
+          a.trigger = q.has_n ? q.label.replace(/\bN\b/, d.n_param) : q.label;
+        }
+      }
 
       a.audit.push({
         actor: State.currentUser,
@@ -1146,6 +1254,7 @@
         routing_tier: 'Auto',
         phase: 'Pre-trip',
         default_owner: 'Unassigned (review queue)',
+        recurrence: 'continuous',
         overrides: { task_type: false, origin_bucket: false, routing_tier: false },
         clone_source: null,
       };
@@ -1294,11 +1403,21 @@
                 </select>
               </div>
               <div>
+                <label class="field-label">Recurrence</label>
+                <select class="field-select" id="wiz-recurrence">
+                  ${RECURRENCE_OPTS.map(r => `<option value="${r.value}" ${d.recurrence === r.value ? 'selected' : ''}>${r.label}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
                 <label class="field-label">Default owner</label>
                 <select class="field-select" id="wiz-owner">
                   ${OWNERS.map(o => `<option value="${o}" ${d.default_owner === o ? 'selected' : ''}>${o}</option>`).join('')}
                 </select>
               </div>
+              <div></div>
             </div>
 
             <!-- Auto-derived locked chips -->
@@ -1414,6 +1533,7 @@
             d.routing_tier = src.routing_tier;
             d.phase = src.phase;
             d.default_owner = src.default_owner || 'Unassigned (review queue)';
+            d.recurrence = src.recurrence || 'continuous';
             // Infer trigger details if possible (simplified: copy trigger string)
             d.trigger_type = src.query_template ? 'schedule' : 'event';
             d.query_template = src.query_template || '';
@@ -1460,10 +1580,11 @@
         renderWizard();
       });
 
-      // Step 2: Name + Task action + Phase + Owner + override controls
+      // Step 2: Name + Task action + Phase + Recurrence + Owner + override controls
       if (byId('wiz-name')) byId('wiz-name').addEventListener('input', e => { d.name = e.target.value; renderWizard(); });
       if (byId('wiz-task-action')) byId('wiz-task-action').addEventListener('input', e => { d.task_action = e.target.value; renderWizard(); });
       if (byId('wiz-phase')) byId('wiz-phase').addEventListener('change', e => { d.phase = e.target.value; renderWizard(); });
+      if (byId('wiz-recurrence')) byId('wiz-recurrence').addEventListener('change', e => { d.recurrence = e.target.value; renderWizard(); });
       if (byId('wiz-owner')) byId('wiz-owner').addEventListener('change', e => { d.default_owner = e.target.value; renderWizard(); });
       if (byId('wiz-task-type')) byId('wiz-task-type').addEventListener('change', e => { d.task_type = e.target.value; renderWizard(); });
       if (byId('wiz-origin')) byId('wiz-origin').addEventListener('change', e => { d.origin_bucket = e.target.value; renderWizard(); });
@@ -1503,12 +1624,14 @@
     }
 
     function saveWizard() {
+      if (!canCreate()) { toast('Only Ops Lead can create new automations.', 'warn'); return; }
       const d = Wizard.data;
       State.newAutomationCounter++;
       const newId = `NEW-${State.newAutomationCounter}`;
       let triggerStr, queryRef = null, nParam = null, cadence;
       if (d.trigger_type === 'schedule') {
         const q = getQueryTemplate(d.query_template);
+        if (!q) { toast('Invalid query template selected.', 'warn'); return; }
         triggerStr = q.has_n ? q.label.replace(/\bN\b/, d.n_param) : q.label;
         queryRef = q.id;
         nParam = q.has_n ? d.n_param : null;
@@ -1533,7 +1656,9 @@
         task_action: d.task_action,
         query_template: queryRef,
         n_param: nParam,
+        event_source: d.trigger_type === 'event' ? d.event_source : undefined,
         cadence: cadence,
+        recurrence: d.recurrence,
         task_type: d.task_type,
         origin_bucket: d.origin_bucket,
         routing_tier: d.routing_tier,

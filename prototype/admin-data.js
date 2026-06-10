@@ -53,10 +53,11 @@ const AUTOMATIONS = [
   {
     id: 7, ref: 'AUTO-7',
     name: 'Verify passport names match tickets',
-    trigger: 'Pre-trip review window (T-2 to T-4 weeks before departure)',
+    trigger: 'Pre-trip review window (14 days before departure)',
     expected: 'Cross-check passport names against issued flight tickets to catch spelling discrepancies.',
     task_type: 'trip-prep', origin_bucket: 'Trip-lifecycle', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Unassigned (review queue)',
+    query_template: 'trips-departing-n-days', n_param: 14, recurrence: 'continuous',
   },
   {
     id: 8, ref: 'AUTO-8',
@@ -65,6 +66,7 @@ const AUTOMATIONS = [
     expected: 'Confirm every flight ticket is issued, not just reserved.',
     task_type: 'trip-prep', origin_bucket: 'Trip-lifecycle', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Unassigned (review queue)',
+    query_template: 'trips-departing-n-days', n_param: 21, recurrence: 'continuous',
   },
   {
     id: 9, ref: 'AUTO-9',
@@ -76,6 +78,7 @@ const AUTOMATIONS = [
     audit: [
       { actor: 'marco', action: 'enabled', time: '3 days ago', reason: 'Mechanical, low-risk lookup. Safe to auto.' },
     ],
+    event_source: 'trip-status-change', recurrence: 'continuous',
   },
   {
     id: 13, ref: 'AUTO-13',
@@ -84,6 +87,7 @@ const AUTOMATIONS = [
     expected: 'Internally flag tight connections or last-flight-of-day risks on the itinerary.',
     task_type: 'disruption-response', origin_bucket: 'Trip-lifecycle', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Unassigned (review queue)',
+    query_template: 'trips-departing-n-days', n_param: 21, recurrence: 'continuous',
   },
   {
     id: 19, ref: 'AUTO-19',
@@ -97,6 +101,7 @@ const AUTOMATIONS = [
       { actor: 'maya',  action: 'disabled', time: 'yesterday', reason: 'Saw 2 misapplied FF numbers on Khan trip. Pausing while we check.' },
       { actor: 'marco', action: 'enabled', time: '2 hours ago', reason: 'Mapping fix shipped. Re-enabling.' },
     ],
+    event_source: 'trip-status-change', recurrence: 'continuous',
   },
   {
     id: 39, ref: 'AUTO-39',
@@ -108,6 +113,7 @@ const AUTOMATIONS = [
     audit: [
       { actor: 'marco', action: 'enabled', time: '1 week ago', reason: 'Earliest opt-in. Same shape as FF numbers.' },
     ],
+    event_source: 'trip-status-change', recurrence: 'continuous',
   },
   {
     id: 49, ref: 'AUTO-49',
@@ -116,6 +122,7 @@ const AUTOMATIONS = [
     expected: 'Send the VIP email to each booked hotel covering member profile, preferences, special occasions.',
     task_type: 'trip-prep', origin_bucket: 'Trip-lifecycle', routing_tier: 'Assist', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Trip owner',
+    query_template: 'trips-departing-n-days', n_param: 7, recurrence: 'continuous',
   },
   {
     id: 54, ref: 'AUTO-54',
@@ -127,6 +134,7 @@ const AUTOMATIONS = [
     audit: [
       { actor: 'marco', action: 'enabled', time: '4 days ago', reason: 'Self-monitoring only. Saved us 3 missed deadlines last week.' },
     ],
+    query_template: 'trips-departing-n-days', n_param: 21, recurrence: 'continuous',
   },
   {
     id: 60, ref: 'AUTO-60',
@@ -135,6 +143,7 @@ const AUTOMATIONS = [
     expected: 'Check for airline or rail strikes affecting the trip.',
     task_type: 'disruption-response', origin_bucket: 'World-driven', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Unassigned (review queue)',
+    query_template: 'trips-departing-n-days', n_param: 14, recurrence: 'continuous',
   },
   {
     id: 65, ref: 'AUTO-65',
@@ -146,6 +155,7 @@ const AUTOMATIONS = [
     audit: [
       { actor: 'maya', action: 'enabled', time: '2 days ago', reason: 'Trigger on trip status change. Tested with 4 live trips.' },
     ],
+    event_source: 'trip-status-change', recurrence: 'continuous',
   },
   {
     id: 68, ref: 'AUTO-68',
@@ -154,6 +164,7 @@ const AUTOMATIONS = [
     expected: "Update the trip status to 'Pre-Trip Docs Sent' once all documents are delivered.",
     task_type: 'ops-internal', origin_bucket: 'Internal operations', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Ops pool',
+    event_source: 'trip-status-change', recurrence: 'continuous',
   },
   {
     id: 77, ref: 'AUTO-77',
@@ -162,6 +173,7 @@ const AUTOMATIONS = [
     expected: 'Verify visa and entry requirements for each destination on the itinerary.',
     task_type: 'trip-prep', origin_bucket: 'Trip-lifecycle', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Unassigned (review queue)',
+    query_template: 'trips-departing-n-days', n_param: 21, recurrence: 'continuous',
   },
   {
     id: 82, ref: 'AUTO-82',
@@ -170,6 +182,7 @@ const AUTOMATIONS = [
     expected: 'Send the pre-trip confirmation message or email to the member with arrival instructions.',
     task_type: 'messaging', origin_bucket: 'Trip-lifecycle', routing_tier: 'Assist', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Trip owner',
+    query_template: 'trips-departing-n-days', n_param: 7, recurrence: 'continuous',
   },
   {
     id: 86, ref: 'AUTO-86',
@@ -178,6 +191,7 @@ const AUTOMATIONS = [
     expected: 'Share the final trip page with the member.',
     task_type: 'messaging', origin_bucket: 'Trip-lifecycle', routing_tier: 'Assist', phase: 'Go-live',
     enabled: false, audit: [], default_owner: 'Trip owner',
+    event_source: 'trip-status-change', recurrence: 'continuous',
   },
   {
     id: 102, ref: 'AUTO-102',
@@ -186,6 +200,7 @@ const AUTOMATIONS = [
     expected: 'Review transit visa requirements for any layover countries.',
     task_type: 'trip-prep', origin_bucket: 'Trip-lifecycle', routing_tier: 'Auto', phase: 'Pre-trip',
     enabled: false, audit: [], default_owner: 'Unassigned (review queue)',
+    query_template: 'trips-departing-n-days', n_param: 21, recurrence: 'continuous',
   },
   {
     id: 106, ref: 'AUTO-106',
@@ -194,6 +209,7 @@ const AUTOMATIONS = [
     expected: 'Send the hotel a reconfirm covering member name, arrival time, room type, special requests, VIP recognition.',
     task_type: 'trip-prep', origin_bucket: 'Trip-lifecycle', routing_tier: 'Assist', phase: 'Mid-trip',
     enabled: false, audit: [], default_owner: 'VVIP pod',
+    query_template: 'trips-departing-n-days', n_param: 1, recurrence: 'daily',
   },
   {
     id: 117, ref: 'AUTO-117',
@@ -206,6 +222,7 @@ const AUTOMATIONS = [
       { actor: 'maya', action: 'enabled', time: '6 days ago', reason: 'Critical for VVIPs. Auto-notify on delay.' },
       { actor: 'marco', action: 'disabled', time: '5 days ago', reason: 'False positive on Khan trip — delay was already resolved. Need human in the loop.' },
     ],
+    event_source: 'flight-delay', recurrence: 'continuous',
   },
   {
     id: 135, ref: 'AUTO-135',
@@ -214,6 +231,7 @@ const AUTOMATIONS = [
     expected: 'Send a personalized WhatsApp message welcoming the member home, referencing specific trip moments.',
     task_type: 'messaging', origin_bucket: 'Relationship', routing_tier: 'Assist', phase: 'Post-trip',
     enabled: false, audit: [], default_owner: 'Trip owner',
+    query_template: 'trips-departing-n-days', n_param: -2, recurrence: 'continuous',
   },
   {
     id: 137, ref: 'AUTO-137',
@@ -222,6 +240,7 @@ const AUTOMATIONS = [
     expected: 'If no survey response is received within 7 days, send a follow-up WhatsApp.',
     task_type: 'messaging', origin_bucket: 'Trip-lifecycle', routing_tier: 'Auto', phase: 'Post-trip',
     enabled: false, audit: [], default_owner: 'Ops pool',
+    query_template: 'trips-departing-n-days', n_param: -7, recurrence: 'continuous',
   },
   {
     id: 173, ref: 'AUTO-173',
@@ -230,6 +249,7 @@ const AUTOMATIONS = [
     expected: 'Support acknowledges same-day; coordinates follow-up call between client and TA.',
     task_type: 'messaging', origin_bucket: 'Trip-lifecycle', routing_tier: 'Escalate', phase: 'Post-trip',
     enabled: false, audit: [], default_owner: 'VVIP support pool',
+    event_source: 'sub-4-star', recurrence: 'continuous',
   },
   {
     id: 175, ref: 'AUTO-175',
@@ -241,6 +261,7 @@ const AUTOMATIONS = [
     audit: [
       { actor: 'marco', action: 'enabled', time: '6 days ago', reason: 'Pure cron job. No risk.' },
     ],
+    query_template: 'trips-departing-n-days', n_param: -2, recurrence: 'daily',
   },
 ];
 
