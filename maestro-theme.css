@@ -1,0 +1,58 @@
+/**
+ * maestro-theme.css
+ * Shared Maestro dark theme tokens for Conductor Task Management prototype suite.
+ * Works with both Tailwind CDN pages (via rgb(var(--maestro-*))) and plain CSS pages.
+ */
+
+:root {
+  /* Base tokens (raw RGB triplets, no rgb() wrapper) */
+  --maestro-bg: 24 24 27;
+  --maestro-card: 38 38 42;
+  --maestro-surface: 32 32 36;
+  --maestro-surface-raised: 40 40 45;
+  --maestro-border: 50 50 56;
+  --maestro-border-hover: 70 70 78;
+  --maestro-text-primary: 240 238 235;
+  --maestro-text-secondary: 180 175 168;
+  --maestro-text-tertiary: 140 135 128;
+  --maestro-accent: 255 110 70;
+  --maestro-accent-hover: 255 130 95;
+  --maestro-accent-light: 50 30 25;
+  --maestro-on-accent: 255 255 255;
+  --maestro-success: 60 180 100;
+  --maestro-success-light: 25 45 35;
+  --maestro-danger: 230 90 70;
+  --maestro-danger-light: 50 30 25;
+  --maestro-warning: 210 160 60;
+  --maestro-warning-light: 50 40 25;
+  --maestro-amber: 251 191 36;
+  --maestro-amber-soft: 50 38 18;
+  --maestro-info: 80 160 220;
+  --maestro-info-light: 25 35 45;
+  --maestro-chip-green: 60 180 100;
+  --maestro-chip-green-soft: 25 45 35;
+  --maestro-chip-orange: 255 140 80;
+  --maestro-chip-orange-soft: 50 35 25;
+  --maestro-chip-blue: 80 160 220;
+  --maestro-chip-blue-soft: 25 35 45;
+  --maestro-chip-teal: 70 190 180;
+  --maestro-chip-teal-soft: 25 45 45;
+  --maestro-chip-purple: 160 120 230;
+  --maestro-chip-purple-soft: 40 35 55;
+  --maestro-chip-pink: 240 120 180;
+  --maestro-chip-pink-soft: 50 30 45;
+  --maestro-control-knob: 255 255 255;
+  --maestro-overlay: 0 0 0;
+}
+
+/* Scrollbar styling (suite-wide) */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
+
+/* Selection highlight */
+::selection {
+  background: rgb(var(--maestro-accent));
+  color: rgb(var(--maestro-on-accent));
+}

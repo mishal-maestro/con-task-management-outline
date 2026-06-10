@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Executors — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,162 +84,162 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
-      <div class="mb-6 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mb-6 px-4 py-3 rounded-lg bg-mambersoft border border-mamber/30 flex items-start gap-3">
+        <svg class="w-5 h-5 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-300">Execution layer addendum · v0.1 draft proposal</p>
-          <p class="text-xs text-amber-200/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
+          <p class="text-sm font-semibold text-mamber">Execution layer addendum · v0.1 draft proposal</p>
+          <p class="text-xs text-mamber/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
         </div>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Executors</h2>
-        <p class="text-sm text-slate-500 mt-1">Action-to-executor binding and v1 executor set</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Executors</h2>
+        <p class="text-sm text-mtext3 mt-1">Action-to-executor binding and v1 executor set</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">The v1.0 action field is a free-text verb-phrase ("Search Aman Tokyo, suite, anniversary last week of Oct"). The execution layer needs a deterministic way to bind that string to a concrete executor. This section proposes the binding model and enumerates the v1 executor set.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">The v1.0 action field is a free-text verb-phrase ("Search Aman Tokyo, suite, anniversary last week of Oct"). The execution layer needs a deterministic way to bind that string to a concrete executor. This section proposes the binding model and enumerates the v1 executor set.</p>
 
       <!-- The Executor Registry -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">The Executor Registry</h3>
-        <p class="text-xs text-slate-400 mb-4 leading-relaxed">A versioned table, product-tunable, with the following columns:</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">The Executor Registry</h3>
+        <p class="text-xs text-mtext3 mb-4 leading-relaxed">A versioned table, product-tunable, with the following columns:</p>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Column</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Type</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Notes</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Column</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Type</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Notes</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">executor_id</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (slug)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Primary key. Stable identifier, e.g. hotel_search_executor.</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">executor_id</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (slug)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Primary key. Stable identifier, e.g. hotel_search_executor.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">executor_kind</td>
-                <td class="px-4 py-3 text-xs text-slate-300">enum</td>
-                <td class="px-4 py-3 text-xs text-slate-300">ai-capability / human-queue / composite.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">executor_kind</td>
+                <td class="px-4 py-3 text-xs text-mtext2">enum</td>
+                <td class="px-4 py-3 text-xs text-mtext2">ai-capability / human-queue / composite.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">task_type</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (FK to v1.0 Appendix F categories)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The task category this executor serves.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">task_type</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (FK to v1.0 Appendix F categories)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The task category this executor serves.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">subtype</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (optional FK)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The specific subtype within the category. Wildcard allowed (matches any subtype).</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">subtype</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (optional FK)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The specific subtype within the category. Wildcard allowed (matches any subtype).</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">action_pattern</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (regex or keyword list)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Pattern matched against the canonical action field. Wildcard allowed.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">action_pattern</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (regex or keyword list)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Pattern matched against the canonical action field. Wildcard allowed.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">executor_config</td>
-                <td class="px-4 py-3 text-xs text-slate-300">JSON</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Capability-specific config (API endpoint, model name, queue name, etc.).</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">executor_config</td>
+                <td class="px-4 py-3 text-xs text-mtext2">JSON</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Capability-specific config (API endpoint, model name, queue name, etc.).</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">version</td>
-                <td class="px-4 py-3 text-xs text-slate-300">integer</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Monotonic per (task_type, subtype, action_pattern). Resolution picks highest version.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">version</td>
+                <td class="px-4 py-3 text-xs text-mtext2">integer</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Monotonic per (task_type, subtype, action_pattern). Resolution picks highest version.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">active</td>
-                <td class="px-4 py-3 text-xs text-slate-300">boolean</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Allows retiring executors without deleting history.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">active</td>
+                <td class="px-4 py-3 text-xs text-mtext2">boolean</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Allows retiring executors without deleting history.</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="mt-4 bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <p class="text-xs text-slate-300 mb-2"><strong>Resolution at approval time:</strong> query the registry with the canonical task's (task_type, subtype, action) tuple. Pick the highest-version active row that matches. Stamp executor_id and executor_version onto the canonical record. If no match, fall back to human_routing_executor and flag the task as unbound for ops review (the registry has a gap).</p>
-          <p class="text-xs text-slate-400"><strong>Why a registry table instead of code-only mapping.</strong> Three reasons. One, product needs to add executors for new task types without an engineering deploy in the longer run (v2 and v3). Two, A/B testing two executor configurations against the same action pattern is cleaner with a version column. Three, the audit trail (which executor version ran which task) lives on the row, not buried in a code commit. v1 may ship with the registry as a hardcoded fixture and graduate to a config table in v2.</p>
+        <div class="mt-4 bg-mcard border border-mborder rounded-lg p-4">
+          <p class="text-xs text-mtext2 mb-2"><strong>Resolution at approval time:</strong> query the registry with the canonical task's (task_type, subtype, action) tuple. Pick the highest-version active row that matches. Stamp executor_id and executor_version onto the canonical record. If no match, fall back to human_routing_executor and flag the task as unbound for ops review (the registry has a gap).</p>
+          <p class="text-xs text-mtext3"><strong>Why a registry table instead of code-only mapping.</strong> Three reasons. One, product needs to add executors for new task types without an engineering deploy in the longer run (v2 and v3). Two, A/B testing two executor configurations against the same action pattern is cleaner with a version column. Three, the audit trail (which executor version ran which task) lives on the row, not buried in a code commit. v1 may ship with the registry as a hardcoded fixture and graduate to a config table in v2.</p>
         </div>
       </div>
 
       <!-- v1 executor set (5 executors) -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">v1 executor set (minimum viable)</h3>
-        <p class="text-xs text-slate-400 mb-4 leading-relaxed">Five executors, sized to cover the v1 task type set in v1.0 Appendix F. Each executor specifies its kind, input contract (fields read from the canonical task), output contract (what gets written back), failure modes, and rough latency.</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">v1 executor set (minimum viable)</h3>
+        <p class="text-xs text-mtext3 mb-4 leading-relaxed">Five executors, sized to cover the v1 task type set in v1.0 Appendix F. Each executor specifies its kind, input contract (fields read from the canonical task), output contract (what gets written back), failure modes, and rough latency.</p>
         <div class="space-y-4">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">message_send_executor</h4>
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
+            <h4 class="text-sm font-semibold text-mtext mb-3">message_send_executor</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><span class="text-slate-400">Kind:</span> <span class="text-slate-300">ai-capability</span></div>
-              <div><span class="text-slate-400">Latency:</span> <span class="text-slate-300">Sub-second to a few seconds</span></div>
+              <div><span class="text-mtext3">Kind:</span> <span class="text-mtext2">ai-capability</span></div>
+              <div><span class="text-mtext3">Latency:</span> <span class="text-mtext2">Sub-second to a few seconds</span></div>
             </div>
-            <p class="text-xs text-slate-300 mt-3 mb-2"><strong>Purpose:</strong> Sends a templated or AI-generated message via the bound channel.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Default for task types:</strong> messaging (subtype scheduled-send, follow-up-prompt); trip-prep (subtypes day-of-departure-message, day-1-check-in, post-trip-review).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Input:</strong> primary_context (the conversation or trip), action (the message intent), evidence_refs (sometimes the source signal, included as context for templated rendering).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Output:</strong> Message receipt id (channel-specific), sent_at timestamp.</p>
-            <p class="text-xs text-slate-400"><strong>Failure modes:</strong> Channel API down, recipient blocked, content rejected by safety filter. All produce a failed execution row with the error code.</p>
+            <p class="text-xs text-mtext2 mt-3 mb-2"><strong>Purpose:</strong> Sends a templated or AI-generated message via the bound channel.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Default for task types:</strong> messaging (subtype scheduled-send, follow-up-prompt); trip-prep (subtypes day-of-departure-message, day-1-check-in, post-trip-review).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Input:</strong> primary_context (the conversation or trip), action (the message intent), evidence_refs (sometimes the source signal, included as context for templated rendering).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Output:</strong> Message receipt id (channel-specific), sent_at timestamp.</p>
+            <p class="text-xs text-mtext3"><strong>Failure modes:</strong> Channel API down, recipient blocked, content rejected by safety filter. All produce a failed execution row with the error code.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">message_compose_executor</h4>
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
+            <h4 class="text-sm font-semibold text-mtext mb-3">message_compose_executor</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><span class="text-slate-400">Kind:</span> <span class="text-slate-300">composite (AI drafts, human approves, send happens via message_send_executor as a chained step)</span></div>
-              <div><span class="text-slate-400">Latency:</span> <span class="text-slate-300">A few seconds for drafting, then human-bound for review</span></div>
+              <div><span class="text-mtext3">Kind:</span> <span class="text-mtext2">composite (AI drafts, human approves, send happens via message_send_executor as a chained step)</span></div>
+              <div><span class="text-mtext3">Latency:</span> <span class="text-mtext2">A few seconds for drafting, then human-bound for review</span></div>
             </div>
-            <p class="text-xs text-slate-300 mt-3 mb-2"><strong>Purpose:</strong> Drafts a message for human review. Used for assist-tier messaging.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Default for task types:</strong> messaging (subtype reply-draft).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Input:</strong> primary_context (the conversation), recent message history, evidence_refs (any prior similar conversations the AI should reference).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Output:</strong> Draft message text written to a draft field on the canonical task. Task status moves to awaiting-review (a sub-state of in_progress for assist-tier; not a new top-level status).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Chained step:</strong> When the human approves the draft, message_send_executor fires with the approved text.</p>
-            <p class="text-xs text-slate-400"><strong>Failure modes:</strong> Drafting model unavailable, context retrieval failure. Falls back to a blank draft with the rationale visible to the operator.</p>
+            <p class="text-xs text-mtext2 mt-3 mb-2"><strong>Purpose:</strong> Drafts a message for human review. Used for assist-tier messaging.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Default for task types:</strong> messaging (subtype reply-draft).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Input:</strong> primary_context (the conversation), recent message history, evidence_refs (any prior similar conversations the AI should reference).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Output:</strong> Draft message text written to a draft field on the canonical task. Task status moves to awaiting-review (a sub-state of in_progress for assist-tier; not a new top-level status).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Chained step:</strong> When the human approves the draft, message_send_executor fires with the approved text.</p>
+            <p class="text-xs text-mtext3"><strong>Failure modes:</strong> Drafting model unavailable, context retrieval failure. Falls back to a blank draft with the rationale visible to the operator.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">hotel_search_executor</h4>
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
+            <h4 class="text-sm font-semibold text-mtext mb-3">hotel_search_executor</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><span class="text-slate-400">Kind:</span> <span class="text-slate-300">ai-capability</span></div>
-              <div><span class="text-slate-400">Latency:</span> <span class="text-slate-300">Seconds to tens of seconds</span></div>
+              <div><span class="text-mtext3">Kind:</span> <span class="text-mtext2">ai-capability</span></div>
+              <div><span class="text-mtext3">Latency:</span> <span class="text-mtext2">Seconds to tens of seconds</span></div>
             </div>
-            <p class="text-xs text-slate-300 mt-3 mb-2"><strong>Purpose:</strong> Runs a hotel property search against the booking engine, returns a ranked list of options.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Default for task types:</strong> booking-action (subtype property-search).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Input:</strong> Property name (from action), dates and traveller details (from primary_context.trip), client preferences (from member profile linked to trip).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Output:</strong> Ranked list of hotel options as a JSON payload, attached to the task_execution result. Surface in the trip page's hotel section per v1.0 Appendix F.</p>
-            <p class="text-xs text-slate-400"><strong>Failure modes:</strong> Booking engine timeout, no inventory matches, invalid date range. failed execution row with the engine's error code. For no matches, return an empty result with a flag so the executor doesn't retry.</p>
+            <p class="text-xs text-mtext2 mt-3 mb-2"><strong>Purpose:</strong> Runs a hotel property search against the booking engine, returns a ranked list of options.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Default for task types:</strong> booking-action (subtype property-search).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Input:</strong> Property name (from action), dates and traveller details (from primary_context.trip), client preferences (from member profile linked to trip).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Output:</strong> Ranked list of hotel options as a JSON payload, attached to the task_execution result. Surface in the trip page's hotel section per v1.0 Appendix F.</p>
+            <p class="text-xs text-mtext3"><strong>Failure modes:</strong> Booking engine timeout, no inventory matches, invalid date range. failed execution row with the engine's error code. For no matches, return an empty result with a flag so the executor doesn't retry.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">pre_arrival_template_executor</h4>
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
+            <h4 class="text-sm font-semibold text-mtext mb-3">pre_arrival_template_executor</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><span class="text-slate-400">Kind:</span> <span class="text-slate-300">composite</span></div>
-              <div><span class="text-slate-400">Latency:</span> <span class="text-slate-300">A few seconds</span></div>
+              <div><span class="text-mtext3">Kind:</span> <span class="text-mtext2">composite</span></div>
+              <div><span class="text-mtext3">Latency:</span> <span class="text-mtext2">A few seconds</span></div>
             </div>
-            <p class="text-xs text-slate-300 mt-3 mb-2"><strong>Purpose:</strong> Renders and schedules a templated pre-arrival communication sequence and surfaces an operator checklist (re-confirm transfers, brief restaurants, send weather and packing notes per v1.0 §3.3).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Default for task types:</strong> trip-prep (subtype pre-arrival-checklist).</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Input:</strong> Trip itinerary, weather forecast for destination, restaurant booking list, client dietary notes.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Output:</strong> A set of scheduled sub-tasks (each one a message_send_executor task wired to the scheduled trigger). Plus an inline checklist on the trip page.</p>
-            <p class="text-xs text-slate-400"><strong>Failure modes:</strong> Itinerary incomplete, forecast unavailable. Surfaces as a blocked task with the missing pieces called out, the executor does not auto-retry.</p>
+            <p class="text-xs text-mtext2 mt-3 mb-2"><strong>Purpose:</strong> Renders and schedules a templated pre-arrival communication sequence and surfaces an operator checklist (re-confirm transfers, brief restaurants, send weather and packing notes per v1.0 §3.3).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Default for task types:</strong> trip-prep (subtype pre-arrival-checklist).</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Input:</strong> Trip itinerary, weather forecast for destination, restaurant booking list, client dietary notes.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Output:</strong> A set of scheduled sub-tasks (each one a message_send_executor task wired to the scheduled trigger). Plus an inline checklist on the trip page.</p>
+            <p class="text-xs text-mtext3"><strong>Failure modes:</strong> Itinerary incomplete, forecast unavailable. Surfaces as a blocked task with the missing pieces called out, the executor does not auto-retry.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">human_routing_executor</h4>
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
+            <h4 class="text-sm font-semibold text-mtext mb-3">human_routing_executor</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div><span class="text-slate-400">Kind:</span> <span class="text-slate-300">human-queue</span></div>
-              <div><span class="text-slate-400">Latency:</span> <span class="text-slate-300">Human-bound</span></div>
+              <div><span class="text-mtext3">Kind:</span> <span class="text-mtext2">human-queue</span></div>
+              <div><span class="text-mtext3">Latency:</span> <span class="text-mtext2">Human-bound</span></div>
             </div>
-            <p class="text-xs text-slate-300 mt-3 mb-2"><strong>Purpose:</strong> Fallback for escalate-tier tasks and for any (task_type, subtype, action) tuple without a more specific executor in v1.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Default for task types:</strong> disruption-response (all subtypes in v1); booking-action (subtypes quote-request, vendor-rebook, payment-chase in v1; will get specific executors in v2 to v3); unbound tasks fall back here.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Input:</strong> The full canonical record. The human has all 31 fields visible.</p>
-            <p class="text-xs text-slate-300 mb-2"><strong>Output:</strong> None at the executor level. The human's action is captured by v1.0's existing operator essentials (status change, manual close, etc.).</p>
-            <p class="text-xs text-slate-400"><strong>Failure modes:</strong> None at the executor level. Failure is operator-level (missed task, SLA breach), surfaced via v1.0's existing internal-ops signals.</p>
+            <p class="text-xs text-mtext2 mt-3 mb-2"><strong>Purpose:</strong> Fallback for escalate-tier tasks and for any (task_type, subtype, action) tuple without a more specific executor in v1.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Default for task types:</strong> disruption-response (all subtypes in v1); booking-action (subtypes quote-request, vendor-rebook, payment-chase in v1; will get specific executors in v2 to v3); unbound tasks fall back here.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Input:</strong> The full canonical record. The human has all 31 fields visible.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>Output:</strong> None at the executor level. The human's action is captured by v1.0's existing operator essentials (status change, manual close, etc.).</p>
+            <p class="text-xs text-mtext3"><strong>Failure modes:</strong> None at the executor level. Failure is operator-level (missed task, SLA breach), surfaced via v1.0's existing internal-ops signals.</p>
           </div>
 
         </div>
@@ -195,122 +247,122 @@
 
       <!-- Coverage check against v1.0 Appendix F -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Coverage check against v1.0 Appendix F (v1 task types)</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Coverage check against v1.0 Appendix F (v1 task types)</h3>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Appendix F category</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Subtype</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Bound executor in v1</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Appendix F category</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Subtype</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Bound executor in v1</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">messaging</td>
-                <td class="px-4 py-3 text-xs text-slate-300">reply-draft</td>
-                <td class="px-4 py-3 text-xs text-slate-300">message_compose_executor (assist)</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">messaging</td>
+                <td class="px-4 py-3 text-xs text-mtext2">reply-draft</td>
+                <td class="px-4 py-3 text-xs text-mtext2">message_compose_executor (assist)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">messaging</td>
-                <td class="px-4 py-3 text-xs text-slate-300">scheduled-send</td>
-                <td class="px-4 py-3 text-xs text-slate-300">message_send_executor (auto, scheduled trigger)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">messaging</td>
+                <td class="px-4 py-3 text-xs text-mtext2">scheduled-send</td>
+                <td class="px-4 py-3 text-xs text-mtext2">message_send_executor (auto, scheduled trigger)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">messaging</td>
-                <td class="px-4 py-3 text-xs text-slate-300">follow-up-prompt</td>
-                <td class="px-4 py-3 text-xs text-slate-300">message_send_executor (auto)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">messaging</td>
+                <td class="px-4 py-3 text-xs text-mtext2">follow-up-prompt</td>
+                <td class="px-4 py-3 text-xs text-mtext2">message_send_executor (auto)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">booking-action</td>
-                <td class="px-4 py-3 text-xs text-slate-300">property-search</td>
-                <td class="px-4 py-3 text-xs text-slate-300">hotel_search_executor (assist; AI returns options, human picks)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">booking-action</td>
+                <td class="px-4 py-3 text-xs text-mtext2">property-search</td>
+                <td class="px-4 py-3 text-xs text-mtext2">hotel_search_executor (assist; AI returns options, human picks)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">booking-action</td>
-                <td class="px-4 py-3 text-xs text-slate-300">quote-request</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (v1 fallback; specific executor in v2)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">booking-action</td>
+                <td class="px-4 py-3 text-xs text-mtext2">quote-request</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (v1 fallback; specific executor in v2)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">booking-action</td>
-                <td class="px-4 py-3 text-xs text-slate-300">vendor-rebook</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (v1 fallback; specific executor in v2)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">booking-action</td>
+                <td class="px-4 py-3 text-xs text-mtext2">vendor-rebook</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (v1 fallback; specific executor in v2)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">booking-action</td>
-                <td class="px-4 py-3 text-xs text-slate-300">payment-chase</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (v1 fallback; specific executor in v2)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">booking-action</td>
+                <td class="px-4 py-3 text-xs text-mtext2">payment-chase</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (v1 fallback; specific executor in v2)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">trip-prep</td>
-                <td class="px-4 py-3 text-xs text-slate-300">pre-arrival-checklist</td>
-                <td class="px-4 py-3 text-xs text-slate-300">pre_arrival_template_executor (composite)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">trip-prep</td>
+                <td class="px-4 py-3 text-xs text-mtext2">pre-arrival-checklist</td>
+                <td class="px-4 py-3 text-xs text-mtext2">pre_arrival_template_executor (composite)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">trip-prep</td>
-                <td class="px-4 py-3 text-xs text-slate-300">day-of-departure-message</td>
-                <td class="px-4 py-3 text-xs text-slate-300">message_send_executor (auto, scheduled trigger)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">trip-prep</td>
+                <td class="px-4 py-3 text-xs text-mtext2">day-of-departure-message</td>
+                <td class="px-4 py-3 text-xs text-mtext2">message_send_executor (auto, scheduled trigger)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">trip-prep</td>
-                <td class="px-4 py-3 text-xs text-slate-300">day-1-check-in</td>
-                <td class="px-4 py-3 text-xs text-slate-300">message_send_executor (auto, scheduled trigger)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">trip-prep</td>
+                <td class="px-4 py-3 text-xs text-mtext2">day-1-check-in</td>
+                <td class="px-4 py-3 text-xs text-mtext2">message_send_executor (auto, scheduled trigger)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">trip-prep</td>
-                <td class="px-4 py-3 text-xs text-slate-300">post-trip-review</td>
-                <td class="px-4 py-3 text-xs text-slate-300">message_send_executor (auto, scheduled trigger)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">trip-prep</td>
+                <td class="px-4 py-3 text-xs text-mtext2">post-trip-review</td>
+                <td class="px-4 py-3 text-xs text-mtext2">message_send_executor (auto, scheduled trigger)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">disruption-response</td>
-                <td class="px-4 py-3 text-xs text-slate-300">weather-alert-reroute</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (escalate)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">disruption-response</td>
+                <td class="px-4 py-3 text-xs text-mtext2">weather-alert-reroute</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (escalate)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">disruption-response</td>
-                <td class="px-4 py-3 text-xs text-slate-300">flight-cancellation-rebook</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (escalate)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">disruption-response</td>
+                <td class="px-4 py-3 text-xs text-mtext2">flight-cancellation-rebook</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (escalate)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">disruption-response</td>
-                <td class="px-4 py-3 text-xs text-slate-300">vendor-side-change-respond</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (escalate)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">disruption-response</td>
+                <td class="px-4 py-3 text-xs text-mtext2">vendor-side-change-respond</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (escalate)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">disruption-response</td>
-                <td class="px-4 py-3 text-xs text-slate-300">compliance-advisory-brief</td>
-                <td class="px-4 py-3 text-xs text-slate-300">human_routing_executor (escalate)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">disruption-response</td>
+                <td class="px-4 py-3 text-xs text-mtext2">compliance-advisory-brief</td>
+                <td class="px-4 py-3 text-xs text-mtext2">human_routing_executor (escalate)</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p class="text-xs text-slate-400 mt-3">Every v1 task type from v1.0 Appendix F resolves to at least one v1 executor. Of the 15 v1 subtypes, eight resolve to specific AI capabilities and seven resolve to the human-routing fallback for v1, with specific executors arriving in v2 or v3.</p>
+        <p class="text-xs text-mtext3 mt-3">Every v1 task type from v1.0 Appendix F resolves to at least one v1 executor. Of the 15 v1 subtypes, eight resolve to specific AI capabilities and seven resolve to the human-routing fallback for v1, with specific executors arriving in v2 or v3.</p>
       </div>
 
       <!-- Phased rollout -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Phased rollout</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Phased rollout</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">v1 (launch)</h4>
-            <ul class="space-y-2 text-xs text-slate-300">
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-mtext mb-3">v1 (launch)</h4>
+            <ul class="space-y-2 text-xs text-mtext2">
               <li>• Executor set: the five executors above. Half of the v1 subtypes resolve to human_routing_executor until specific executors land in v2 to v3.</li>
               <li>• Executor registry: hardcoded in code. No admin UI, no config table. Updates require an engineering deploy.</li>
             </ul>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">v2</h4>
-            <ul class="space-y-2 text-xs text-slate-300">
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-mtext mb-3">v2</h4>
+            <ul class="space-y-2 text-xs text-mtext2">
               <li>• Executor set: add specific executors for booking-action subtypes (quote-request, vendor-rebook, payment-chase) and for the v2 task types from v1.0 Appendix F (member-context, ops-internal, agent-subtask).</li>
               <li>• Executor registry: graduates from hardcoded to a config table. Product can add executors via a config edit. Still no admin UI; that's v3.</li>
             </ul>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <h4 class="text-sm font-semibold text-slate-100 mb-3">v3</h4>
-            <ul class="space-y-2 text-xs text-slate-300">
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-mtext mb-3">v3</h4>
+            <ul class="space-y-2 text-xs text-mtext2">
               <li>• Executor set: v3 task types from v1.0 Appendix F (compliance-safety, discovery).</li>
               <li>• Executor registry: admin UI for product to add and version executors without engineering involvement. A/B testing two executors against the same action pattern becomes a product workflow.</li>
             </ul>

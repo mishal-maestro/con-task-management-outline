@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trip Detail — Conductor Task Mgmt Prototype</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="../theme.js"></script>
   <script src="task-data.js"></script>
@@ -19,31 +71,27 @@
   <script src="agent-dock.js"></script>
 
   <style>
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-    body { background: #020617; }
+    body { background: rgb(var(--maestro-bg)); }
 
-    .top-tab { padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: rgb(148 163 184); cursor: pointer; transition: color .12s; border-bottom: 2px solid transparent; display: inline-flex; align-items: center; gap: 0.5rem; }
-    .top-tab:hover { color: rgb(241 245 249); }
-    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+    .top-tab { padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: rgb(var(--maestro-text-secondary)); cursor: pointer; transition: color .12s; border-bottom: 2px solid transparent; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .top-tab:hover { color: rgb(var(--maestro-text-primary)); }
+    .top-tab.active { color: rgb(var(--maestro-text-primary)); border-bottom-color: rgb(var(--maestro-accent)); }
   </style>
 </head>
 
-<body class="text-slate-300 font-sans min-h-screen antialiased">
+<body class="text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="topnav-root"></div>
 
-  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2">
-    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+  <div class="bg-mambersoft border-b border-mamber/30 px-4 py-1.5 text-[11px] text-mtext3 flex items-center gap-2">
+    <svg class="w-3 h-3 text-mamber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     <span>Prototype mock · the orange banner below is the in-context AI review surface for a Trip</span>
   </div>
 
   <main class="max-w-[1280px] mx-auto px-6 py-6">
 
     <!-- Back to trips -->
-    <a href="trips.html" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300 transition-colors mb-4">
+    <a href="trips.html" class="inline-flex items-center gap-1.5 text-[11px] text-mtext3 hover:text-mtext2 transition-colors mb-4">
       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       Back to Trips
     </a>
@@ -51,14 +99,14 @@
     <!-- Trip header -->
     <div class="flex items-start justify-between gap-6 mb-5">
       <div>
-        <h1 id="trip-title" class="text-2xl font-semibold text-slate-100 tracking-tight">—</h1>
-        <div id="trip-meta" class="flex items-center gap-3 mt-2 text-xs text-slate-400">
+        <h1 id="trip-title" class="text-2xl font-semibold text-mtext tracking-tight">—</h1>
+        <div id="trip-meta" class="flex items-center gap-3 mt-2 text-xs text-mtext2">
           <!-- rendered by JS -->
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <button class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700">Share</button>
-        <button class="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700">Edit</button>
+        <button class="px-3 py-1.5 rounded-md bg-mcard border border-mborder text-xs text-mtext2 hover:border-mborderh">Share</button>
+        <button class="px-3 py-1.5 rounded-md bg-mcard border border-mborder text-xs text-mtext2 hover:border-mborderh">Edit</button>
       </div>
     </div>
 
@@ -72,10 +120,10 @@
       <div class="lg:col-span-2 space-y-5">
 
         <!-- Itinerary timeline (lightweight mock) -->
-        <section class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+        <section class="bg-mcard border border-mborder rounded-lg p-5">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-sm font-semibold text-slate-200">Itinerary</h2>
-            <button class="text-[11px] text-orange-400 hover:text-orange-300">Edit itinerary →</button>
+            <h2 class="text-sm font-semibold text-mtext">Itinerary</h2>
+            <button class="text-[11px] text-maccent hover:text-maccenth">Edit itinerary →</button>
           </div>
           <div id="itinerary-list" class="space-y-3">
             <!-- rendered by JS -->
@@ -83,10 +131,10 @@
         </section>
 
         <!-- Bookings table -->
-        <section class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+        <section class="bg-mcard border border-mborder rounded-lg p-5">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-sm font-semibold text-slate-200">Bookings</h2>
-            <button class="text-[11px] text-orange-400 hover:text-orange-300">+ Add booking</button>
+            <h2 class="text-sm font-semibold text-mtext">Bookings</h2>
+            <button class="text-[11px] text-maccent hover:text-maccenth">+ Add booking</button>
           </div>
           <div id="bookings-list" class="space-y-2">
             <!-- rendered by JS -->
@@ -99,10 +147,10 @@
       <aside class="space-y-4">
 
         <!-- Linked tasks -->
-        <section class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <section class="bg-mcard border border-mborder rounded-lg p-4">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Linked tasks</h3>
-            <a href="task-board.html" class="text-[10px] text-orange-400 hover:text-orange-300">View all →</a>
+            <h3 class="text-xs font-semibold text-mtext uppercase tracking-wider">Linked tasks</h3>
+            <a href="task-board.html" class="text-[10px] text-maccent hover:text-maccenth">View all →</a>
           </div>
           <div id="trip-tasks-list" class="space-y-2">
             <!-- rendered by JS -->
@@ -110,8 +158,8 @@
         </section>
 
         <!-- Client snapshot -->
-        <section class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-3">Client</div>
+        <section class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="text-xs font-semibold text-mtext uppercase tracking-wider mb-3">Client</div>
           <div id="client-snapshot">
             <!-- rendered by JS -->
           </div>
@@ -222,14 +270,14 @@
       document.getElementById('trip-title').textContent = t.name;
       document.getElementById('trip-meta').innerHTML = `
         <span>📅 ${t.dates}</span>
-        <span class="text-slate-700">·</span>
+        <span class="text-mtext3">·</span>
         <span>${t.advisor}</span>
-        <span class="text-slate-700">·</span>
-        <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">${t.stage}</span>
+        <span class="text-mtext3">·</span>
+        <span class="px-1.5 py-0.5 rounded text-[10px] bg-msurface text-mtext2 border border-mborder">${t.stage}</span>
         ${t.tags.map(tag => {
           const isWarn = /disruption|overdue|attention/i.test(tag);
           const isVVIP = /vvip/i.test(tag);
-          const cls = isWarn ? 'bg-red-500/10 text-red-400 border-red-500/30' : isVVIP ? 'bg-orange-500/10 text-orange-300 border-orange-500/30' : 'bg-slate-800 text-slate-400 border-slate-700';
+          const cls = isWarn ? 'bg-mdangerl text-mdanger border-mdanger/30' : isVVIP ? 'bg-maccentl text-maccent border-maccent/30' : 'bg-msurface text-mtext2 border-mborder';
           return `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] border ${cls}">${tag}</span>`;
         }).join('')}
       `;
@@ -244,15 +292,15 @@
       }
       banner.classList.remove('hidden');
       banner.innerHTML = `
-        <div class="bg-orange-500/10 border border-orange-500/40 rounded-lg overflow-hidden">
-          <div class="px-4 py-3 border-b border-orange-500/20 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
-            <span class="text-sm font-semibold text-orange-300">${pending.length} AI suggestion${pending.length === 1 ? '' : 's'} for this trip</span>
-            <span class="text-[11px] text-slate-400">· approve in place or open the source</span>
+        <div class="bg-maccentl border border-maccent/40 rounded-lg overflow-hidden">
+          <div class="px-4 py-3 border-b border-maccent/20 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-maccent"></span>
+            <span class="text-sm font-semibold text-maccent">${pending.length} AI suggestion${pending.length === 1 ? '' : 's'} for this trip</span>
+            <span class="text-[11px] text-mtext2">· approve in place or open the source</span>
             <div class="flex-1"></div>
-            <a href="task-board.html#tab=needs-review" class="text-[11px] text-orange-400 hover:text-orange-300">Go to Tasks · Needs Review →</a>
+            <a href="task-board.html#tab=needs-review" class="text-[11px] text-maccent hover:text-maccenth">Go to Tasks · Needs Review →</a>
           </div>
-          <div class="divide-y divide-slate-800">
+          <div class="divide-y divide-mborder">
             ${pending.map(task => {
               const tier = TIER_STYLES[task.routing_tier];
               const src = SOURCE_CHANNELS[task.source_channel] || SOURCE_CHANNELS['system'];
@@ -262,17 +310,17 @@
                     <span class="${src.color} mt-0.5 flex-shrink-0" title="${src.label}">${src.svg}</span>
                     <div class="flex-1 min-w-0">
                       <div class="flex items-baseline gap-2 mb-1 flex-wrap">
-                        <a href="task-board.html#task=${task.id}" class="task-id-link text-sm text-slate-100 hover:text-orange-300">${task.title}</a>
+                        <a href="task-board.html#task=${task.id}" class="task-id-link text-sm text-mtext hover:text-maccent">${task.title}</a>
                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
-                        ${task.confidence ? `<span class="text-[10px] text-amber-400 font-mono">${task.confidence}%</span>` : ''}
-                        <span class="text-[10px] text-slate-500">· <a href="task-board.html#task=${task.id}" class="task-id-link font-mono text-slate-500 hover:text-orange-400">${task.id}</a></span>
+                        ${task.confidence ? `<span class="text-[10px] text-mamber font-mono">${task.confidence}%</span>` : ''}
+                        <span class="text-[10px] text-mtext3">· <a href="task-board.html#task=${task.id}" class="task-id-link font-mono text-mtext3 hover:text-maccent">${task.id}</a></span>
                       </div>
-                      <p class="text-[11px] text-slate-400 leading-relaxed mb-2">${task.rationale}</p>
-                      ${task.draft ? `<div class="bg-slate-950 border border-slate-800 rounded p-2 text-[11px] text-slate-300 italic mb-2">"${task.draft.replace(/^"|"$/g,'')}"</div>` : ''}
+                      <p class="text-[11px] text-mtext2 leading-relaxed mb-2">${task.rationale}</p>
+                      ${task.draft ? `<div class="bg-mbg border border-mborder rounded p-2 text-[11px] text-mtext2 italic mb-2">"${task.draft.replace(/^"|"$/g,'')}"</div>` : ''}
                       <div class="flex items-center gap-1.5">
-                        <button class="banner-approve px-2 py-0.5 rounded-md bg-green-500/15 text-green-300 border border-green-500/40 hover:bg-green-500/25 text-[11px] font-medium" data-id="${task.id}">✓ Approve</button>
-                        ${task.draft ? `<a href="inline-create.html#from-task=${task.id}" class="px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 text-[11px]">Edit + send →</a>` : ''}
-                        <button class="banner-dismiss px-2 py-0.5 rounded-md text-slate-500 hover:text-red-400 text-[11px]" data-id="${task.id}">Dismiss</button>
+                        <button class="banner-approve px-2 py-0.5 rounded-md bg-msuccessl text-msuccess border border-msuccess/40 hover:bg-msuccess/25 text-[11px] font-medium" data-id="${task.id}">✓ Approve</button>
+                        ${task.draft ? `<a href="inline-create.html#from-task=${task.id}" class="px-2 py-0.5 rounded-md bg-msurface border border-mborder text-mtext2 hover:bg-mraised text-[11px]">Edit + send →</a>` : ''}
+                        <button class="banner-dismiss px-2 py-0.5 rounded-md text-mtext3 hover:text-mdanger text-[11px]" data-id="${task.id}">Dismiss</button>
                       </div>
                     </div>
                   </div>
@@ -307,18 +355,18 @@
     function renderItinerary(t) {
       const root = document.getElementById('itinerary-list');
       if (t.itinerary.length === 0) {
-        root.innerHTML = '<div class="text-[11px] text-slate-600 italic py-4 text-center">No itinerary yet · trip is in early planning</div>';
+        root.innerHTML = '<div class="text-[11px] text-mtext3 italic py-4 text-center">No itinerary yet · trip is in early planning</div>';
         return;
       }
       root.innerHTML = t.itinerary.map(item => {
-        const statusCls = item.status === 'confirmed' ? 'text-green-400' : item.status === 'on-trip' ? 'text-orange-300' : item.status === 'completed' ? 'text-slate-500' : item.status === 'disrupted' ? 'text-red-400' : 'text-amber-400';
+        const statusCls = item.status === 'confirmed' ? 'text-msuccess' : item.status === 'on-trip' ? 'text-maccent' : item.status === 'completed' ? 'text-mtext3' : item.status === 'disrupted' ? 'text-mdanger' : 'text-mamber';
         const statusLabel = { confirmed: '✓', 'on-trip': '◯', completed: '✓', disrupted: '⚠', 'on-hold': '◐', 'pending-ticket': '◐', 'pending-confirm': '◐', planning: '·' }[item.status] || '·';
         return `
-          <div class="flex items-start gap-3 py-2 border-b border-slate-800 last:border-b-0">
+          <div class="flex items-start gap-3 py-2 border-b border-mborder last:border-b-0">
             <span class="text-base ${statusCls} flex-shrink-0">${statusLabel}</span>
             <div class="flex-1 min-w-0">
-              <div class="text-[11px] text-slate-500 font-mono">${item.day}</div>
-              <div class="text-sm text-slate-200 mt-0.5">${item.event}</div>
+              <div class="text-[11px] text-mtext3 font-mono">${item.day}</div>
+              <div class="text-sm text-mtext mt-0.5">${item.event}</div>
             </div>
             <span class="text-[10px] uppercase tracking-wider ${statusCls} flex-shrink-0">${item.status}</span>
           </div>
@@ -329,16 +377,16 @@
     function renderBookings(t) {
       const root = document.getElementById('bookings-list');
       if (t.bookings.length === 0) {
-        root.innerHTML = '<div class="text-[11px] text-slate-600 italic py-4 text-center">No bookings yet</div>';
+        root.innerHTML = '<div class="text-[11px] text-mtext3 italic py-4 text-center">No bookings yet</div>';
         return;
       }
       root.innerHTML = t.bookings.map(b => `
-        <div class="flex items-center justify-between gap-3 px-3 py-2 bg-slate-950 border border-slate-800 rounded">
+        <div class="flex items-center justify-between gap-3 px-3 py-2 bg-mbg border border-mborder rounded">
           <div class="flex items-center gap-3 min-w-0">
-            <span class="text-[10px] uppercase tracking-wider text-slate-500 w-14 flex-shrink-0">${b.type}</span>
-            <span class="text-sm text-slate-200 truncate">${b.label}</span>
+            <span class="text-[10px] uppercase tracking-wider text-mtext3 w-14 flex-shrink-0">${b.type}</span>
+            <span class="text-sm text-mtext truncate">${b.label}</span>
           </div>
-          <span class="text-[11px] ${b.warn ? 'text-red-400' : 'text-slate-400'} flex-shrink-0">${b.status}</span>
+          <span class="text-[11px] ${b.warn ? 'text-mdanger' : 'text-mtext2'} flex-shrink-0">${b.status}</span>
         </div>
       `).join('');
     }
@@ -346,7 +394,7 @@
     function renderTripTasks(t) {
       const root = document.getElementById('trip-tasks-list');
       if (t.linkedTasks.length === 0) {
-        root.innerHTML = '<div class="text-[11px] text-slate-600 italic py-2">No linked tasks</div>';
+        root.innerHTML = '<div class="text-[11px] text-mtext3 italic py-2">No linked tasks</div>';
         return;
       }
       root.innerHTML = t.linkedTasks.map(tid => {
@@ -355,13 +403,13 @@
         const tier = TIER_STYLES[task.routing_tier];
         const isPending = task.approval_state === 'pending-review' && task.status !== 'dismissed';
         return `
-          <a href="task-board.html#task=${tid}" class="task-id-link block bg-slate-950 border border-slate-800 rounded p-2 hover:border-orange-500/40 transition-colors group relative">
-            ${isPending ? '<span class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-orange-500" title="AI suggestion pending"></span>' : ''}
+          <a href="task-board.html#task=${tid}" class="task-id-link block bg-mbg border border-mborder rounded p-2 hover:border-maccent/40 transition-colors group relative">
+            ${isPending ? '<span class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-maccent" title="AI suggestion pending"></span>' : ''}
             <div class="flex items-start justify-between gap-2 mb-1">
-              <span class="text-[10px] font-mono text-slate-500 group-hover:text-orange-400">${tid}</span>
+              <span class="text-[10px] font-mono text-mtext3 group-hover:text-maccent">${tid}</span>
               <span class="px-1.5 py-0.5 rounded text-[9px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
             </div>
-            <div class="text-[11px] text-slate-200 leading-snug pr-4">${task.title}</div>
+            <div class="text-[11px] text-mtext leading-snug pr-4">${task.title}</div>
           </a>
         `;
       }).join('');
@@ -371,13 +419,13 @@
       const root = document.getElementById('client-snapshot');
       root.innerHTML = `
         <div class="flex items-center gap-2 mb-2">
-          <div class="w-8 h-8 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[10px] font-semibold flex-shrink-0">${t.clientName.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase()}</div>
+          <div class="w-8 h-8 rounded-full bg-maccentl text-maccent flex items-center justify-center text-[10px] font-semibold flex-shrink-0">${t.clientName.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase()}</div>
           <div class="min-w-0">
-            <div class="text-sm font-medium text-slate-100 truncate">${t.clientName}</div>
-            <div class="text-[10px] text-slate-500">${t.clientTier} · ${t.clientPastTrips} past trip${t.clientPastTrips === 1 ? '' : 's'}</div>
+            <div class="text-sm font-medium text-mtext truncate">${t.clientName}</div>
+            <div class="text-[10px] text-mtext3">${t.clientTier} · ${t.clientPastTrips} past trip${t.clientPastTrips === 1 ? '' : 's'}</div>
           </div>
         </div>
-        <a href="inline-create.html" class="block text-[11px] text-orange-400 hover:text-orange-300 mt-2">Open conversation →</a>
+        <a href="inline-create.html" class="block text-[11px] text-maccent hover:text-maccenth mt-2">Open conversation →</a>
       `;
     }
 
@@ -394,7 +442,7 @@
 
     function showToast(msg) {
       const t = document.createElement('div');
-      t.className = 'fixed bottom-6 right-6 z-[70] bg-slate-800 border border-slate-700 rounded-lg shadow-xl px-4 py-2.5 text-sm text-slate-200';
+      t.className = 'fixed bottom-6 right-6 z-[70] bg-msurface border border-mborder rounded-lg shadow-xl px-4 py-2.5 text-sm text-mtext';
       t.textContent = msg;
       document.body.appendChild(t);
       setTimeout(() => { t.style.transition = 'opacity .25s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 280); }, 2500);

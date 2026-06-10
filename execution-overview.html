@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Execution Layer Overview — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,91 +84,91 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
-      <div class="mb-6 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mb-6 px-4 py-3 rounded-lg bg-mambersoft border border-mamber/30 flex items-start gap-3">
+        <svg class="w-5 h-5 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-300">Execution layer addendum · v0.1 draft proposal</p>
-          <p class="text-xs text-amber-200/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
+          <p class="text-sm font-semibold text-mamber">Execution layer addendum · v0.1 draft proposal</p>
+          <p class="text-xs text-mamber/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
         </div>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Execution Layer Overview</h2>
-        <p class="text-sm text-slate-500 mt-1">Post-approval execution model, v0.1 draft</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Execution Layer Overview</h2>
+        <p class="text-sm text-mtext3 mt-1">Post-approval execution model, v0.1 draft</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">The v1.0 outline covers the four-stage flow up to and including approval, plus the canonical task schema and closure shape. It defines the execution metadata fields (action, actor, when, routing_tier) but does not describe the execution engine. Once a task is approved, what fires? How does the verb-phrase in action bind to a concrete function, API, or AI capability? What happens on failure? What fields capture the execution output? This addendum is the answer.</p>
+      <p class="text-sm text-mtext2 mb-6 leading-relaxed">The v1.0 outline covers the four-stage flow up to and including approval, plus the canonical task schema and closure shape. It defines the execution metadata fields (action, actor, when, routing_tier) but does not describe the execution engine. Once a task is approved, what fires? How does the verb-phrase in action bind to a concrete function, API, or AI capability? What happens on failure? What fields capture the execution output? This addendum is the answer.</p>
 
       <!-- What v1.0 owns vs what this addendum owns -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">What v1.0 owns and what this addendum owns</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">What v1.0 owns and what this addendum owns</h3>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Concern</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Owned by v1.0</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Owned by this addendum</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Concern</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Owned by v1.0</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Owned by this addendum</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Signal detection and Suggestion synthesis</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§3, §4, §5, §7.1 stages 1 to 2</td>
-                <td class="px-4 py-3 text-xs text-slate-400">(cross-references only)</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Signal detection and Suggestion synthesis</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§3, §4, §5, §7.1 stages 1 to 2</td>
+                <td class="px-4 py-3 text-xs text-mtext3">(cross-references only)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Approval gate (human or auto above threshold)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§7.1 stage 3</td>
-                <td class="px-4 py-3 text-xs text-slate-400">(cross-references only)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Approval gate (human or auto above threshold)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§7.1 stage 3</td>
+                <td class="px-4 py-3 text-xs text-mtext3">(cross-references only)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Canonical task schema (29 fields)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§7.2</td>
-                <td class="px-4 py-3 text-xs text-slate-300">(extends with a separate task_execution table, §6 below)</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Canonical task schema (29 fields)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§7.2</td>
+                <td class="px-4 py-3 text-xs text-mtext2">(extends with a separate task_execution table, §6 below)</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Routing tier (auto / assist / escalate)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§6</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Resolved into concrete executor invocation, §5</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Routing tier (auto / assist / escalate)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§6</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Resolved into concrete executor invocation, §5</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Closure model</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§7.3</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Wired to executor outcomes, §7</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Closure model</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§7.3</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Wired to executor outcomes, §7</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">What runs after approval</td>
-                <td class="px-4 py-3 text-xs text-slate-400">not covered</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§3 to §10</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">What runs after approval</td>
+                <td class="px-4 py-3 text-xs text-mtext3">not covered</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§3 to §10</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">How action verb-phrases map to functions</td>
-                <td class="px-4 py-3 text-xs text-slate-400">not covered</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§5</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">How action verb-phrases map to functions</td>
+                <td class="px-4 py-3 text-xs text-mtext3">not covered</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§5</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Trigger enumeration and event bus</td>
-                <td class="px-4 py-3 text-xs text-slate-400">not covered</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§4</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Trigger enumeration and event bus</td>
+                <td class="px-4 py-3 text-xs text-mtext3">not covered</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§4</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Execution failure, retry, cancellation</td>
-                <td class="px-4 py-3 text-xs text-slate-400">not covered</td>
-                <td class="px-4 py-3 text-xs text-slate-300">§6, §7, §9</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Execution failure, retry, cancellation</td>
+                <td class="px-4 py-3 text-xs text-mtext3">not covered</td>
+                <td class="px-4 py-3 text-xs text-mtext2">§6, §7, §9</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Agent SDK / skills / workflows internals</td>
-                <td class="px-4 py-3 text-xs text-slate-400">not covered</td>
-                <td class="px-4 py-3 text-xs text-slate-400">explicitly out of scope, §11</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Agent SDK / skills / workflows internals</td>
+                <td class="px-4 py-3 text-xs text-mtext3">not covered</td>
+                <td class="px-4 py-3 text-xs text-mtext3">explicitly out of scope, §11</td>
               </tr>
             </tbody>
           </table>
@@ -125,52 +177,52 @@
 
       <!-- Definitions (9 terms in 3-col grid) -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Execution layer definitions</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Execution layer definitions</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Trigger</div>
-            <p class="text-sm text-slate-300 leading-relaxed">The condition that causes an approved canonical task to start executing. Derived from the task's when field (v1.0 §7.2). Three concrete types in v1: immediate, scheduled, on-event. A fourth, deferred, defers firing entirely until manual invocation.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Trigger</div>
+            <p class="text-sm text-mtext2 leading-relaxed">The condition that causes an approved canonical task to start executing. Derived from the task's when field (v1.0 §7.2). Three concrete types in v1: immediate, scheduled, on-event. A fourth, deferred, defers firing entirely until manual invocation.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Action</div>
-            <p class="text-sm text-slate-300 leading-relaxed">The verb-phrase work being done, as captured in the v1.0 action field ("Search Aman Tokyo", "Send follow-up reply", "Re-quote hotel after vendor change"). Free-text at the data layer, bound to a concrete executor at approval time.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Action</div>
+            <p class="text-sm text-mtext2 leading-relaxed">The verb-phrase work being done, as captured in the v1.0 action field ("Search Aman Tokyo", "Send follow-up reply", "Re-quote hotel after vendor change"). Free-text at the data layer, bound to a concrete executor at approval time.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Executor</div>
-            <p class="text-sm text-slate-300 leading-relaxed">The concrete worker that runs an action. Can be an AI capability (a named classifier / watcher / agent skill), a human queue (the assigned owner's inbox), or a composite of both (AI proposes, human approves, AI fires). Every approved canonical task has exactly one executor bound to it.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Executor</div>
+            <p class="text-sm text-mtext2 leading-relaxed">The concrete worker that runs an action. Can be an AI capability (a named classifier / watcher / agent skill), a human queue (the assigned owner's inbox), or a composite of both (AI proposes, human approves, AI fires). Every approved canonical task has exactly one executor bound to it.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Executor kind</div>
-            <p class="text-sm text-slate-300 leading-relaxed">One of ai-capability, human-queue, composite. Maps to the v1.0 §6 routing tier as follows: auto typically resolves to ai-capability; assist resolves to composite; escalate resolves to human-queue. Exceptions are possible per task subtype.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Executor kind</div>
+            <p class="text-sm text-mtext2 leading-relaxed">One of ai-capability, human-queue, composite. Maps to the v1.0 §6 routing tier as follows: auto typically resolves to ai-capability; assist resolves to composite; escalate resolves to human-queue. Exceptions are possible per task subtype.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Executor registry</div>
-            <p class="text-sm text-slate-300 leading-relaxed">A versioned table mapping (task_type, subtype, action_pattern) to a concrete executor configuration. Product-tunable. Resolution happens at approval time, the binding is then immutable for the life of the canonical task.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Executor registry</div>
+            <p class="text-sm text-mtext2 leading-relaxed">A versioned table mapping (task_type, subtype, action_pattern) to a concrete executor configuration. Product-tunable. Resolution happens at approval time, the binding is then immutable for the life of the canonical task.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Execution contract</div>
-            <p class="text-sm text-slate-300 leading-relaxed">The resolved (trigger, action, actor, executor, routing tier) tuple for a specific canonical task. Locked at approval. Edits before approval, not after.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Execution contract</div>
+            <p class="text-sm text-mtext2 leading-relaxed">The resolved (trigger, action, actor, executor, routing tier) tuple for a specific canonical task. Locked at approval. Edits before approval, not after.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Execution attempt</div>
-            <p class="text-sm text-slate-300 leading-relaxed">One run of an executor against a canonical task. A task may have multiple attempts (retry, manual rerun) but only one execution contract. Recorded in the task_execution table.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Execution attempt</div>
+            <p class="text-sm text-mtext2 leading-relaxed">One run of an executor against a canonical task. A task may have multiple attempts (retry, manual rerun) but only one execution contract. Recorded in the task_execution table.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Execution result</div>
-            <p class="text-sm text-slate-300 leading-relaxed">The output of a successful execution attempt, stored as a JSON payload in the task_execution row. Examples: ranked list of hotel matches, message receipt id, schedule confirmation id.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Execution result</div>
+            <p class="text-sm text-mtext2 leading-relaxed">The output of a successful execution attempt, stored as a JSON payload in the task_execution row. Examples: ranked list of hotel matches, message receipt id, schedule confirmation id.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Reconciler sweep</div>
-            <p class="text-sm text-slate-300 leading-relaxed">A periodic job (every 24 hours in v1) that scans for tasks stuck in in_progress with no execution row updated within the window, then flags them as orphans for ops review. Catches "executor fired but never reported back" cases.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Reconciler sweep</div>
+            <p class="text-sm text-mtext2 leading-relaxed">A periodic job (every 24 hours in v1) that scans for tasks stuck in in_progress with no execution row updated within the window, then flags them as orphans for ops review. Catches "executor fired but never reported back" cases.</p>
           </div>
 
         </div>
@@ -178,38 +230,38 @@
 
       <!-- The Execution Contract (5 elements) -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">The Execution Contract</h3>
-        <p class="text-xs text-slate-400 mb-4 leading-relaxed">Every canonical task carries an execution contract, resolved at approval time and immutable thereafter. The contract has five elements, each derived from a v1.0 field:</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">The Execution Contract</h3>
+        <p class="text-xs text-mtext2 mb-4 leading-relaxed">Every canonical task carries an execution contract, resolved at approval time and immutable thereafter. The contract has five elements, each derived from a v1.0 field:</p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Trigger type</h4>
-            <p class="text-xs text-slate-400 mb-2">Resolved from v1.0 field: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">when</code></p>
-            <p class="text-xs text-slate-300">Whether the executor fires immediately, at a timestamp, on a named event, or only on manual invocation.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Trigger type</h4>
+            <p class="text-xs text-mtext2 mb-2">Resolved from v1.0 field: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">when</code></p>
+            <p class="text-xs text-mtext2">Whether the executor fires immediately, at a timestamp, on a named event, or only on manual invocation.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Executor binding</h4>
-            <p class="text-xs text-slate-400 mb-2">Resolved from: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">action</code> + <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">task_type</code> + <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">subtype</code></p>
-            <p class="text-xs text-slate-300">Which concrete executor (function / API / skill / human queue) runs the work. Resolved via the registry.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Executor binding</h4>
+            <p class="text-xs text-mtext2 mb-2">Resolved from: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">action</code> + <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">task_type</code> + <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">subtype</code></p>
+            <p class="text-xs text-mtext2">Which concrete executor (function / API / skill / human queue) runs the work. Resolved via the registry.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Runtime context</h4>
-            <p class="text-xs text-slate-400 mb-2">Resolved from v1.0 field: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">actor</code></p>
-            <p class="text-xs text-slate-300">Who or what carries the work. For ai-capability executors this names the capability; for human-queue executors this names the operator inbox; for composite executors this names the human reviewer plus the AI capability.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Runtime context</h4>
+            <p class="text-xs text-mtext2 mb-2">Resolved from v1.0 field: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">actor</code></p>
+            <p class="text-xs text-mtext2">Who or what carries the work. For ai-capability executors this names the capability; for human-queue executors this names the operator inbox; for composite executors this names the human reviewer plus the AI capability.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Approval and execution flow</h4>
-            <p class="text-xs text-slate-400 mb-2">Resolved from v1.0 field: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">routing_tier</code></p>
-            <p class="text-xs text-slate-300">Auto fires the executor without further human gate. Assist runs the executor up to a draft state, then waits for human approval before continuing. Escalate skips AI execution entirely and routes to a human queue with high priority.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Approval and execution flow</h4>
+            <p class="text-xs text-mtext2 mb-2">Resolved from v1.0 field: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">routing_tier</code></p>
+            <p class="text-xs text-mtext2">Auto fires the executor without further human gate. Assist runs the executor up to a draft state, then waits for human approval before continuing. Escalate skips AI execution entirely and routes to a human queue with high priority.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Closure rule</h4>
-            <p class="text-xs text-slate-400 mb-2">Resolved from: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">task_type</code> (via Appendix F mapping)</p>
-            <p class="text-xs text-slate-300">How the task transitions to done (or blocked) once the executor returns. Wired in §7.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Closure rule</h4>
+            <p class="text-xs text-mtext2 mb-2">Resolved from: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">task_type</code> (via Appendix F mapping)</p>
+            <p class="text-xs text-mtext2">How the task transitions to done (or blocked) once the executor returns. Wired in §7.</p>
           </div>
 
         </div>
@@ -217,11 +269,11 @@
 
       <!-- Agent layer boundary callout -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Agent layer boundary</h3>
-        <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5">
-          <p class="text-sm text-slate-300 mb-3">The agent layer (Claude Agent SDK skills, workflows, orchestrator) is a separate spec, owned by the platform and agent squad. This addendum does not specify or constrain how that layer is built.</p>
-          <p class="text-sm font-semibold text-slate-200 mb-2">The task layer's contract with the agent layer:</p>
-          <ul class="space-y-2 text-xs text-slate-300">
+        <h3 class="text-sm font-semibold text-mtext mb-3">Agent layer boundary</h3>
+        <div class="bg-minfol border border-minfo/30 rounded-lg p-5">
+          <p class="text-sm text-mtext2 mb-3">The agent layer (Claude Agent SDK skills, workflows, orchestrator) is a separate spec, owned by the platform and agent squad. This addendum does not specify or constrain how that layer is built.</p>
+          <p class="text-sm font-semibold text-mtext mb-2">The task layer's contract with the agent layer:</p>
+          <ul class="space-y-2 text-xs text-mtext2">
             <li>• An executor of executor_kind = ai-capability invokes a named capability in the agent layer.</li>
             <li>• The capability is identified by a slug stored in executor_config.capability_id. The slug is opaque to the task layer.</li>
             <li>• The capability conforms to a synchronous interface (returns within a few seconds with a result payload or error) or an asynchronous one (returns an acknowledgement quickly, calls back later with task_id and payload).</li>
@@ -232,33 +284,33 @@
 
       <!-- Reference patterns (5 cards) -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Reference patterns</h3>
-        <p class="text-xs text-slate-400 mb-4 leading-relaxed">External products with execution-layer patterns the squad can borrow from. Linked here so the alignment meeting has a shared visual vocabulary.</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Reference patterns</h3>
+        <p class="text-xs text-mtext2 mb-4 leading-relaxed">External products with execution-layer patterns the squad can borrow from. Linked here so the alignment meeting has a shared visual vocabulary.</p>
         <div class="space-y-3">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-1.5">Notion automations</h4>
-            <p class="text-xs text-slate-300">Trigger plus condition plus action shape. The framing Sunthar called out on the May 14 standup. Useful reference for the on-event trigger model and for product-tunable action recipes.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-1.5">Notion automations</h4>
+            <p class="text-xs text-mtext2">Trigger plus condition plus action shape. The framing Sunthar called out on the May 14 standup. Useful reference for the on-event trigger model and for product-tunable action recipes.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-1.5">GitHub Actions</h4>
-            <p class="text-xs text-slate-300">YAML workflows defining triggers (on:), conditions (if:), and steps (each running a named action or composite). Useful reference for the executor registry pattern, especially the versioned action references.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-1.5">GitHub Actions</h4>
+            <p class="text-xs text-mtext2">YAML workflows defining triggers (on:), conditions (if:), and steps (each running a named action or composite). Useful reference for the executor registry pattern, especially the versioned action references.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-1.5">Zapier or Make</h4>
-            <p class="text-xs text-slate-300">Visual trigger-action chains. Useful reference for the operator-facing surface in v3 if product wants a no-code path for adding executors.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-1.5">Zapier or Make</h4>
+            <p class="text-xs text-mtext2">Visual trigger-action chains. Useful reference for the operator-facing surface in v3 if product wants a no-code path for adding executors.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-1.5">Temporal or AWS Step Functions or Celery</h4>
-            <p class="text-xs text-slate-300">Long-running orchestration with persisted state, retry policies, and timeout handling. Useful reference for v3 pause-resume work.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-1.5">Temporal or AWS Step Functions or Celery</h4>
+            <p class="text-xs text-mtext2">Long-running orchestration with persisted state, retry policies, and timeout handling. Useful reference for v3 pause-resume work.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-1.5">Airflow</h4>
-            <p class="text-xs text-slate-300">DAG-based scheduled task orchestration with retries and observability. Useful reference for the scheduled-fire side and the reconciler sweep pattern.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-1.5">Airflow</h4>
+            <p class="text-xs text-mtext2">DAG-based scheduled task orchestration with retries and observability. Useful reference for the scheduled-fire side and the reconciler sweep pattern.</p>
           </div>
 
         </div>

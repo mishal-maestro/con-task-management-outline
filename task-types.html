@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>App. F — Task Types — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,166 +84,166 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Appendix F — Task types and rollout phases</h2>
-        <p class="text-sm text-slate-500 mt-1">9 task_type categories phased v1 / v2 / v3</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Appendix F — Task types and rollout phases</h2>
+        <p class="text-sm text-mtext3 mt-1">9 task_type categories phased v1 / v2 / v3</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">The <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">task_type</code> field (§7.2) determines UI rendering and rollout phase. This appendix is the starter list: 9 categories phased into v1 / v2 / v3, with example subtypes per category and where each surfaces in Conductor. Not exhaustive; alignment meeting refines.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">The <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">task_type</code> field (§7.2) determines UI rendering and rollout phase. This appendix is the starter list: 9 categories phased into v1 / v2 / v3, with example subtypes per category and where each surfaces in Conductor. Not exhaustive; alignment meeting refines.</p>
 
       <!-- Phase 1 -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-6">
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-6">
         <div class="flex items-center gap-3 mb-3">
-          <span class="px-2 py-1 rounded text-xs font-mono font-semibold bg-green-500/10 text-green-400 border border-green-500/30">v1 launch</span>
-          <h3 class="text-base font-semibold text-slate-100">Phase 1 — four categories</h3>
+          <span class="px-2 py-1 rounded text-xs font-mono font-semibold bg-msuccessl text-msuccess border border-msuccess/30">v1 launch</span>
+          <h3 class="text-base font-semibold text-mtext">Phase 1 — four categories</h3>
         </div>
 
-        <div class="overflow-x-auto bg-slate-950/40 rounded-lg border border-slate-800 mb-4">
+        <div class="overflow-x-auto bg-mbg/40 rounded-lg border border-mborder mb-4">
           <table class="w-full">
             <thead>
-              <tr class="bg-slate-800/50 border-b border-slate-800">
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Category (<code>task_type</code>)</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Example subtypes</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Where it surfaces</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Origin buckets</th>
+              <tr class="bg-msurface/50 border-b border-mborder">
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Category (<code>task_type</code>)</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Example subtypes</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Where it surfaces</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Origin buckets</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800 text-xs">
+            <tbody class="divide-y divide-mborder text-xs">
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>messaging</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>reply-draft</code>, <code>scheduled-send</code>, <code>follow-up-prompt</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Composer view; inline in the conversation thread; member-page activity feed</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Client-driven (§3.1)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>messaging</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>reply-draft</code>, <code>scheduled-send</code>, <code>follow-up-prompt</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Composer view; inline in the conversation thread; member-page activity feed</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Client-driven (§3.1)</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>booking-action</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>property-search</code>, <code>quote-request</code>, <code>vendor-rebook</code>, <code>payment-chase</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Trip page (hotel / flight / restaurant section); component-detail view</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Client-driven (§3.1), World-driven (§3.2)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>booking-action</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>property-search</code>, <code>quote-request</code>, <code>vendor-rebook</code>, <code>payment-chase</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Trip page (hotel / flight / restaurant section); component-detail view</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Client-driven (§3.1), World-driven (§3.2)</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>trip-prep</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>pre-arrival-checklist</code>, <code>day-of-departure-message</code>, <code>day-1-check-in</code>, <code>post-trip-review</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Trip page (timeline); scheduled-messages view</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Trip lifecycle (§3.3)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>trip-prep</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>pre-arrival-checklist</code>, <code>day-of-departure-message</code>, <code>day-1-check-in</code>, <code>post-trip-review</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Trip page (timeline); scheduled-messages view</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Trip lifecycle (§3.3)</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>disruption-response</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>weather-alert-reroute</code>, <code>flight-cancellation-rebook</code>, <code>vendor-side-change-respond</code>, <code>compliance-advisory-brief</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Trip page (alerts panel); ops dashboard with high-priority badge</td>
-                <td class="px-4 py-3 text-slate-400 align-top">World-driven (§3.2)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>disruption-response</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>weather-alert-reroute</code>, <code>flight-cancellation-rebook</code>, <code>vendor-side-change-respond</code>, <code>compliance-advisory-brief</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Trip page (alerts panel); ops dashboard with high-priority badge</td>
+                <td class="px-4 py-3 text-mtext3 align-top">World-driven (§3.2)</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="text-xs text-slate-400 leading-relaxed">These four are the v1 launch set, assuming Andy's AI messaging work lands in parallel. They cover the messaging flow, the booking flow, the templated trip lifecycle, and time-sensitive disruptions — the patterns the ops team uses every day in CC v1.</p>
+        <p class="text-xs text-mtext3 leading-relaxed">These four are the v1 launch set, assuming Andy's AI messaging work lands in parallel. They cover the messaging flow, the booking flow, the templated trip lifecycle, and time-sensitive disruptions — the patterns the ops team uses every day in CC v1.</p>
       </div>
 
       <!-- Phase 2 -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-6">
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-6">
         <div class="flex items-center gap-3 mb-3">
-          <span class="px-2 py-1 rounded text-xs font-mono font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">v2</span>
-          <h3 class="text-base font-semibold text-slate-100">Phase 2 — three categories</h3>
+          <span class="px-2 py-1 rounded text-xs font-mono font-semibold bg-mambersoft text-mamber border border-mamber/30">v2</span>
+          <h3 class="text-base font-semibold text-mtext">Phase 2 — three categories</h3>
         </div>
 
-        <div class="overflow-x-auto bg-slate-950/40 rounded-lg border border-slate-800 mb-4">
+        <div class="overflow-x-auto bg-mbg/40 rounded-lg border border-mborder mb-4">
           <table class="w-full">
             <thead>
-              <tr class="bg-slate-800/50 border-b border-slate-800">
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Category (<code>task_type</code>)</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Example subtypes</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Where it surfaces</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Origin buckets</th>
+              <tr class="bg-msurface/50 border-b border-mborder">
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Category (<code>task_type</code>)</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Example subtypes</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Where it surfaces</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Origin buckets</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800 text-xs">
+            <tbody class="divide-y divide-mborder text-xs">
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>member-context</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>preference-capture</code>, <code>returning-client-gesture</code>, <code>care-context-check-in</code>, <code>referral-acknowledgement</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Member page; account page</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Client-driven implicit (§3.1b), Relationship (§3.4)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>member-context</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>preference-capture</code>, <code>returning-client-gesture</code>, <code>care-context-check-in</code>, <code>referral-acknowledgement</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Member page; account page</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Client-driven implicit (§3.1b), Relationship (§3.4)</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>ops-internal</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>coverage-gap</code>, <code>shift-handoff</code>, <code>profile-hygiene-reminder</code>, <code>sla-breach-escalation</code>, <code>workload-imbalance-flag</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Ops dashboard; shift-handoff view</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Internal ops (§3.5)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>ops-internal</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>coverage-gap</code>, <code>shift-handoff</code>, <code>profile-hygiene-reminder</code>, <code>sla-breach-escalation</code>, <code>workload-imbalance-flag</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Ops dashboard; shift-handoff view</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Internal ops (§3.5)</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>agent-subtask</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>ai-research-step</code>, <code>human-followup-call</code>, <code>document-lookup</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Within the agent run; rolls up to the trip page when bound to a trip</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Any (driven by what the TA prompted the agent to research)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>agent-subtask</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>ai-research-step</code>, <code>human-followup-call</code>, <code>document-lookup</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Within the agent run; rolls up to the trip page when bound to a trip</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Any (driven by what the TA prompted the agent to research)</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="text-xs text-slate-400 leading-relaxed">These layer on once the v1 patterns are stable. Internal-ops automation matters for scale but doesn't block the v1 client experience.</p>
+        <p class="text-xs text-mtext3 leading-relaxed">These layer on once the v1 patterns are stable. Internal-ops automation matters for scale but doesn't block the v1 client experience.</p>
       </div>
 
       <!-- Phase 3 -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-6">
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-6">
         <div class="flex items-center gap-3 mb-3">
-          <span class="px-2 py-1 rounded text-xs font-mono font-semibold bg-slate-700/40 text-slate-400 border border-slate-700">v3 (later)</span>
-          <h3 class="text-base font-semibold text-slate-100">Phase 3 — two categories</h3>
+          <span class="px-2 py-1 rounded text-xs font-mono font-semibold bg-mcard text-mtext3 border border-mborderh">v3 (later)</span>
+          <h3 class="text-base font-semibold text-mtext">Phase 3 — two categories</h3>
         </div>
 
-        <div class="overflow-x-auto bg-slate-950/40 rounded-lg border border-slate-800 mb-4">
+        <div class="overflow-x-auto bg-mbg/40 rounded-lg border border-mborder mb-4">
           <table class="w-full">
             <thead>
-              <tr class="bg-slate-800/50 border-b border-slate-800">
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Category (<code>task_type</code>)</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Example subtypes</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Where it surfaces</th>
-                <th class="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Origin buckets</th>
+              <tr class="bg-msurface/50 border-b border-mborder">
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Category (<code>task_type</code>)</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Example subtypes</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Where it surfaces</th>
+                <th class="text-left px-4 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Origin buckets</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800 text-xs">
+            <tbody class="divide-y divide-mborder text-xs">
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>compliance-safety</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>state-dept-advisory-brief</code>, <code>passport-expiry-reminder</code>, <code>visa-renewal-prep</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Member page (compliance section); trip page</td>
-                <td class="px-4 py-3 text-slate-400 align-top">World-driven (§3.2)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>compliance-safety</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>state-dept-advisory-brief</code>, <code>passport-expiry-reminder</code>, <code>visa-renewal-prep</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Member page (compliance section); trip page</td>
+                <td class="px-4 py-3 text-mtext3 align-top">World-driven (§3.2)</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 font-mono text-slate-200 align-top"><code>discovery</code></td>
-                <td class="px-4 py-3 text-slate-300 align-top"><code>behavioural-interest-prompt</code>, <code>deal-saved-followup</code>, <code>search-pattern-nudge</code></td>
-                <td class="px-4 py-3 text-slate-400 align-top">Member page (low-priority badge); curated daily digest</td>
-                <td class="px-4 py-3 text-slate-400 align-top">Client-driven behavioural (§3.1b)</td>
+                <td class="px-4 py-3 font-mono text-mtext align-top"><code>discovery</code></td>
+                <td class="px-4 py-3 text-mtext2 align-top"><code>behavioural-interest-prompt</code>, <code>deal-saved-followup</code>, <code>search-pattern-nudge</code></td>
+                <td class="px-4 py-3 text-mtext3 align-top">Member page (low-priority badge); curated daily digest</td>
+                <td class="px-4 py-3 text-mtext3 align-top">Client-driven behavioural (§3.1b)</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="text-xs text-slate-400 leading-relaxed">Phase 3 covers the more behavioural / ambient surface area. Lower urgency for v1 because the threshold rules (§3.1b) and behavioural-signal scope (§8 q12) need product judgement before locking. Internal-surface signals from Slack / operator inboxes (§8 q15) plug into Phase 2 or Phase 3 once enumerated.</p>
+        <p class="text-xs text-mtext3 leading-relaxed">Phase 3 covers the more behavioural / ambient surface area. Lower urgency for v1 because the threshold rules (§3.1b) and behavioural-signal scope (§8 q12) need product judgement before locking. Internal-surface signals from Slack / operator inboxes (§8 q15) plug into Phase 2 or Phase 3 once enumerated.</p>
       </div>
 
       <!-- Surface rollout summary -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-6">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">Surface rollout summary</h3>
-        <p class="text-sm text-slate-400 mb-4 leading-relaxed">Engineering and design think in surfaces ("what do we build in v1?"), not just task_type categories. The aggregation below, pulled from the "Where it surfaces" column across the three phase tables, makes the phasing tangible in those terms.</p>
-        <ul class="space-y-2 text-sm text-slate-300">
-          <li class="flex gap-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-green-500/10 text-green-400 border border-green-500/30 flex-shrink-0">v1 surfaces</span><span>composer view, trip page, ops dashboard.</span></li>
-          <li class="flex gap-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30 flex-shrink-0">v2 surfaces</span><span>member page, account page, agent run view.</span></li>
-          <li class="flex gap-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-700/40 text-slate-400 border border-slate-700 flex-shrink-0">v3 surfaces</span><span>member-page compliance section, curated daily digest.</span></li>
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-6">
+        <h3 class="text-base font-semibold text-mtext mb-3">Surface rollout summary</h3>
+        <p class="text-sm text-mtext3 mb-4 leading-relaxed">Engineering and design think in surfaces ("what do we build in v1?"), not just task_type categories. The aggregation below, pulled from the "Where it surfaces" column across the three phase tables, makes the phasing tangible in those terms.</p>
+        <ul class="space-y-2 text-sm text-mtext2">
+          <li class="flex gap-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-msuccessl text-msuccess border border-msuccess/30 flex-shrink-0">v1 surfaces</span><span>composer view, trip page, ops dashboard.</span></li>
+          <li class="flex gap-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-mambersoft text-mamber border border-mamber/30 flex-shrink-0">v2 surfaces</span><span>member page, account page, agent run view.</span></li>
+          <li class="flex gap-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-mcard text-mtext3 border border-mborderh flex-shrink-0">v3 surfaces</span><span>member-page compliance section, curated daily digest.</span></li>
         </ul>
       </div>
 
       <!-- How to use -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">How to use this appendix</h3>
-        <ul class="space-y-2 text-sm text-slate-300">
-          <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">•</span> <span><strong class="text-slate-200">Engineers:</strong> <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">task_type</code> is one of these 9 values in v1; subtypes are the enumerable child within each category.</span></li>
-          <li class="flex gap-2"><span class="text-blue-400 flex-shrink-0">•</span> <span><strong class="text-slate-200">Designers:</strong> each row's "where it surfaces" column drives the rendering decisions per task type.</span></li>
-          <li class="flex gap-2"><span class="text-orange-400 flex-shrink-0">•</span> <span><strong class="text-slate-200">Alignment meeting:</strong> confirm the phase split is right, prune / add categories, confirm subtype starter list for Phase 1 categories.</span></li>
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-8">
+        <h3 class="text-base font-semibold text-mtext mb-3">How to use this appendix</h3>
+        <ul class="space-y-2 text-sm text-mtext2">
+          <li class="flex gap-2"><span class="text-chip-purple flex-shrink-0">•</span> <span><strong class="text-mtext">Engineers:</strong> <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">task_type</code> is one of these 9 values in v1; subtypes are the enumerable child within each category.</span></li>
+          <li class="flex gap-2"><span class="text-chip-blue flex-shrink-0">•</span> <span><strong class="text-mtext">Designers:</strong> each row's "where it surfaces" column drives the rendering decisions per task type.</span></li>
+          <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> <span><strong class="text-mtext">Alignment meeting:</strong> confirm the phase split is right, prune / add categories, confirm subtype starter list for Phase 1 categories.</span></li>
         </ul>
       </div>
 

@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Mode — Epics & Stories — Conductor Task Mgmt</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,20 +84,20 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Sunthar's PRD — Conductor Agent Mode V1
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Agent Mode — Epics &amp; Stories</h2>
-        <p class="text-sm text-slate-500 mt-1">Sunthar's PRD V1, broken into 7 epics and 30 stories — the build backbone. The clickable Agent tab demonstrates them in a real system view.</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Agent Mode — Epics &amp; Stories</h2>
+        <p class="text-sm text-mtext3 mt-1">Sunthar's PRD V1, broken into 7 epics and 30 stories — the build backbone. The clickable Agent tab demonstrates them in a real system view.</p>
       </div>
 
       <div id="epic-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5"></div>
 
-      <p class="text-xs text-slate-600 mt-6">See it working — <a href="prototype/agent.html" class="text-orange-400 hover:text-orange-300">the clickable Agent tab</a> · <a href="agent-walkthrough.html" class="text-orange-400 hover:text-orange-300">the hero-flow walkthrough</a>.</p>
+      <p class="text-xs text-mtext3 mt-6">See it working — <a href="prototype/agent.html" class="text-maccent hover:text-maccenth">the clickable Agent tab</a> · <a href="agent-walkthrough.html" class="text-maccent hover:text-maccenth">the hero-flow walkthrough</a>.</p>
 
     </div>
   </main>
@@ -117,18 +169,18 @@
       let n = 0;
       const stories = e.stories.map(s => {
         n++;
-        return `<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-slate-800/50 transition-colors">
-          <span class="font-mono text-[10px] text-slate-500 pt-0.5 flex-shrink-0">${e.id}-S${n}</span>
-          <span class="text-xs text-slate-300 leading-snug">${Theme.escapeHtml(s)}</span>
+        return `<div class="flex items-start gap-2.5 p-2 rounded-md hover:bg-msurface/50 transition-colors">
+          <span class="font-mono text-[10px] text-mtext3 pt-0.5 flex-shrink-0">${e.id}-S${n}</span>
+          <span class="text-xs text-mtext2 leading-snug">${Theme.escapeHtml(s)}</span>
         </div>`;
       }).join('');
-      return `<div class="bg-slate-900 border ${e.overlap ? 'border-orange-500/50' : 'border-slate-800'} rounded-lg p-5 flex flex-col">
+      return `<div class="bg-mcard border ${e.overlap ? 'border-maccent/50' : 'border-mborder'} rounded-lg p-5 flex flex-col">
         <div class="flex items-center gap-2 mb-1">
-          <span class="font-mono text-xs font-semibold text-orange-500">${e.id}</span>
-          <h3 class="text-sm font-semibold text-slate-100">${Theme.escapeHtml(e.title)}</h3>
-          ${e.overlap ? '<span class="ml-auto text-[9px] font-mono uppercase tracking-wider text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5">Task-layer overlap</span>' : ''}
+          <span class="font-mono text-xs font-semibold text-maccent">${e.id}</span>
+          <h3 class="text-sm font-semibold text-mtext">${Theme.escapeHtml(e.title)}</h3>
+          ${e.overlap ? '<span class="ml-auto text-[9px] font-mono uppercase tracking-wider text-maccenth bg-maccentl rounded px-1.5 py-0.5">Task-layer overlap</span>' : ''}
         </div>
-        <p class="text-xs text-slate-500 leading-relaxed mb-3">${Theme.escapeHtml(e.summary)}</p>
+        <p class="text-xs text-mtext3 leading-relaxed mb-3">${Theme.escapeHtml(e.summary)}</p>
         <div class="space-y-0.5 mt-auto">${stories}</div>
       </div>`;
     }).join('');

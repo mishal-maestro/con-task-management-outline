@@ -3,11 +3,11 @@
 // Field shapes per PRD v1.0 §7.2 (canonical task record).
 
 const TEAM = [
-  { id: 'mc', name: 'Maya Chen',     role: 'TA',            initials: 'MC', color: 'bg-orange-500/20 text-orange-300' },
-  { id: 'js', name: 'Jordan Singh',  role: 'TA',            initials: 'JS', color: 'bg-blue-500/20 text-blue-300'     },
-  { id: 'rp', name: 'Rae Park',      role: 'Ops',           initials: 'RP', color: 'bg-emerald-500/20 text-emerald-300' },
-  { id: 'tk', name: 'Tomás Kovac',   role: 'Ops Manager',   initials: 'TK', color: 'bg-fuchsia-500/20 text-fuchsia-300' },
-  { id: 'ai', name: 'AI · System',   role: 'AI agent',      initials: 'AI', color: 'bg-slate-700 text-slate-300' },
+  { id: 'mc', name: 'Maya Chen',     role: 'TA',            initials: 'MC', color: 'bg-chip-orange text-chip-orange' },
+  { id: 'js', name: 'Jordan Singh',  role: 'TA',            initials: 'JS', color: 'bg-chip-blue text-chip-blue'     },
+  { id: 'rp', name: 'Rae Park',      role: 'Ops',           initials: 'RP', color: 'bg-chip-green text-chip-green' },
+  { id: 'tk', name: 'Tomás Kovac',   role: 'Ops Manager',   initials: 'TK', color: 'bg-chip-pink text-chip-pink' },
+  { id: 'ai', name: 'AI · System',   role: 'AI agent',      initials: 'AI', color: 'bg-mborder text-mtext2' },
 ];
 
 function memberById(id) { return TEAM.find(m => m.id === id) || TEAM[0]; }
@@ -570,10 +570,10 @@ const TIER_STYLES = {
 };
 
 const PRIORITY_STYLES = {
-  urgent: { dot: 'bg-red-500',    label: 'Urgent' },
-  high:   { dot: 'bg-orange-500', label: 'High'   },
-  medium: { dot: 'bg-sky-500',    label: 'Medium' },
-  low:    { dot: 'bg-slate-500',  label: 'Low'    },
+  urgent: { dot: 'bg-mdanger',    label: 'Urgent' },
+  high:   { dot: 'bg-maccent', label: 'High'   },
+  medium: { dot: 'bg-minfo',    label: 'Medium' },
+  low:    { dot: 'bg-mborder',  label: 'Low'    },
 };
 
 const TASK_TYPE_LABELS = {
@@ -607,5 +607,5 @@ const SOURCE_CHANNELS = {
   'system-feed':      { label: 'Signal feed',     color: 'text-red-400',    svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 00-4-5.7V5a2 2 0 00-4 0v.3A6 6 0 006 11v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1"/></svg>' },
   'system-schedule':  { label: 'Scheduled query', color: 'text-purple-400', svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' },
   'system-ops':       { label: 'Ops system',      color: 'text-amber-400',  svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' },
-  'system':           { label: 'System',          color: 'text-slate-400',  svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>' },
+  'system':           { label: 'System',          color: 'text-mtext2',  svg: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>' },
 };

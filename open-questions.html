@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Open Questions — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,202 +84,202 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Open Questions</h2>
-        <p class="text-sm text-slate-500 mt-1">For the alignment meeting</p>
+        <h2 class="text-2xl font-semibold text-mtext tracking-tight">Open Questions</h2>
+        <p class="text-sm text-mtext3 mt-1">For the alignment meeting</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">These are the calls only the PM + TA leads can make. The outline does <em>not</em> pre-decide them.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">These are the calls only the PM + TA leads can make. The outline does <em>not</em> pre-decide them.</p>
 
       <!-- 2-col grid of 10 question cards -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">1</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">1</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Bucket priority for MVP</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">Five buckets in §3. Which 1-2 do we build for first? Different stakeholders may rank the buckets differently — World-driven (weather, vendor changes) versus Client-driven (explicit requests) versus Trip lifecycle (pre-arrival prep). Rank order is the gate before any scoping.</p>
-              <div class="bg-blue-500/10 border border-blue-500/30 rounded px-3 py-2">
-                <p class="text-xs text-slate-300 mb-1"><strong>Starting proposal from the Conductor PM</strong> (for the alignment meeting to react to; can be refined in the PRD):</p>
-                <p class="text-xs text-slate-300">Two lanes: (a) explicit client / ops tasks from messaging + core workflows (§3.1a + manual ops creation), and (b) high-confidence proactive tasks from Trip lifecycle (§3.3) + Internal ops (§3.5). Defer behavioural signals (§3.1b), relationship moments (§3.4), and broader ambient sensing to a later phase.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Bucket priority for MVP</h3>
+              <p class="text-xs text-mtext3 leading-relaxed mb-2">Five buckets in §3. Which 1-2 do we build for first? Different stakeholders may rank the buckets differently — World-driven (weather, vendor changes) versus Client-driven (explicit requests) versus Trip lifecycle (pre-arrival prep). Rank order is the gate before any scoping.</p>
+              <div class="bg-minfol border border-minfo/30 rounded px-3 py-2">
+                <p class="text-xs text-mtext2 mb-1"><strong>Starting proposal from the Conductor PM</strong> (for the alignment meeting to react to; can be refined in the PRD):</p>
+                <p class="text-xs text-mtext2">Two lanes: (a) explicit client / ops tasks from messaging + core workflows (§3.1a + manual ops creation), and (b) high-confidence proactive tasks from Trip lifecycle (§3.3) + Internal ops (§3.5). Defer behavioural signals (§3.1b), relationship moments (§3.4), and broader ambient sensing to a later phase.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">2</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">2</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Listening cadence per event-driven stream and schedule-driven query</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Per-stream, not blanket. Some need real-time push (flight delays); some hourly is plenty (vendor pricing); some daily (birthdays). Affects infra cost and operator perception of "liveness."</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Listening cadence per event-driven stream and schedule-driven query</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">Per-stream, not blanket. Some need real-time push (flight delays); some hourly is plenty (vendor pricing); some daily (birthdays). Affects infra cost and operator perception of "liveness."</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">3</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">3</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Default routing per bucket</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Matrix in §6.4. The proposed defaults are a starting point. Worth a working session.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Default routing per bucket</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">Matrix in §6.4. The proposed defaults are a starting point. Worth a working session.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">4</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">4</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Tolerance for false positives, per bucket</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Auto-tier tasks fire without human review. What's the failure budget — global, or per-bucket? A 1% false-positive rate on relationship-bucket tasks is unacceptable; on internal-ops it's fine.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Tolerance for false positives, per bucket</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">Auto-tier tasks fire without human review. What's the failure budget — global, or per-bucket? A 1% false-positive rate on relationship-bucket tasks is unacceptable; on internal-ops it's fine.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">5</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">5</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Closure model and per-origin mapping</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">(a) Same <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">auto</code>/<code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">assist</code>/<code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">escalate</code> tier model as creation, or separate? E.g. an <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">assist</code>-tier task might still auto-close, or always require human ACK regardless of creation tier. (b) Per origin bucket, what's the default closure path (manual completion / AI auto-close / AI-proposed close / manual dismissal)? Trip-lifecycle templated comms could auto-close on confirmation; Relationship-bucket tasks should require human ACK on closure regardless of creation tier. Default mapping to confirm at alignment meeting.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Closure model and per-origin mapping</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">(a) Same <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">auto</code>/<code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">assist</code>/<code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">escalate</code> tier model as creation, or separate? E.g. an <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">assist</code>-tier task might still auto-close, or always require human ACK regardless of creation tier. (b) Per origin bucket, what's the default closure path (manual completion / AI auto-close / AI-proposed close / manual dismissal)? Trip-lifecycle templated comms could auto-close on confirmation; Relationship-bucket tasks should require human ACK on closure regardless of creation tier. Default mapping to confirm at alignment meeting.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">6</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">6</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Default filters and sort orders per role</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Tasks live on the shared task board (§7.2), visible to owners and watchers, not separate per-role dashboards. The open call: what default filters or sort orders do TAs vs ops associates apply, and which presets should we ship out of the box? Drives onboarding and the feel of the shared view without spawning role-specific dashboard products.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Default filters and sort orders per role</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">Tasks live on the shared task board (§7.2), visible to owners and watchers, not separate per-role dashboards. The open call: what default filters or sort orders do TAs vs ops associates apply, and which presets should we ship out of the box? Drives onboarding and the feel of the shared view without spawning role-specific dashboard products.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">7</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">7</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Agent sub-tasks: same entity model as ops tasks, or separate?</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">When the agent splits into AI sub-tasks + human sub-tasks inside a single agent run, do those flow into the global Tasks dashboard, or live local to the agent run?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Agent sub-tasks: same entity model as ops tasks, or separate?</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">When the agent splits into AI sub-tasks + human sub-tasks inside a single agent run, do those flow into the global Tasks dashboard, or live local to the agent run?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">8</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">8</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Scope boundary — Tasks vs Alerts/Monitoring</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Several schedule-driven queries (deal thresholds, award-space scans, expiring documents) feel like alerts more than tasks. Where does Tasks stop and a separate Alerts surface start? Affects whether a task is created up front, or only created when the user acts on the alert.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Scope boundary — Tasks vs Alerts/Monitoring</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">Several schedule-driven queries (deal thresholds, award-space scans, expiring documents) feel like alerts more than tasks. Where does Tasks stop and a separate Alerts surface start? Affects whether a task is created up front, or only created when the user acts on the alert.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">9</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">9</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">VVIP policy and detection</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">(a) What counts as VVIP — client profile flag, account tier, trip value above threshold, or some combination? (b) Once defined, does VVIP status auto-escalate every task tied to that client (or trip above $X) regardless of bucket, or apply specific bypass rules per origin? Both parts affect whether the escalation policy is implementable.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">VVIP policy and detection</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">(a) What counts as VVIP — client profile flag, account tier, trip value above threshold, or some combination? (b) Once defined, does VVIP status auto-escalate every task tied to that client (or trip above $X) regardless of bucket, or apply specific bypass rules per origin? Both parts affect whether the escalation policy is implementable.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">10</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">10</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Closure audit and recovery</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">(a) Beyond a <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">Reopen</code> button, do we need a "soft-closed" intermediate state for high-stakes tasks (VVIP, large bookings)? Trade-off: cleaner UI vs. recoverability. (b) When AI auto-closes a task and an operator reopens it, what does the system do next cycle? Learn (skip re-firing under similar conditions), re-propose closure (forcing operator review), or escalate (mark the task as suspect)?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Closure audit and recovery</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">(a) Beyond a <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">Reopen</code> button, do we need a "soft-closed" intermediate state for high-stakes tasks (VVIP, large bookings)? Trade-off: cleaner UI vs. recoverability. (b) When AI auto-closes a task and an operator reopens it, what does the system do next cycle? Learn (skip re-firing under similar conditions), re-propose closure (forcing operator review), or escalate (mark the task as suspect)?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">11</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">11</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Review queue placement and expiry policy</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">The Surface model is set (central task board + Review queue, see §7.2). Open: where does the Review queue live in Conductor (standalone surface, overview-tab section, notification stack)? What's the expiry policy for stale suggestions, and the batch operations needed to prevent dead-inbox accumulation? Both are design + product calls for the alignment meeting.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Review queue placement and expiry policy</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">The Surface model is set (central task board + Review queue, see §7.2). Open: where does the Review queue live in Conductor (standalone surface, overview-tab section, notification stack)? What's the expiry policy for stale suggestions, and the batch operations needed to prevent dead-inbox accumulation? Both are design + product calls for the alignment meeting.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">12</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">12</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Behavioural-signal scope</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Which app behaviours count as task-shaped intent vs background-only? The §3.1b examples (4 properties tapped in a planning window, 3 deals saved in a region, repeated dynamic-trip-card opens) are starter examples; the full set + threshold values are a product call. Needs mobile-product input.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Behavioural-signal scope</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">Which app behaviours count as task-shaped intent vs background-only? The §3.1b examples (4 properties tapped in a planning window, 3 deals saved in a region, repeated dynamic-trip-card opens) are starter examples; the full set + threshold values are a product call. Needs mobile-product input.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">13</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">13</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Priority assignment rule</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">§7.2 lists priority as a filter and the canonical fields block includes <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">priority</code>, but the outline doesn't say how priority is assigned. Manual? Urgency-derived (T-2 vs T-10 days)? VVIP-weighted? Origin-default with overrides? Affects whether operators trust the priority column.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Priority assignment rule</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">§7.2 lists priority as a filter and the canonical fields block includes <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">priority</code>, but the outline doesn't say how priority is assigned. Manual? Urgency-derived (T-2 vs T-10 days)? VVIP-weighted? Origin-default with overrides? Affects whether operators trust the priority column.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">14</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">14</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Workload-balancing enforcement</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">§3.5 detects imbalance (TA A has 12 active trips, TA B has 5). When the next incoming task arrives, does the system auto-route to the lighter TA, or just flag the imbalance to the ops manager? Affects whether routing in §6 is fully automated or has a human checkpoint at assignment.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Workload-balancing enforcement</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">§3.5 detects imbalance (TA A has 12 active trips, TA B has 5). When the next incoming task arrives, does the system auto-route to the lighter TA, or just flag the imbalance to the ops manager? Affects whether routing in §6 is fully automated or has a human checkpoint at assignment.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">15</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">15</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Internal-surface signal sources</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">§4 enumerates client-facing channels (chat, WhatsApp, email, voice, in-app) and external feeds (weather, flight, vendor data, advisory). Operator-side internal surfaces (Slack threads, operator inboxes, internal tool actions) are not yet enumerated as Signal sources. Which of these should the system sense from, and what's the rollout priority? Scope decision for the alignment meeting; affects how broad the v1 Signal surface is.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Internal-surface signal sources</h3>
+              <p class="text-xs text-mtext3 leading-relaxed">§4 enumerates client-facing channels (chat, WhatsApp, email, voice, in-app) and external feeds (weather, flight, vendor data, advisory). Operator-side internal surfaces (Slack threads, operator inboxes, internal tool actions) are not yet enumerated as Signal sources. Which of these should the system sense from, and what's the rollout priority? Scope decision for the alignment meeting; affects how broad the v1 Signal surface is.</p>
             </div>
           </div>
         </div>

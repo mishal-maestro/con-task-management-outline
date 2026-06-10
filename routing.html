@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Routing Logic — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,46 +84,46 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext2 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Routing Logic</h2>
-        <p class="text-sm text-slate-500 mt-1">Who does the work — AI or human?</p>
+        <h2 class="text-2xl font-semibold text-mtext tracking-tight font-serif">Routing Logic</h2>
+        <p class="text-sm text-mtext3 mt-1">Who does the work — AI or human?</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Routing is the leverage decision. Once a task exists, it is <strong>executed</strong> via <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">auto</code>, <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">assist</code>, or <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">escalate</code> depending on cost-of-error and competence boundary. <em>How</em> the task came into existence — manual create, AI auto-create, or AI proposed-then-approved — is a separate dimension, covered in §7.1.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">Routing is the leverage decision. Once a task exists, it is <strong>executed</strong> via <code class="px-1 py-0.5 bg-msurface rounded text-mtext font-mono text-xs">auto</code>, <code class="px-1 py-0.5 bg-msurface rounded text-mtext font-mono text-xs">assist</code>, or <code class="px-1 py-0.5 bg-msurface rounded text-mtext font-mono text-xs">escalate</code> depending on cost-of-error and competence boundary. <em>How</em> the task came into existence — manual create, AI auto-create, or AI proposed-then-approved — is a separate dimension, covered in §7.1.</p>
 
       <!-- 6.1 The three tiers (3-column side-by-side) -->
       <div class="mb-8">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">6.1 The three tiers</h3>
+        <h3 class="text-base font-semibold text-mtext mb-3">6.1 The three tiers</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
             <div class="flex items-center gap-2 mb-2">
-              <span class="font-mono text-xs uppercase tracking-wider text-green-500">Auto</span>
+              <span class="font-mono text-xs uppercase tracking-wider text-msuccess">Auto</span>
             </div>
-            <p class="text-sm text-slate-300 mb-3">AI handles the task end-to-end. No human gate after creation.</p>
-            <p class="text-xs text-slate-500 italic mb-3">Use when: task is mechanical, has structured inputs, has a known correct answer, and cost of error is low.</p>
-            <div class="bg-amber-500/10 border border-amber-500/30 rounded p-2.5">
-              <p class="text-[11px] text-slate-300 leading-relaxed"><strong class="text-amber-400">v1 caveat:</strong> routing tier "auto" describes <strong>post-canonical execution</strong>. The pre-canonical approval gate is phased separately — see <a href="lifecycle.html" class="text-orange-400 hover:text-orange-300">§7.1 Stage 3</a>. Auto-tier tasks still need a human approval click at creation in v1.</p>
+            <p class="text-sm text-mtext2 mb-3">AI handles the task end-to-end. No human gate after creation.</p>
+            <p class="text-xs text-mtext3 italic mb-3">Use when: task is mechanical, has structured inputs, has a known correct answer, and cost of error is low.</p>
+            <div class="bg-mambersoft border border-mamber/30 rounded p-2.5">
+              <p class="text-[11px] text-mtext2 leading-relaxed"><strong class="text-mamber">v1 caveat:</strong> routing tier "auto" describes <strong>post-canonical execution</strong>. The pre-canonical approval gate is phased separately — see <a href="lifecycle.html" class="text-orange-400 hover:text-orange-300">§7.1 Stage 3</a>. Auto-tier tasks still need a human approval click at creation in v1.</p>
             </div>
           </div>
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
             <div class="flex items-center gap-2 mb-2">
-              <span class="font-mono text-xs uppercase tracking-wider text-amber-500">Assist</span>
+              <span class="font-mono text-xs uppercase tracking-wider text-mamber">Assist</span>
             </div>
-            <p class="text-sm text-slate-300 mb-3">AI proposes the action; a human reviews and approves before execution.</p>
-            <p class="text-xs text-slate-500 italic">Use when: task has ambiguity, decision affects client perception, has financial commitment, or touches relationship trust.</p>
+            <p class="text-sm text-mtext2 mb-3">AI proposes the action; a human reviews and approves before execution.</p>
+            <p class="text-xs text-mtext3 italic">Use when: task has ambiguity, decision affects client perception, has financial commitment, or touches relationship trust.</p>
           </div>
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
+          <div class="bg-mcard border border-mborder rounded-lg p-5">
             <div class="flex items-center gap-2 mb-2">
-              <span class="font-mono text-xs uppercase tracking-wider text-red-500">Escalate</span>
+              <span class="font-mono text-xs uppercase tracking-wider text-mdanger">Escalate</span>
             </div>
-            <p class="text-sm text-slate-300 mb-3">Immediate human attention required.</p>
-            <p class="text-xs text-slate-500 italic">Use when: time-sensitive, high-stakes (VVIP / >$X booking / safety), or AI confidence below a threshold.</p>
+            <p class="text-sm text-mtext2 mb-3">Immediate human attention required.</p>
+            <p class="text-xs text-mtext3 italic">Use when: time-sensitive, high-stakes (VVIP / >$X booking / safety), or AI confidence below a threshold.</p>
           </div>
         </div>
       </div>
@@ -79,10 +131,10 @@
       <!-- 6.2 + 6.3 side-by-side (2-column) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Where AI is competent -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
-          <h3 class="text-base font-semibold text-slate-100 mb-3">6.2 Where AI is competent (rule of thumb)</h3>
-          <ul class="space-y-2 text-sm text-slate-300">
-            <li class="flex gap-2"><span class="text-green-500">•</span> Detection of known patterns (deal thresholds, expiring documents, departing trips)</li>
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
+          <h3 class="text-base font-semibold text-mtext mb-3">6.2 Where AI is competent (rule of thumb)</h3>
+          <ul class="space-y-2 text-sm text-mtext2">
+            <li class="flex gap-2"><span class="text-msuccess">•</span> Detection of known patterns (deal thresholds, expiring documents, departing trips)</li>
             <li class="flex gap-2"><span class="text-green-500">•</span> Drafting templated communications (confirmations, polite follow-ups, reminders)</li>
             <li class="flex gap-2"><span class="text-green-500">•</span> Mechanical lookups (find a hotel rate, check award availability)</li>
             <li class="flex gap-2"><span class="text-green-500">•</span> Status updates (mark a task done when a confirmation arrives)</li>
@@ -91,81 +143,81 @@
         </div>
 
         <!-- Where humans are essential -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
-          <h3 class="text-base font-semibold text-slate-100 mb-3">6.3 Where humans are essential</h3>
-          <ul class="space-y-2 text-sm text-slate-300">
-            <li class="flex gap-2"><span class="text-red-500">•</span> Phone calls to suppliers — especially relationship-leverage moments (asking for an upgrade, securing a sold-out room)</li>
-            <li class="flex gap-2"><span class="text-red-500">•</span> Client-facing communication during conflict, complaint, disappointment, or loss</li>
-            <li class="flex gap-2"><span class="text-red-500">•</span> Financial decisions: committing > $X without explicit client approval</li>
-            <li class="flex gap-2"><span class="text-red-500">•</span> Relationship moments — birthdays, anniversaries, condolences. The TA's voice matters; the AI's doesn't.</li>
-            <li class="flex gap-2"><span class="text-red-500">•</span> Judgment calls where two valid options exist and the answer depends on the client's taste</li>
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
+          <h3 class="text-base font-semibold text-mtext mb-3">6.3 Where humans are essential</h3>
+          <ul class="space-y-2 text-sm text-mtext">
+            <li class="flex gap-2"><span class="text-mdanger">•</span> Phone calls to suppliers — especially relationship-leverage moments (asking for an upgrade, securing a sold-out room)</li>
+            <li class="flex gap-2"><span class="text-mdanger">•</span> Client-facing communication during conflict, complaint, disappointment, or loss</li>
+            <li class="flex gap-2"><span class="text-mdanger">•</span> Financial decisions: committing > $X without explicit client approval</li>
+            <li class="flex gap-2"><span class="text-mdanger">•</span> Relationship moments — birthdays, anniversaries, condolences. The TA's voice matters; the AI's doesn't.</li>
+            <li class="flex gap-2"><span class="text-mdanger">•</span> Judgment calls where two valid options exist and the answer depends on the client's taste</li>
           </ul>
         </div>
       </div>
 
       <!-- Default routing matrix -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">6.4 Suggested default routing per origin bucket</h3>
-        <p class="text-xs text-slate-400 mb-4">A starting point for the alignment meeting — not locked. Expect pushback on several of these.</p>
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-8">
+        <h3 class="text-base font-semibold text-mtext mb-3">6.4 Suggested default routing per origin bucket</h3>
+        <p class="text-xs text-mtext3 mb-4">A starting point for the alignment meeting — not locked. Expect pushback on several of these.</p>
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Origin bucket</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Suggested default</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Rationale</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Origin bucket</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider">Suggested default</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider">Rationale</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
+            <tbody class="divide-y divide-mborder">
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">Client-driven (explicit)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">Assist</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">AI drafts the response; human approves the tone</td>
+                <td class="px-4 py-3 text-sm text-mtext">Client-driven (explicit)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mambersoft text-mamber border border-mamber/30">Assist</span></td>
+                <td class="px-4 py-3 text-xs text-mtext3">AI drafts the response; human approves the tone</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">Client-driven (implicit)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">Assist</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Misreading the client is expensive; human nuance needed</td>
+                <td class="px-4 py-3 text-sm text-mtext">Client-driven (implicit)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mambersoft text-mamber border border-mamber/30">Assist</span></td>
+                <td class="px-4 py-3 text-xs text-mtext3">Misreading the client is expensive; human nuance needed</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">World-driven (compliance)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-green-500/10 text-green-400 border border-green-500/30">Auto</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Mechanical detection, mechanical reminder</td>
+                <td class="px-4 py-3 text-sm text-mtext">World-driven (compliance)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-msuccessl text-msuccess border border-msuccess/30">Auto</span></td>
+                <td class="px-4 py-3 text-xs text-mtext2">Mechanical detection, mechanical reminder</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">World-driven (disruption)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-red-500/10 text-red-400 border border-red-500/30">Escalate</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Time-sensitive, client-facing, often a relationship moment</td>
+                <td class="px-4 py-3 text-sm text-mtext">World-driven (disruption)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mdangerl text-mdanger border border-mdanger/30">Escalate</span></td>
+                <td class="px-4 py-3 text-xs text-mtext2">Time-sensitive, client-facing, often a relationship moment</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">World-driven (vendor change)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">Assist</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Auto detect → Assist action. Detection is mechanical; the response (re-shop, re-quote) needs judgement</td>
+                <td class="px-4 py-3 text-sm text-mtext">World-driven (vendor change)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mambersoft text-mamber border border-mamber/30">Assist</span></td>
+                <td class="px-4 py-3 text-xs text-mtext3">Auto detect → Assist action. Detection is mechanical; the response (re-shop, re-quote) needs judgement</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">World-driven (loyalty)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">Assist</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Auto detect → Assist action. Detection auto; booking commitment human</td>
+                <td class="px-4 py-3 text-sm text-mtext">World-driven (loyalty)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mambersoft text-mamber border border-mamber/30">Assist</span></td>
+                <td class="px-4 py-3 text-xs text-mtext3">Auto detect → Assist action. Detection auto; booking commitment human</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">Trip lifecycle (templated prep)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-green-500/10 text-green-400 border border-green-500/30">Auto</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Pre-arrival checklists are routine</td>
+                <td class="px-4 py-3 text-sm text-mtext">Trip lifecycle (templated prep)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-msuccessl text-msuccess border border-msuccess/30">Auto</span></td>
+                <td class="px-4 py-3 text-xs text-mtext2">Pre-arrival checklists are routine</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">Trip lifecycle (client comms)</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">Assist</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">TA voice on every client-facing send</td>
+                <td class="px-4 py-3 text-sm text-mtext">Trip lifecycle (client comms)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mambersoft text-mamber border border-mamber/30">Assist</span></td>
+                <td class="px-4 py-3 text-xs text-mtext3">TA voice on every client-facing send</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">Relationship</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-red-500/10 text-red-400 border border-red-500/30">Escalate</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">The whole point is the human voice</td>
+                <td class="px-4 py-3 text-sm text-mtext">Relationship</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-mdangerl text-mdanger border border-mdanger/30">Escalate</span></td>
+                <td class="px-4 py-3 text-xs text-mtext2">The whole point is the human voice</td>
               </tr>
               <tr>
-                <td class="px-4 py-3 text-sm text-slate-200">Internal ops</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-green-500/10 text-green-400 border border-green-500/30">Auto</span></td>
-                <td class="px-4 py-3 text-xs text-slate-400">Self-monitoring is automation territory</td>
+                <td class="px-4 py-3 text-sm text-mtext">Internal ops</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 rounded text-xs font-mono bg-msuccessl text-msuccess border border-msuccess/30">Auto</span></td>
+                <td class="px-4 py-3 text-xs text-mtext2">Self-monitoring is automation territory</td>
               </tr>
             </tbody>
           </table>
@@ -173,32 +225,32 @@
       </div>
 
       <!-- 6.5 Mental model per origin -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">6.5 Mental model — analogy per origin</h3>
-        <p class="text-sm text-slate-400 mb-4 leading-relaxed">The 4-stage creation flow (Signal → Suggestion → Approval gate → Canonical task, §7.1) is the same everywhere. But how operators think about the flow varies by origin bucket — different mental models fit different work shapes. We use both deliberately.</p>
+      <div class="bg-mcard border border-mborder rounded-lg p-6">
+        <h3 class="text-base font-semibold text-mtext mb-3">6.5 Mental model — analogy per origin</h3>
+        <p class="text-sm text-mtext3 mb-4 leading-relaxed">The 4-stage creation flow (Signal → Suggestion → Approval gate → Canonical task, §7.1) is the same everywhere. But how operators think about the flow varies by origin bucket — different mental models fit different work shapes. We use both deliberately.</p>
 
         <div class="space-y-4">
-          <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
+          <div class="bg-msurface/50 border border-mborder rounded-lg p-4">
             <div class="flex items-center gap-2 mb-2">
-              <span class="text-sm font-semibold text-blue-400">PR-review model</span>
-              <span class="text-xs text-slate-500">— Client-driven and Relationship origins</span>
+              <span class="text-sm font-semibold text-chip-blue">PR-review model</span>
+              <span class="text-xs text-mtext3">— Client-driven and Relationship origins</span>
             </div>
-            <p class="text-xs text-slate-300 leading-relaxed mb-2">Like a code pull request: AI drafts a proposed task; a human reviews the diff (rationale + evidence + proposed fields), edits if needed, approves or rejects. The proposal is persistent — it waits for review without time pressure. Closure is reviewed-then-merged.</p>
-            <p class="text-xs text-slate-400 leading-relaxed">Suits Client-driven and Relationship work because: tone matters, judgment matters, the suggestion is essentially a draft response that benefits from explicit review.</p>
+            <p class="text-xs text-mtext2 leading-relaxed mb-2">Like a code pull request: AI drafts a proposed task; a human reviews the diff (rationale + evidence + proposed fields), edits if needed, approves or rejects. The proposal is persistent — it waits for review without time pressure. Closure is reviewed-then-merged.</p>
+            <p class="text-xs text-mtext3 leading-relaxed">Suits Client-driven and Relationship work because: tone matters, judgment matters, the suggestion is essentially a draft response that benefits from explicit review.</p>
           </div>
 
-          <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
+          <div class="bg-msurface/50 border border-mborderh rounded-lg p-4">
             <div class="flex items-center gap-2 mb-2">
-              <span class="text-sm font-semibold text-orange-400">Incident model</span>
-              <span class="text-xs text-slate-500">— World-driven, Trip lifecycle, Internal ops origins</span>
+              <span class="text-sm font-semibold text-maccent">Incident model</span>
+              <span class="text-xs text-mtext3">— World-driven, Trip lifecycle, Internal ops origins</span>
             </div>
-            <p class="text-xs text-slate-300 leading-relaxed mb-2">Like an on-call alert: a signal fires, the system creates or proposes an incident, operators acknowledge and respond. Time-sensitive (some suggestions expire if not acted on quickly). Correlated signals are grouped into a single incident-task (3 messages + 1 vendor email about the same hotel issue = one task, not 4). Escalation policies route to on-call.</p>
-            <p class="text-xs text-slate-400 leading-relaxed">Suits World-driven / Lifecycle / Internal ops because: time matters, signals can correlate, and operators need to triage by urgency rather than review in order.</p>
+            <p class="text-xs text-mtext2 leading-relaxed mb-2">Like an on-call alert: a signal fires, the system creates or proposes an incident, operators acknowledge and respond. Time-sensitive (some suggestions expire if not acted on quickly). Correlated signals are grouped into a single incident-task (3 messages + 1 vendor email about the same hotel issue = one task, not 4). Escalation policies route to on-call.</p>
+            <p class="text-xs text-mtext3 leading-relaxed">Suits World-driven / Lifecycle / Internal ops because: time matters, signals can correlate, and operators need to triage by urgency rather than review in order.</p>
           </div>
 
-          <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-            <p class="text-xs text-slate-300 leading-relaxed"><strong>Why both.</strong> Forcing PR-review semantics onto a typhoon alert produces dead suggestions that didn't make it through review in time. Forcing incident semantics onto a relationship-bucket task produces auto-resolution where the TA's voice was needed. The analogy that fits the work-shape produces better defaults; the doc uses each where it earns its keep.</p>
-            <p class="text-xs text-slate-400 mt-2">Worked end-to-end examples of both analogies in action are in Appendix E.</p>
+          <div class="bg-mambersoft border border-mamber/30 rounded-lg p-4">
+            <p class="text-xs text-mtext2 leading-relaxed"><strong>Why both.</strong> Forcing PR-review semantics onto a typhoon alert produces dead suggestions that didn't make it through review in time. Forcing incident semantics onto a relationship-bucket task produces auto-resolution where the TA's voice was needed. The analogy that fits the work-shape produces better defaults; the doc uses each where it earns its keep.</p>
+            <p class="text-xs text-mtext3 mt-2">Worked end-to-end examples of both analogies in action are in Appendix E.</p>
           </div>
         </div>
       </div>

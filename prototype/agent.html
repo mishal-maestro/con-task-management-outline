@@ -5,10 +5,107 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent — Conductor Task Mgmt Prototype</title>
 
+  <style>
+    /* Maestro design tokens MUST be defined before Tailwind CDN loads */
+    :root {
+      --maestro-bg: 24 24 27;
+      --maestro-card: 38 38 42;
+      --maestro-surface: 32 32 36;
+      --maestro-surface-raised: 40 40 45;
+      --maestro-border: 50 50 56;
+      --maestro-border-hover: 70 70 78;
+      --maestro-text-primary: 240 238 235;
+      --maestro-text-secondary: 180 175 168;
+      --maestro-text-tertiary: 140 135 128;
+      --maestro-accent: 255 110 70;
+      --maestro-accent-hover: 255 130 95;
+      --maestro-accent-light: 50 30 25;
+      --maestro-on-accent: 255 255 255;
+      --maestro-success: 60 180 100;
+      --maestro-success-light: 25 45 35;
+      --maestro-danger: 230 90 70;
+      --maestro-danger-light: 50 30 25;
+      --maestro-warning: 210 160 60;
+      --maestro-warning-light: 50 40 25;
+      --maestro-amber: 251 191 36;
+      --maestro-amber-soft: 50 38 18;
+      --maestro-info: 80 160 220;
+      --maestro-info-light: 25 35 45;
+      --maestro-chip-green: 60 180 100;
+      --maestro-chip-green-soft: 25 45 35;
+      --maestro-chip-orange: 255 140 80;
+      --maestro-chip-orange-soft: 50 35 25;
+      --maestro-chip-blue: 80 160 220;
+      --maestro-chip-blue-soft: 25 35 45;
+      --maestro-chip-teal: 70 190 180;
+      --maestro-chip-teal-soft: 25 45 45;
+      --maestro-chip-purple: 160 120 230;
+      --maestro-chip-purple-soft: 40 35 55;
+      --maestro-chip-pink: 240 120 180;
+      --maestro-chip-pink-soft: 50 30 45;
+      --maestro-control-knob: 255 255 255;
+      --maestro-overlay: 0 0 0;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
+    body { background: rgb(var(--maestro-bg)); }
+  </style>
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
 
   <script src="../theme.js"></script>
   <script src="task-data.js"></script>
@@ -19,73 +116,67 @@
   <script src="agent-context-panel.js"></script>
 
   <style>
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-    body { background: #020617; }
-
     .top-tab {
-      padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: rgb(148 163 184);
+      padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: rgb(var(--maestro-text-secondary));
       cursor: pointer; transition: color .12s; border-bottom: 2px solid transparent;
       display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    .top-tab:hover { color: rgb(241 245 249); }
-    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+    .top-tab:hover { color: rgb(var(--maestro-text-primary)); }
+    .top-tab.active { color: rgb(var(--maestro-text-primary)); border-bottom-color: rgb(var(--maestro-accent)); }
 
     /* left rail */
     .proj-row { display: block; width: 100%; text-align: left; padding: 8px 16px; border-left: 2px solid transparent; cursor: pointer; }
-    .proj-row:hover { background: rgba(30,41,59,.4); }
-    .proj-row.active { background: rgba(30,41,59,.6); border-left-color: #ff5e32; }
+    .proj-row:hover { background: color-mix(in srgb, rgb(var(--maestro-surface)) 60%, transparent); }
+    .proj-row.active { background: color-mix(in srgb, rgb(var(--maestro-surface-raised)) 70%, transparent); border-left-color: rgb(var(--maestro-accent)); }
     .thread-row { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 7px 16px; border-left: 2px solid transparent; cursor: pointer; }
-    .thread-row:hover { background: rgba(30,41,59,.35); }
-    .thread-row.active { background: rgba(255,94,50,.08); border-left-color: #ff5e32; }
+    .thread-row:hover { background: color-mix(in srgb, rgb(var(--maestro-surface)) 50%, transparent); }
+    .thread-row.active { background: color-mix(in srgb, rgb(var(--maestro-accent-light)) 40%, transparent); border-left-color: rgb(var(--maestro-accent)); }
 
     /* messages */
-    .a-sys { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #64748b; padding: 6px 0; }
-    .a-sys a { color: #fb923c; text-decoration: underline; text-underline-offset: 2px; }
+    .a-sys { display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgb(var(--maestro-text-tertiary)); padding: 6px 0; }
+    .a-sys a { color: rgb(var(--maestro-accent)); text-decoration: underline; text-underline-offset: 2px; }
     .a-msg { display: flex; gap: 10px; margin-bottom: 16px; }
     .a-av { width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
-    .a-av.advisor { background: #334155; color: #e2e8f0; }
-    .a-av.ai { background: #ff5e32; color: #fff; }
-    .a-name { font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 3px; }
-    .a-bubble { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 9px 13px; font-size: 13px; color: #e2e8f0; line-height: 1.55; }
-    .a-msg.advisor .a-bubble { background: #0f172a; }
+    .a-av.advisor { background: rgb(var(--maestro-surface)); color: rgb(var(--maestro-text-primary)); }
+    .a-av.ai { background: rgb(var(--maestro-accent)); color: rgb(var(--maestro-on-accent)); }
+    .a-name { font-size: 11px; font-weight: 600; color: rgb(var(--maestro-text-secondary)); margin-bottom: 3px; }
+    .a-bubble { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: 10px; padding: 9px 13px; font-size: 13px; color: rgb(var(--maestro-text-primary)); line-height: 1.55; }
+    .a-msg.advisor .a-bubble { background: rgb(var(--maestro-bg)); }
 
-    .a-rec { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 13px; }
-    .a-rec.added { border-color: #ff5e32; box-shadow: 0 0 0 3px rgba(255,94,50,.12); }
+    .a-rec { background: rgb(var(--maestro-bg)); border: 1px solid rgb(var(--maestro-border)); border-radius: 10px; padding: 13px; }
+    .a-rec.added { border-color: rgb(var(--maestro-accent)); box-shadow: 0 0 0 3px color-mix(in srgb, rgb(var(--maestro-accent-light)) 60%, transparent); }
 
-    .src-chip { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #34d399; background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); border-radius: 5px; padding: 2px 7px; cursor: pointer; }
+    .src-chip { display: inline-flex; align-items: center; gap: 5px; font-family: ui-monospace, monospace; font-size: 10px; color: rgb(var(--maestro-chip-green)); background: rgb(var(--maestro-chip-green-soft)); border: 1px solid color-mix(in srgb, rgb(var(--maestro-chip-green)) 40%, transparent); border-radius: 5px; padding: 2px 7px; cursor: pointer; }
     .hf-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; border-radius: 6px; padding: 3px 9px; border: 1px solid; cursor: pointer; }
     .hf-chip .d { width: 6px; height: 6px; border-radius: 50%; }
-    .hf-pass { color: #34d399; background: rgba(52,211,153,.1); border-color: rgba(52,211,153,.35); }
-    .hf-pass .d { background: #34d399; }
-    .hf-factual { color: #fbbf24; background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.35); }
-    .hf-factual .d { background: #fbbf24; }
-    .hf-intent { color: #60a5fa; background: rgba(96,165,250,.1); border-color: rgba(96,165,250,.35); }
-    .hf-intent .d { background: #60a5fa; }
+    .hf-pass { color: rgb(var(--maestro-chip-green)); background: rgb(var(--maestro-chip-green-soft)); border-color: color-mix(in srgb, rgb(var(--maestro-chip-green)) 40%, transparent); }
+    .hf-pass .d { background: rgb(var(--maestro-chip-green)); }
+    .hf-factual { color: rgb(var(--maestro-amber)); background: rgb(var(--maestro-amber-soft)); border-color: color-mix(in srgb, rgb(var(--maestro-amber)) 40%, transparent); }
+    .hf-factual .d { background: rgb(var(--maestro-amber)); }
+    .hf-intent { color: rgb(var(--maestro-chip-blue)); background: rgb(var(--maestro-chip-blue-soft)); border-color: color-mix(in srgb, rgb(var(--maestro-chip-blue)) 40%, transparent); }
+    .hf-intent .d { background: rgb(var(--maestro-chip-blue)); }
 
     .a-event { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; border-radius: 7px; padding: 6px 10px; }
-    .a-event.task { color: #c4b5fd; background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.3); }
-    .a-event.trip { color: #34d399; background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); }
+    .a-event.task { color: rgb(var(--maestro-chip-purple)); background: rgb(var(--maestro-chip-purple-soft)); border: 1px solid color-mix(in srgb, rgb(var(--maestro-chip-purple)) 35%, transparent); }
+    .a-event.trip { color: rgb(var(--maestro-chip-green)); background: rgb(var(--maestro-chip-green-soft)); border: 1px solid color-mix(in srgb, rgb(var(--maestro-chip-green)) 35%, transparent); }
     .a-event a { cursor: pointer; }
 
-    .panel-h { font-size: 12px; font-weight: 600; color: #e2e8f0; }
-    .panel-eyebrow { font-size: 10px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 1px; color: #ff5e32; }
+    .panel-h { font-size: 12px; font-weight: 600; color: rgb(var(--maestro-text-primary)); }
+    .panel-eyebrow { font-size: 10px; font-family: ui-monospace, monospace; text-transform: uppercase; letter-spacing: 1px; color: rgb(var(--maestro-accent)); }
   </style>
 </head>
 
-<body class="text-slate-300 font-sans antialiased h-screen flex flex-col overflow-hidden">
+<body class="text-mtext2 font-sans antialiased h-screen flex flex-col overflow-hidden">
 
   <div id="topnav-root"></div>
 
   <!-- Helper strip -->
-  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2 flex-shrink-0">
-    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+  <div class="bg-mambersoft border-b border-mamber/30 px-4 py-1.5 text-[11px] text-mtext3 flex items-center gap-2 flex-shrink-0">
+    <svg class="w-3 h-3 text-mamber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     <span>Agent tab · prototype mock · simulated data ·
-      <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank" class="text-orange-400 hover:text-orange-300 underline">Agent Mode PRD</a> ·
-      <a href="../agent-overview.html" class="text-orange-400 hover:text-orange-300 underline">Agent Mode outline</a> ·
-      <a href="index.html" class="text-orange-400 hover:text-orange-300 underline">prototype index</a></span>
+      <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank" class="text-maccent hover:text-maccenth underline">Agent Mode PRD</a> ·
+      <a href="../agent-overview.html" class="text-maccent hover:text-maccenth underline">Agent Mode outline</a> ·
+      <a href="index.html" class="text-maccent hover:text-maccenth underline">prototype index</a></span>
   </div>
 
   <!-- 2-column app — left switcher + center (Project Home or Thread).
@@ -93,13 +184,13 @@
   <main class="flex-1 flex min-h-0">
 
     <!-- LEFT — Projects switcher -->
-    <aside class="w-[300px] bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0">
-      <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+    <aside class="w-[300px] bg-mcard border-r border-mborder flex flex-col flex-shrink-0">
+      <div class="px-4 py-3 border-b border-mborder flex items-center justify-between">
         <span class="panel-h">Agent</span>
-        <span class="text-[10px] text-slate-500 font-mono">/agent</span>
+        <span class="text-[10px] text-mtext3 font-mono">/agent</span>
       </div>
       <div id="project-list" class="flex-1 overflow-y-auto py-1"></div>
-      <div class="px-4 py-2.5 border-t border-slate-800 text-[10px] text-slate-600">
+      <div class="px-4 py-2.5 border-t border-mborder text-[10px] text-mtext3">
         Projects group threads by trip &amp; client · PRD §4
       </div>
     </aside>
@@ -166,16 +257,16 @@
       let html = '';
       const recent = AgentData.recentThreads(4);
       if (recent.length) {
-        html += `<div class="px-4 pt-3 pb-1 text-[10px] font-mono uppercase tracking-wider text-slate-600">Recent</div>`;
+        html += `<div class="px-4 pt-3 pb-1 text-[10px] font-mono uppercase tracking-wider text-mtext3">Recent</div>`;
         recent.forEach(t => {
           const active = t.id === curThread;
-          const dot = t.status === 'open' ? '#34d399' : t.status === 'paused' ? '#fbbf24' : '#64748b';
+          const dot = t.status === 'open' ? 'rgb(var(--maestro-chip-green))' : t.status === 'paused' ? 'rgb(var(--maestro-amber))' : 'rgb(var(--maestro-text-tertiary))';
           const pr = AgentData.project(t.project);
           html += `<button class="thread-row ${active ? 'active' : ''}" onclick="openThread('${t.id}')">
             <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:${dot}"></span>
             <span class="flex-1 min-w-0">
-              <span class="block truncate text-[12px] ${active ? 'text-slate-100' : 'text-slate-300'}">${esc(t.title)}</span>
-              <span class="block truncate text-[10px] text-slate-600">${esc(pr ? pr.name : '')}</span>
+              <span class="block truncate text-[12px] ${active ? 'text-mtext' : 'text-mtext2'}">${esc(t.title)}</span>
+              <span class="block truncate text-[10px] text-mtext3">${esc(pr ? pr.name : '')}</span>
             </span>
           </button>`;
         });
@@ -183,17 +274,17 @@
       [['Trips', 'trip'], ['Clients', 'client']].forEach(([label, kind]) => {
         const projs = AGENT_PROJECTS.filter(p => p.kind === kind);
         if (!projs.length) return;
-        html += `<div class="px-4 pt-3 pb-1 text-[10px] font-mono uppercase tracking-wider text-slate-600">${label}</div>`;
+        html += `<div class="px-4 pt-3 pb-1 text-[10px] font-mono uppercase tracking-wider text-mtext3">${label}</div>`;
         projs.forEach(p => {
           const active = p.id === curProject;
           const tc = AgentData.threadsFor(p.id).length;
           html += `<button class="proj-row ${active ? 'active' : ''}" onclick="selectProject('${p.id}')">
             <div class="flex items-center gap-2">
               <div class="flex-1 min-w-0">
-                <div class="text-sm ${active ? 'text-slate-100' : 'text-slate-300'} font-medium truncate">${esc(p.name)}</div>
-                <div class="text-[11px] text-slate-500 truncate">${esc(p.meta)}</div>
+                <div class="text-sm ${active ? 'text-mtext' : 'text-mtext2'} font-medium truncate">${esc(p.name)}</div>
+                <div class="text-[11px] text-mtext3 truncate">${esc(p.meta)}</div>
               </div>
-              <span class="text-[10px] font-mono text-slate-600 flex-shrink-0">${tc}</span>
+              <span class="text-[10px] font-mono text-mtext3 flex-shrink-0">${tc}</span>
             </div>
           </button>`;
         });
@@ -233,26 +324,26 @@
       const ctxCount = ctx ? (ctx.trip.length + ctx.org.length) : 0;
 
       const card = (view, label, count, sub) => `
-        <button onclick="openContextPanel('${view}','${curProject}')" class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-left hover:border-orange-500/50 transition-colors">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500">${label}</div>
-          <div class="text-lg font-semibold text-slate-100 mt-0.5">${count}</div>
-          <div class="text-[11px] text-slate-500">${sub}</div>
+        <button onclick="openContextPanel('${view}','${curProject}')" class="bg-mcard border border-mborder rounded-lg p-3 text-left hover:border-maccent/50 transition-colors">
+          <div class="text-[10px] font-mono uppercase tracking-wider text-mtext3">${label}</div>
+          <div class="text-lg font-semibold text-mtext mt-0.5">${count}</div>
+          <div class="text-[11px] text-mtext3">${sub}</div>
         </button>`;
 
       const threadRow = (t) => {
-        const dot = t.status === 'open' ? '#34d399' : t.status === 'paused' ? '#fbbf24' : '#64748b';
-        return `<button onclick="openThread('${t.id}')" class="w-full text-left bg-slate-900 border border-slate-800 rounded-lg p-3 hover:border-slate-700 transition-colors flex items-start gap-3">
+        const dot = t.status === 'open' ? 'rgb(var(--maestro-chip-green))' : t.status === 'paused' ? 'rgb(var(--maestro-amber))' : 'rgb(var(--maestro-text-tertiary))';
+        return `<button onclick="openThread('${t.id}')" class="w-full text-left bg-mcard border border-mborder rounded-lg p-3 hover:border-mborderh transition-colors flex items-start gap-3">
           <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:${dot}"></span>
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2">
-              <span class="text-sm font-medium text-slate-200 truncate">${esc(t.title)}</span>
-              ${t.isNew ? '<span class="text-[9px] font-mono text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5 flex-shrink-0">NEW</span>' : ''}
+              <span class="text-sm font-medium text-mtext truncate">${esc(t.title)}</span>
+              ${t.isNew ? '<span class="text-[9px] font-mono text-maccent bg-maccentl rounded px-1.5 py-0.5 flex-shrink-0">NEW</span>' : ''}
             </div>
-            <div class="text-[11px] text-slate-500 truncate mt-0.5">${esc(threadPreview(t.id))}</div>
+            <div class="text-[11px] text-mtext3 truncate mt-0.5">${esc(threadPreview(t.id))}</div>
           </div>
           <div class="text-right flex-shrink-0">
-            <span class="text-[9px] font-mono uppercase tracking-wide text-blue-300 bg-blue-500/15 rounded px-1.5 py-0.5">${esc(t.skill)}</span>
-            <div class="text-[10px] text-slate-600 mt-1 capitalize">${esc(t.status)} · ${esc(t.updated)}</div>
+            <span class="text-[9px] font-mono uppercase tracking-wide text-chip-blue bg-chip-blue-soft rounded px-1.5 py-0.5">${esc(t.skill)}</span>
+            <div class="text-[10px] text-mtext3 mt-1 capitalize">${esc(t.status)} · ${esc(t.updated)}</div>
           </div>
         </button>`;
       };
@@ -262,10 +353,10 @@
           <div class="max-w-[800px] mx-auto px-8 py-8">
 
             <div class="flex items-center gap-2.5 mb-1">
-              <h1 class="text-xl font-semibold text-slate-100">${esc(p.name)}</h1>
-              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 bg-slate-800 rounded px-1.5 py-0.5">${kindLabel}</span>
+              <h1 class="text-xl font-serif font-semibold text-mtext">${esc(p.name)}</h1>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-mtext3 bg-msurface rounded px-1.5 py-0.5">${kindLabel}</span>
             </div>
-            <div class="text-sm text-slate-500 mb-5">${esc(p.meta)} · the agent workspace for this ${esc(p.kind)}</div>
+            <div class="text-sm text-mtext3 mb-5">${esc(p.meta)} · the agent workspace for this ${esc(p.kind)}</div>
 
             <div class="grid grid-cols-3 gap-2 mb-6">
               ${card('overview', 'Trip Context', ctxCount, 'grounding facts')}
@@ -273,23 +364,23 @@
               ${card('tasks', 'Tasks', tasks.length, 'agent-created')}
             </div>
 
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 mb-6">
-              <div class="text-[11px] text-slate-500 mb-2">Start a thread — opens a hotel-search with this ${esc(p.kind)}'s context pre-loaded.</div>
-              <div class="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2">
-                <svg class="w-4 h-4 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                <input id="home-starter" type="text" placeholder="Ask the agent to find a hotel for this trip…" class="flex-1 bg-transparent text-sm text-slate-300 placeholder-slate-600 outline-none">
-                <span class="text-[10px] font-mono text-slate-500 border border-slate-700 rounded px-1.5 py-0.5">⌘K</span>
-                <button id="home-starter-btn" class="px-3 py-1.5 rounded-md bg-orange-500 text-xs text-white font-medium hover:bg-orange-600">New thread</button>
+            <div class="bg-mcard border border-mborder rounded-xl p-3 mb-6">
+              <div class="text-[11px] text-mtext3 mb-2">Start a thread — opens a hotel-search with this ${esc(p.kind)}'s context pre-loaded.</div>
+              <div class="flex items-center gap-2 bg-mbg border border-mborder rounded-lg px-3 py-2">
+                <svg class="w-4 h-4 text-maccent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                <input id="home-starter" type="text" placeholder="Ask the agent to find a hotel for this trip…" class="flex-1 bg-transparent text-sm text-mtext2 placeholder-mtext3 outline-none">
+                <span class="text-[10px] font-mono text-mtext3 border border-mborder rounded px-1.5 py-0.5">⌘K</span>
+                <button id="home-starter-btn" class="px-3 py-1.5 rounded-md bg-maccent text-xs text-white font-medium hover:bg-maccenth">New thread</button>
               </div>
             </div>
 
             <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-semibold text-slate-200">Threads</span>
-              <span class="text-[11px] text-slate-500 font-mono">${threads.length}</span>
+              <span class="text-sm font-semibold text-mtext">Threads</span>
+              <span class="text-[11px] text-mtext3 font-mono">${threads.length}</span>
             </div>
             <div class="space-y-2">
               ${threads.length ? threads.map(threadRow).join('')
-                : '<div class="text-xs text-slate-600 py-6 text-center border border-dashed border-slate-800 rounded-lg">No threads yet — start one above.</div>'}
+                : '<div class="text-xs text-mtext3 py-6 text-center border border-dashed border-mborder rounded-lg">No threads yet — start one above.</div>'}
             </div>
 
           </div>
@@ -305,25 +396,25 @@
     function threadHeaderHtml(th, proj) {
       return `
         <div class="flex-shrink-0">
-          <div class="flex items-center gap-2.5 px-5 py-3 border-b border-slate-800">
-            <button onclick="backToHome()" title="Back to ${esc(proj.name)}" class="p-1 -ml-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-100 flex-shrink-0">
+          <div class="flex items-center gap-2.5 px-5 py-3 border-b border-mborder">
+            <button onclick="backToHome()" title="Back to ${esc(proj.name)}" class="p-1 -ml-1 rounded hover:bg-msurface text-mtext3 hover:text-mtext flex-shrink-0">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-semibold text-slate-100 truncate">${esc(th.title)}</div>
+              <div class="text-sm font-semibold text-mtext truncate">${esc(th.title)}</div>
               <div class="flex items-center gap-2 mt-0.5">
-                <span class="text-[9px] font-mono uppercase tracking-wide text-blue-300 bg-blue-500/15 rounded px-1.5 py-0.5">${esc(th.skill)}</span>
-                <button onclick="backToHome()" class="text-[11px] text-slate-500 hover:text-orange-300">in ${esc(proj.name)}</button>
+                <span class="text-[9px] font-mono uppercase tracking-wide text-chip-blue bg-chip-blue-soft rounded px-1.5 py-0.5">${esc(th.skill)}</span>
+                <button onclick="backToHome()" class="text-[11px] text-mtext3 hover:text-maccent">in ${esc(proj.name)}</button>
               </div>
             </div>
-            <button onclick="openContextPanel('overview','${proj.id}')" class="text-xs px-2.5 py-1.5 rounded-md bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 inline-flex items-center gap-1.5">
+            <button onclick="openContextPanel('overview','${proj.id}')" class="text-xs px-2.5 py-1.5 rounded-md bg-msurface text-mtext border border-mborder hover:bg-mraised inline-flex items-center gap-1.5">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               Context
             </button>
-            <button id="pause-btn" onclick="togglePause()" class="text-xs px-2.5 py-1.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">${th.paused ? 'Resume Agent' : 'Pause Agent'}</button>
-            <button onclick="showSharedToast('Thread archived.')" class="text-xs px-2.5 py-1.5 rounded-md bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700">Archive</button>
+            <button id="pause-btn" onclick="togglePause()" class="text-xs px-2.5 py-1.5 rounded-md bg-msurface text-mtext2 border border-mborder hover:bg-mraised">${th.paused ? 'Resume Agent' : 'Pause Agent'}</button>
+            <button onclick="showSharedToast('Thread archived.')" class="text-xs px-2.5 py-1.5 rounded-md bg-msurface text-mtext3 border border-mborder hover:bg-mraised">Archive</button>
           </div>
-          <div id="pause-banner" class="${th.paused ? '' : 'hidden'} px-5 py-2 bg-amber-500/10 border-b border-amber-500/30 text-[11px] text-amber-300">
+          <div id="pause-banner" class="${th.paused ? '' : 'hidden'} px-5 py-2 bg-mambersoft border-b border-mamber/30 text-[11px] text-mamber">
             Agent paused on this thread — manual mode. The AI will not iterate; the advisor handles remaining work.
           </div>
         </div>`;
@@ -332,14 +423,14 @@
     function newThreadEmptyState(proj) {
       return `
         <div class="max-w-[460px] mx-auto text-center mt-8 mb-2">
-          <div class="w-10 h-10 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center mx-auto mb-3">
+          <div class="w-10 h-10 rounded-lg bg-maccentl text-maccent flex items-center justify-center mx-auto mb-3">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
           </div>
-          <div class="text-sm font-semibold text-slate-200">New hotel-search thread</div>
-          <p class="text-xs text-slate-500 leading-relaxed mt-1.5">
+          <div class="text-sm font-semibold text-mtext">New hotel-search thread</div>
+          <p class="text-xs text-mtext3 leading-relaxed mt-1.5">
             ${esc(proj.name)}'s context is loaded — trip facts, ClientFacts and org insights.
             Type the advisor's ask below and the agent returns grounded recommendations.
-            Open <span class="text-slate-400">Context</span> any time to see what it knows.
+            Open <span class="text-mtext2">Context</span> any time to see what it knows.
           </p>
         </div>`;
     }
@@ -358,10 +449,10 @@
           ${msgs.map(renderMessage).join('')}
           ${isNewEmpty ? newThreadEmptyState(proj) : ''}
         </div>
-        <div class="flex-shrink-0 px-4 py-3 border-t border-slate-800">
-          <div class="flex items-center gap-2 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2">
-            <input id="composer-input" type="text" placeholder="Message the agent…" class="flex-1 bg-transparent text-sm text-slate-300 placeholder-slate-600 outline-none">
-            <button id="composer-send" class="px-3 py-1 rounded-md bg-orange-500 text-xs text-white font-medium hover:bg-orange-600">Send</button>
+        <div class="flex-shrink-0 px-4 py-3 border-t border-mborder">
+          <div class="flex items-center gap-2 bg-mbg border border-mborder rounded-lg px-3 py-2">
+            <input id="composer-input" type="text" placeholder="Message the agent…" class="flex-1 bg-transparent text-sm text-mtext2 placeholder-mtext3 outline-none">
+            <button id="composer-send" class="px-3 py-1 rounded-md bg-maccent text-xs text-white font-medium hover:bg-maccenth">Send</button>
           </div>
         </div>`;
 
@@ -405,39 +496,39 @@
         <div class="flex items-start justify-between gap-3">
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-sm font-semibold text-slate-100">${r.name}</span>
-              ${r.lead ? '<span class="text-[9px] font-mono text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5">NAMED BY ADVISOR</span>' : ''}
+              <span class="text-sm font-semibold text-mtext">${r.name}</span>
+              ${r.lead ? '<span class="text-[9px] font-mono text-maccent bg-maccentl rounded px-1.5 py-0.5">NAMED BY ADVISOR</span>' : ''}
             </div>
-            <div class="text-[11px] text-slate-500 mt-0.5">${r.room} · ${r.area}</div>
+            <div class="text-[11px] text-mtext3 mt-0.5">${r.room} · ${r.area}</div>
           </div>
           <div class="text-right flex-shrink-0">
-            <div class="text-sm font-semibold text-slate-200">${r.rate}</div>
-            <div class="text-[10px] text-slate-500">${r.total}</div>
+            <div class="text-sm font-semibold text-mtext">${r.rate}</div>
+            <div class="text-[10px] text-mtext3">${r.total}</div>
           </div>
         </div>
-        <p class="text-xs text-slate-400 leading-relaxed mt-2">${r.why}</p>
+        <p class="text-xs text-mtext2 leading-relaxed mt-2">${r.why}</p>
         <div class="flex items-center gap-2 mt-2.5 flex-wrap">
           <span class="src-chip" onclick="toggleHidden('src-${rid}')">◈ ${r.source.label}</span>
           ${f ? `<span class="hf-chip hf-factual" onclick="toggleHidden('fd-${f.id}')"><span class="d"></span>${f.helper}: ${f.summary}</span>` : ''}
           <span class="ml-auto">${added
-            ? '<span class="text-[11px] text-emerald-400 font-medium">✓ Added to trip</span>'
-            : `<button onclick="showSharedToast('${r.name} — added to the trip.')" class="text-[11px] px-2.5 py-1 rounded-md bg-slate-800 text-slate-200 border border-slate-700 hover:bg-orange-500 hover:text-white hover:border-orange-500">Add to Trip</button>`}</span>
+            ? '<span class="text-[11px] text-msuccess font-medium">✓ Added to trip</span>'
+            : `<button onclick="showSharedToast('${r.name} — added to the trip.')" class="text-[11px] px-2.5 py-1 rounded-md bg-msurface text-mtext border border-mborder hover:bg-maccent hover:text-white hover:border-maccent">Add to Trip</button>`}</span>
         </div>
-        <div id="src-${rid}" class="hidden mt-2 text-[11px] font-mono text-emerald-300/80 bg-emerald-500/5 border border-emerald-500/20 rounded-md p-2">${r.source.detail}</div>
-        ${f ? `<div id="fd-${f.id}" class="hidden mt-2 text-[11px] text-amber-200/90 bg-amber-500/5 border border-amber-500/20 rounded-md p-2">${f.detail}</div>` : ''}
+        <div id="src-${rid}" class="hidden mt-2 text-[11px] font-mono text-chip-green bg-chip-green-soft border border-chip-green/20 rounded-md p-2">${r.source.detail}</div>
+        ${f ? `<div id="fd-${f.id}" class="hidden mt-2 text-[11px] text-mamber bg-mambersoft border border-mamber/20 rounded-md p-2">${f.detail}</div>` : ''}
       </div>`;
     }
 
     function renderMessage(m) {
       if (m.kind === 'context')
-        return `<div class="a-sys"><span class="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span><span>${m.body}</span></div>`;
+        return `<div class="a-sys"><span class="w-1.5 h-1.5 rounded-full bg-mtext3 flex-shrink-0"></span><span>${m.body}</span></div>`;
 
       if (m.kind === 'check') {
         const f = AGENT_FINDINGS[m.findingId];
-        return `<div class="a-sys"><span class="w-1.5 h-1.5 rounded-full bg-slate-600 flex-shrink-0"></span><span>${f.helper} ran before any recommendation was emitted (sub-agent, pre-emit)</span></div>
+        return `<div class="a-sys"><span class="w-1.5 h-1.5 rounded-full bg-mtext3 flex-shrink-0"></span><span>${f.helper} ran before any recommendation was emitted (sub-agent, pre-emit)</span></div>
           <div class="mb-4">
             <span class="hf-chip hf-pass" onclick="toggleHidden('fd-${f.id}')"><span class="d"></span>${f.helper} ✓ ${f.summary}</span>
-            <div id="fd-${f.id}" class="hidden mt-1.5 text-[11px] text-emerald-200/90 bg-emerald-500/5 border border-emerald-500/20 rounded-md p-2" style="max-width:520px;">${f.detail}</div>
+            <div id="fd-${f.id}" class="hidden mt-1.5 text-[11px] text-chip-green bg-chip-green-soft border border-chip-green/20 rounded-md p-2" style="max-width:520px;">${f.detail}</div>
           </div>`;
       }
 
@@ -459,21 +550,21 @@
         const setChips = setF.map(f => `
           <div class="mt-2">
             <span class="hf-chip hf-intent" onclick="toggleHidden('fd-${f.id}')"><span class="d"></span>${f.helper}: ${f.summary}</span>
-            <div id="fd-${f.id}" class="hidden mt-1.5 text-[11px] text-blue-200/90 bg-blue-500/5 border border-blue-500/20 rounded-md p-2">${f.detail}</div>
+            <div id="fd-${f.id}" class="hidden mt-1.5 text-[11px] text-chip-blue bg-chip-blue-soft border border-chip-blue/20 rounded-md p-2">${f.detail}</div>
           </div>`).join('');
         body += `<div class="mt-2 space-y-2">${cards}</div>${setChips}
-          <div class="text-[10px] text-slate-600 mt-2">Findings are coalesced — one chip per finding kind. Click a chip for detail.</div>`;
+          <div class="text-[10px] text-mtext3 mt-2">Findings are coalesced — one chip per finding kind. Click a chip for detail.</div>`;
       }
       if (m.kind === 'actions') {
         body += `<div class="flex flex-wrap gap-2 mt-2">
-          ${m.actions.map(a => `<button onclick="showSharedToast('Finished thread — this action was already taken.')" class="text-xs px-3 py-1.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">${a}</button>`).join('')}
+          ${m.actions.map(a => `<button onclick="showSharedToast('Finished thread — this action was already taken.')" class="text-xs px-3 py-1.5 rounded-md bg-msurface text-mtext2 border border-mborder hover:bg-mraised">${a}</button>`).join('')}
         </div>`;
       }
       if (m.kind === 'draft') {
-        body += `<div class="mt-2 bg-slate-950 border border-slate-700 rounded-lg p-3">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-1.5">messaging task · draft to Aman Tokyo</div>
-          <p class="text-xs text-slate-300 leading-relaxed">${m.draftText}</p>
-          ${m.sent ? '<div class="mt-2.5 text-[11px] text-emerald-400 font-medium">✓ Sent to Aman Tokyo · messaging task closed</div>' : ''}
+        body += `<div class="mt-2 bg-mbg border border-mborder rounded-lg p-3">
+          <div class="text-[10px] font-mono uppercase tracking-wider text-mtext3 mb-1.5">messaging task · draft to Aman Tokyo</div>
+          <p class="text-xs text-mtext2 leading-relaxed">${m.draftText}</p>
+          ${m.sent ? '<div class="mt-2.5 text-[11px] text-msuccess font-medium">✓ Sent to Aman Tokyo · messaging task closed</div>' : ''}
         </div>`;
       }
       return `<div class="a-msg ${m.role}">${av}<div style="flex:1;min-width:0;"><div class="a-name">${name}</div>${body}</div></div>`;

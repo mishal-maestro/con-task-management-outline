@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Mode — Helper Agents — Conductor Task Mgmt</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,15 +69,15 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
     .hf-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; border-radius: 6px; padding: 4px 9px; border: 1px solid; }
     .hf-chip .d { width: 6px; height: 6px; border-radius: 50%; }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -34,121 +86,121 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Sunthar's PRD §5 — AI Behavior + Helpers
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Agent Mode — Helper Agents</h2>
-        <p class="text-sm text-slate-500 mt-1">A defense-in-depth QA layer — three helpers verify the main AI on every operator-visible output.</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Agent Mode — Helper Agents</h2>
+        <p class="text-sm text-mtext3 mt-1">A defense-in-depth QA layer — three helpers verify the main AI on every operator-visible output.</p>
       </div>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-6 text-sm text-slate-300 leading-relaxed">
-        v1 ships <strong class="text-slate-100">3 helpers</strong>. One <em>sub-agent</em> runs before a recommendation is emitted and can block it; two <em>independents</em> run on emit and post a chip. v1 surfaces only <strong class="text-slate-100">Important-tier</strong> findings as inline chips — Critical-tier blocking is deferred until override-rate data justifies it.
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-6 text-sm text-mtext2 leading-relaxed">
+        v1 ships <strong class="text-mtext">3 helpers</strong>. One <em>sub-agent</em> runs before a recommendation is emitted and can block it; two <em>independents</em> run on emit and post a chip. v1 surfaces only <strong class="text-mtext">Important-tier</strong> findings as inline chips — Critical-tier blocking is deferred until override-rate data justifies it.
       </div>
 
       <!-- Pipeline -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-6">
-        <div class="font-mono text-[11px] uppercase tracking-widest text-orange-500 mb-4">Where each helper fires</div>
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-6">
+        <div class="font-mono text-[11px] uppercase tracking-widest text-maccent mb-4">Where each helper fires</div>
         <div class="flex items-stretch gap-3 flex-wrap">
-          <div class="flex-1 min-w-[150px] border border-rose-500/40 bg-rose-500/5 rounded-lg p-3 text-center">
-            <div class="text-sm font-semibold text-rose-300">exclusion-check</div>
-            <div class="text-[11px] text-slate-500 mt-1">Sub-agent · before emit</div>
-            <div class="text-[11px] text-rose-300/80 mt-1">can block the rec</div>
+          <div class="flex-1 min-w-[150px] border border-mdanger/40 bg-mdangerl rounded-lg p-3 text-center">
+            <div class="text-sm font-semibold text-mdanger">exclusion-check</div>
+            <div class="text-[11px] text-mtext3 mt-1">Sub-agent · before emit</div>
+            <div class="text-[11px] text-mdanger/80 mt-1">can block the rec</div>
           </div>
-          <div class="flex items-center text-slate-600 text-xl">→</div>
-          <div class="flex-1 min-w-[150px] border border-orange-500/40 bg-orange-500/5 rounded-lg p-3 text-center">
-            <div class="text-sm font-semibold text-orange-300">propose_recommendation</div>
-            <div class="text-[11px] text-slate-500 mt-1">main AI · hotel-search</div>
-            <div class="text-[11px] text-orange-300/80 mt-1">emits the artifact</div>
+          <div class="flex items-center text-mtext3 text-xl">→</div>
+          <div class="flex-1 min-w-[150px] border border-maccent/40 bg-maccentl rounded-lg p-3 text-center">
+            <div class="text-sm font-semibold text-maccenth">propose_recommendation</div>
+            <div class="text-[11px] text-mtext3 mt-1">main AI · hotel-search</div>
+            <div class="text-[11px] text-maccenth/80 mt-1">emits the artifact</div>
           </div>
-          <div class="flex items-center text-slate-600 text-xl">→</div>
+          <div class="flex items-center text-mtext3 text-xl">→</div>
           <div class="flex-1 min-w-[150px] space-y-2">
-            <div class="border border-amber-500/40 bg-amber-500/5 rounded-lg p-2.5 text-center">
-              <div class="text-xs font-semibold text-amber-300">factual-check</div>
-              <div class="text-[10px] text-slate-500">Independent · posts a chip</div>
+            <div class="border border-mamber/40 bg-mambersoft rounded-lg p-2.5 text-center">
+              <div class="text-xs font-semibold text-mamber">factual-check</div>
+              <div class="text-[10px] text-mtext3">Independent · posts a chip</div>
             </div>
-            <div class="border border-blue-500/40 bg-blue-500/5 rounded-lg p-2.5 text-center">
-              <div class="text-xs font-semibold text-blue-300">intent-match-verifier</div>
-              <div class="text-[10px] text-slate-500">Independent · posts a chip</div>
+            <div class="border border-minfo/40 bg-minfol rounded-lg p-2.5 text-center">
+              <div class="text-xs font-semibold text-minfo">intent-match-verifier</div>
+              <div class="text-[10px] text-mtext3">Independent · posts a chip</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Helper cards -->
-      <div class="mb-2 text-base font-semibold text-slate-100">The v1 3-pack</div>
+      <div class="mb-2 text-base font-semibold text-mtext">The v1 3-pack</div>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 flex flex-col">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 flex flex-col">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-sm font-semibold text-slate-100">exclusion-check</span>
-            <span class="text-[9px] font-mono uppercase tracking-wider text-rose-300 bg-rose-500/15 rounded px-1.5 py-0.5">Sub-agent</span>
+            <span class="font-mono text-sm font-semibold text-mtext">exclusion-check</span>
+            <span class="text-[9px] font-mono uppercase tracking-wider text-mdanger bg-mdangerl rounded px-1.5 py-0.5">Sub-agent</span>
           </div>
           <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Model</div><div class="text-[11px] text-slate-300 mt-0.5">Haiku</div></div>
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Latency</div><div class="text-[11px] text-slate-300 mt-0.5">≤ 1.5s</div></div>
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Tier</div><div class="text-[11px] text-slate-300 mt-0.5">Important</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Model</div><div class="text-[11px] text-mtext2 mt-0.5">Haiku</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Latency</div><div class="text-[11px] text-mtext2 mt-0.5">≤ 1.5s</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Tier</div><div class="text-[11px] text-mtext2 mt-0.5">Important</div></div>
           </div>
-          <div class="text-[10px] font-mono text-slate-500 mb-2">fires: before propose_recommendation</div>
-          <p class="text-xs text-slate-400 leading-relaxed flex-1">Verifies the candidate set doesn't violate a client exclusion ("no Maybourne"). Runs in parallel before emit; can block a Critical violation (rare — promotion is data-driven).</p>
+          <div class="text-[10px] font-mono text-mtext3 mb-2">fires: before propose_recommendation</div>
+          <p class="text-xs text-mtext3 leading-relaxed flex-1">Verifies the candidate set doesn't violate a client exclusion ("no Maybourne"). Runs in parallel before emit; can block a Critical violation (rare — promotion is data-driven).</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 flex flex-col">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 flex flex-col">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-sm font-semibold text-slate-100">intent-match-verifier</span>
-            <span class="text-[9px] font-mono uppercase tracking-wider text-blue-300 bg-blue-500/15 rounded px-1.5 py-0.5">Independent</span>
+            <span class="font-mono text-sm font-semibold text-mtext">intent-match-verifier</span>
+            <span class="text-[9px] font-mono uppercase tracking-wider text-minfo bg-minfol rounded px-1.5 py-0.5">Independent</span>
           </div>
           <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Model</div><div class="text-[11px] text-slate-300 mt-0.5">Sonnet 4</div></div>
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Latency</div><div class="text-[11px] text-slate-300 mt-0.5">≤ 3s</div></div>
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Tier</div><div class="text-[11px] text-slate-300 mt-0.5">Important</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Model</div><div class="text-[11px] text-mtext2 mt-0.5">Sonnet 4</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Latency</div><div class="text-[11px] text-mtext2 mt-0.5">≤ 3s</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Tier</div><div class="text-[11px] text-mtext2 mt-0.5">Important</div></div>
           </div>
-          <div class="text-[10px] font-mono text-slate-500 mb-2">fires: on propose_recommendation emit</div>
-          <p class="text-xs text-slate-400 leading-relaxed flex-1">Verifies the recommendations cover every sub-ask in the original advisor message. Posts an Important chip when coverage is below 1.0 — e.g. connecting suites for the children weren't addressed.</p>
+          <div class="text-[10px] font-mono text-mtext3 mb-2">fires: on propose_recommendation emit</div>
+          <p class="text-xs text-mtext3 leading-relaxed flex-1">Verifies the recommendations cover every sub-ask in the original advisor message. Posts an Important chip when coverage is below 1.0 — e.g. connecting suites for the children weren't addressed.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 flex flex-col">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 flex flex-col">
           <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-sm font-semibold text-slate-100">factual-check</span>
-            <span class="text-[9px] font-mono uppercase tracking-wider text-blue-300 bg-blue-500/15 rounded px-1.5 py-0.5">Independent</span>
+            <span class="font-mono text-sm font-semibold text-mtext">factual-check</span>
+            <span class="text-[9px] font-mono uppercase tracking-wider text-minfo bg-minfol rounded px-1.5 py-0.5">Independent</span>
           </div>
           <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Model</div><div class="text-[11px] text-slate-300 mt-0.5">Haiku</div></div>
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Latency</div><div class="text-[11px] text-slate-300 mt-0.5">≤ 2s</div></div>
-            <div class="bg-slate-950 border border-slate-800 rounded p-2"><div class="text-[9px] uppercase tracking-wider text-slate-600">Tier</div><div class="text-[11px] text-slate-300 mt-0.5">Important</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Model</div><div class="text-[11px] text-mtext2 mt-0.5">Haiku</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Latency</div><div class="text-[11px] text-mtext2 mt-0.5">≤ 2s</div></div>
+            <div class="bg-mbg border border-mborder rounded p-2"><div class="text-[9px] uppercase tracking-wider text-mtext3">Tier</div><div class="text-[11px] text-mtext2 mt-0.5">Important</div></div>
           </div>
-          <div class="text-[10px] font-mono text-slate-500 mb-2">fires: on propose_recommendation emit</div>
-          <p class="text-xs text-slate-400 leading-relaxed flex-1">Cross-references dates, names and prices in the artifact against structured trip data. Posts an Important chip per discrepancy — e.g. a quoted rate is for a room category that doesn't match the ask.</p>
+          <div class="text-[10px] font-mono text-mtext3 mb-2">fires: on propose_recommendation emit</div>
+          <p class="text-xs text-mtext3 leading-relaxed flex-1">Cross-references dates, names and prices in the artifact against structured trip data. Posts an Important chip per discrepancy — e.g. a quoted rate is for a room category that doesn't match the ask.</p>
         </div>
 
       </div>
 
       <!-- Chips + failure modes -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
-          <div class="font-mono text-[11px] uppercase tracking-widest text-orange-500 mb-3">HelperFindingChip — visual reference</div>
-          <p class="text-xs text-slate-500 mb-3">Findings render as inline chips on the artifact. See them live on the recommendations in the <a href="prototype/agent.html" class="text-orange-400 hover:text-orange-300">Agent tab</a>.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
+          <div class="font-mono text-[11px] uppercase tracking-widest text-maccent mb-3">HelperFindingChip — visual reference</div>
+          <p class="text-xs text-mtext3 mb-3">Findings render as inline chips on the artifact. See them live on the recommendations in the <a href="prototype/agent.html" class="text-maccent hover:text-maccenth">Agent tab</a>.</p>
           <div class="flex flex-wrap gap-2">
-            <span class="hf-chip" style="color:#34d399;background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.35);"><span class="d" style="background:#34d399;"></span>exclusion-check ✓ clear</span>
-            <span class="hf-chip" style="color:#fbbf24;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.35);"><span class="d" style="background:#fbbf24;"></span>factual-check finding</span>
-            <span class="hf-chip" style="color:#60a5fa;background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.35);"><span class="d" style="background:#60a5fa;"></span>intent-match finding</span>
+            <span class="hf-chip" style="color:rgb(60,180,100);background:rgba(60,180,100,.1);border-color:rgba(60,180,100,.35);"><span class="d" style="background:rgb(60,180,100);"></span>exclusion-check ✓ clear</span>
+            <span class="hf-chip" style="color:rgb(251,191,36);background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.35);"><span class="d" style="background:rgb(251,191,36);"></span>factual-check finding</span>
+            <span class="hf-chip" style="color:rgb(80,160,220);background:rgba(80,160,220,.1);border-color:rgba(80,160,220,.35);"><span class="d" style="background:rgb(80,160,220);"></span>intent-match finding</span>
           </div>
-          <div class="mt-4 pt-4 border-t border-slate-800">
-            <div class="text-xs font-semibold text-slate-200 mb-1.5">Coalescing &amp; precedence</div>
-            <p class="text-xs text-slate-500 leading-relaxed">One chip per finding kind (max 2 on an artifact). 3-second coalesce window post-emit. If factual-check and intent-match-verifier post the same severity on the same span, <strong class="text-slate-300">factual-check takes precedence</strong> — an objective check beats a judgment call.</p>
+          <div class="mt-4 pt-4 border-t border-mborder">
+            <div class="text-xs font-semibold text-mtext mb-1.5">Coalescing &amp; precedence</div>
+            <p class="text-xs text-mtext3 leading-relaxed">One chip per finding kind (max 2 on an artifact). 3-second coalesce window post-emit. If factual-check and intent-match-verifier post the same severity on the same span, <strong class="text-mtext2">factual-check takes precedence</strong> — an objective check beats a judgment call.</p>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
-          <div class="font-mono text-[11px] uppercase tracking-widest text-orange-500 mb-3">Failure modes — graceful degradation</div>
-          <p class="text-xs text-slate-500 mb-3">A helper failure never blocks a recommendation from rendering.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
+          <div class="font-mono text-[11px] uppercase tracking-widest text-maccent mb-3">Failure modes — graceful degradation</div>
+          <p class="text-xs text-mtext3 mb-3">A helper failure never blocks a recommendation from rendering.</p>
           <ul class="space-y-2.5">
-            <li class="flex gap-2.5 text-xs text-slate-300 leading-relaxed"><span class="text-rose-400 flex-shrink-0">▸</span><span><strong class="text-slate-100">Sub-agent over budget</strong> — drop from the gate, fall back to running as an independent.</span></li>
-            <li class="flex gap-2.5 text-xs text-slate-300 leading-relaxed"><span class="text-rose-400 flex-shrink-0">▸</span><span><strong class="text-slate-100">Sub-agent errors</strong> — log it, do not block the main agent.</span></li>
-            <li class="flex gap-2.5 text-xs text-slate-300 leading-relaxed"><span class="text-rose-400 flex-shrink-0">▸</span><span><strong class="text-slate-100">Independent errors</strong> — fail silently; surface "1 check unavailable" in the artifact metadata.</span></li>
+            <li class="flex gap-2.5 text-xs text-mtext2 leading-relaxed"><span class="text-mdanger flex-shrink-0">▸</span><span><strong class="text-mtext">Sub-agent over budget</strong> — drop from the gate, fall back to running as an independent.</span></li>
+            <li class="flex gap-2.5 text-xs text-mtext2 leading-relaxed"><span class="text-mdanger flex-shrink-0">▸</span><span><strong class="text-mtext">Sub-agent errors</strong> — log it, do not block the main agent.</span></li>
+            <li class="flex gap-2.5 text-xs text-mtext2 leading-relaxed"><span class="text-mdanger flex-shrink-0">▸</span><span><strong class="text-mtext">Independent errors</strong> — fail silently; surface "1 check unavailable" in the artifact metadata.</span></li>
           </ul>
         </div>
       </div>

@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Automation Panel — Conductor Task Mgmt Prototype</title>
+
+  <style>
+    /* Maestro design tokens MUST be defined before Tailwind CDN loads */
+    :root {
+      --maestro-bg: 24 24 27;
+      --maestro-card: 38 38 42;
+      --maestro-surface: 32 32 36;
+      --maestro-surface-raised: 40 40 45;
+      --maestro-border: 50 50 56;
+      --maestro-border-hover: 70 70 78;
+      --maestro-text-primary: 240 238 235;
+      --maestro-text-secondary: 180 175 168;
+      --maestro-text-tertiary: 140 135 128;
+      --maestro-accent: 255 110 70;
+      --maestro-accent-hover: 255 130 95;
+      --maestro-accent-light: 50 30 25;
+      --maestro-on-accent: 255 255 255;
+      --maestro-success: 60 180 100;
+      --maestro-success-light: 25 45 35;
+      --maestro-danger: 230 90 70;
+      --maestro-danger-light: 50 30 25;
+      --maestro-warning: 210 160 60;
+      --maestro-warning-light: 50 40 25;
+      --maestro-amber: 251 191 36;
+      --maestro-amber-soft: 50 38 18;
+      --maestro-info: 80 160 220;
+      --maestro-info-light: 25 35 45;
+      --maestro-chip-green: 60 180 100;
+      --maestro-chip-green-soft: 25 45 35;
+      --maestro-chip-orange: 255 140 80;
+      --maestro-chip-orange-soft: 50 35 25;
+      --maestro-chip-blue: 80 160 220;
+      --maestro-chip-blue-soft: 25 35 45;
+      --maestro-chip-teal: 70 190 180;
+      --maestro-chip-teal-soft: 25 45 45;
+      --maestro-chip-purple: 160 120 230;
+      --maestro-chip-purple-soft: 40 35 55;
+      --maestro-chip-pink: 240 120 180;
+      --maestro-chip-pink-soft: 50 30 45;
+      --maestro-control-knob: 255 255 255;
+      --maestro-overlay: 0 0 0;
+    }
+  </style>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <script src="../theme.js"></script>
+  <script src="../data.js"></script>
+  <script>window.CURRENT_PAGE = 'proto-admin-panel';</script>
+  <script src="../nav.js"></script>
+  <script src="admin-data.js"></script>
+  <script src="task-data.js"></script>
+
+  <style>
+    /* Override Tailwind's default font-sans with Commissioner */
+    .font-sans, body { font-family: 'Commissioner', 'Inter', ui-sans-serif, system-ui, sans-serif !important; }
+    .font-serif { font-family: 'DM Serif Display', ui-serif, Georgia, serif !important; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
+
+    /* Toggle switch */
+    .toggle { position: relative; display: inline-block; width: 36px; height: 20px; cursor: pointer; vertical-align: middle; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: rgb(var(--maestro-border));
+      border-radius: 9999px;
+      transition: background .15s;
+    }
+    .toggle-slider::after {
+      content: '';
+      position: absolute;
+      width: 14px; height: 14px;
+      left: 3px; top: 3px;
+      background: rgb(var(--maestro-control-knob));
+      border-radius: 50%;
+      transition: transform .15s;
+    }
+    .toggle input:checked + .toggle-slider { background: rgb(var(--maestro-success)); }
+    .toggle input:checked + .toggle-slider::after { transform: translateX(16px); }
+    .toggle.disabled { cursor: not-allowed; opacity: 0.5; }
+
+    /* Drawer slide */
+    .drawer { transform: translateX(100%); transition: transform .25s ease-out; }
+    .drawer.open { transform: translateX(0); }
+
+    /* Modal/backdrop fade */
+    .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .15s; }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* Toast */
+    .toast { animation: toast-in .2s ease-out; }
+    @keyframes toast-in {
+      from { transform: translateY(8px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Filter chips (shared style with task-board) */
+    .filter-chip {
+      display: inline-flex; align-items: center;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      color: rgb(var(--maestro-text-secondary));
+      background: rgb(var(--maestro-card));
+      border: 1px solid rgb(var(--maestro-border));
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all .12s;
+    }
+    .filter-chip:hover { color: rgb(var(--maestro-text-primary)); border-color: rgb(var(--maestro-border-hover)); background: rgb(var(--maestro-surface)); }
+    .filter-chip.active {
+      color: rgb(var(--maestro-text-primary));
+      background: rgb(var(--maestro-accent-light));
+      border-color: rgb(var(--maestro-accent));
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 0.0625rem 0.3125rem;
+      background: rgb(var(--maestro-surface));
+      border: 1px solid rgb(var(--maestro-border));
+      border-radius: 0.25rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.625rem;
+      color: rgb(var(--maestro-amber));
+    }
+
+    tr.row-disabled td { opacity: 0.55; }
+    tr.row-enabled  { background: color-mix(in srgb, rgb(var(--maestro-success)) 3%, transparent); }
+  </style>
+</head>
+
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
+
+  <div id="nav-root"></div>
+
+  <main class="ml-0 lg:ml-[260px] min-h-screen">
+    <div id="topnav-root"></div>
+
+    <div class="max-w-[1400px] mx-auto px-6 py-8 pt-14 lg:pt-8">
+
+      <!-- Source chip -->
+      <div class="mb-6 flex items-center gap-2 flex-wrap">
+        <a href="https://www.notion.so/36ed1ecb2189819595eee88d28a6efff" target="_blank"
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          PRD v1.1 §A1 Addendum (source of truth)
+        </a>
+        <span class="text-[11px] text-mborder">·</span>
+        <a href="https://www.notion.so/3662321e910742e3baeaffa14b6e221b?v=e51fb5c948594c38a3311df3aa4668dc" target="_blank"
+           class="inline-flex items-center gap-1.5 text-[11px] text-mtext3 hover:text-mtext2 transition-colors">
+          Notion Task Inventory DB
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <span class="text-[11px] text-mborder">·</span>
+        <a href="admin-panel-v2.html" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-mambersoft text-mamber border border-mamber/30 hover:bg-mambersoft/60 transition-colors" title="Preview the proposed v2 scope expansion (Create + Edit)">
+          v2 proposed: Create + Edit →
+        </a>
+      </div>
+
+      <!-- Header -->
+      <div class="flex items-start justify-between gap-4 mb-6 flex-wrap">
+        <div>
+          <h2 class="text-2xl font-semibold text-mtext tracking-tight">Automation Admin Panel</h2>
+          <p class="text-sm text-mtext3 mt-1">Toggle individual task automations on or off. Default OFF on launch, ops opts in deliberately.</p>
+        </div>
+        <!-- Role-mode switcher (simulates RBAC) -->
+        <div class="flex items-center gap-2">
+          <label class="text-[11px] text-mtext3 uppercase tracking-wider">Acting as</label>
+          <select id="role-select" class="bg-mcard border border-mborder rounded-lg px-3 py-1.5 text-sm text-mtext focus:outline-none focus:border-maccent">
+            <option value="marco" selected>Marco Silva · Ops Lead (full)</option>
+            <option value="maya">Maya Chen · TA Lead (full)</option>
+            <option value="jordan">Jordan Singh · Frontline TA (read-only)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-2xl font-semibold text-mtext leading-tight" id="stat-total">0</div>
+          <div class="text-[11px] text-mtext3 mt-1.5 uppercase tracking-wider font-medium">Automations (P0)</div>
+        </div>
+        <div class="bg-msuccessl border border-msuccess/30 rounded-lg p-4">
+          <div class="font-mono text-2xl font-semibold text-msuccess leading-tight" id="stat-on">0</div>
+          <div class="text-[11px] text-msuccess/70 mt-1.5 uppercase tracking-wider font-medium">On</div>
+        </div>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-2xl font-semibold text-mtext3 leading-tight" id="stat-off">0</div>
+          <div class="text-[11px] text-mtext3 mt-1.5 uppercase tracking-wider font-medium">Off</div>
+        </div>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-sm font-semibold text-mtext2 leading-tight" id="stat-tier-breakdown">— / — / —</div>
+          <div class="text-[11px] text-mtext3 mt-1.5 uppercase tracking-wider font-medium">Auto / Assist / Escalate</div>
+        </div>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-sm font-semibold text-mtext2 leading-tight" id="stat-recent">—</div>
+          <div class="text-[11px] text-mtext3 mt-1.5 uppercase tracking-wider font-medium">Last change</div>
+        </div>
+      </div>
+
+      <!-- Calibration dashboard notice -->
+      <div class="bg-minfol border border-minfo/30 rounded-lg p-3 mb-4 flex items-start gap-3">
+        <svg class="w-4 h-4 text-minfo flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p class="text-xs text-mtext2 leading-relaxed">
+          This panel toggles automations <strong class="text-mtext">on / off</strong>.
+          Per-(origin × task_type) confidence thresholds for v2 auto-approval live in the Calibration Dashboard
+          (<a href="https://linear.app/maestroinc/issue/CON-241" target="_blank" class="text-maccent hover:text-maccenth font-mono">CON-241</a>, separate surface).
+          Both surfaces read the same automation registry.
+        </p>
+      </div>
+
+      <!-- Read-only banner (shows when frontline TA is acting) -->
+      <div id="readonly-banner" class="hidden bg-mwarningl border border-mwarning/30 rounded-lg p-3 mb-4 flex items-start gap-3">
+        <svg class="w-4 h-4 text-mwarning flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <p class="text-xs text-mtext2 leading-relaxed">
+          <strong class="text-mwarning">Read-only.</strong> Frontline TAs can view automation state but cannot toggle. Switch to an Ops Lead or TA Lead to make changes.
+        </p>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="bg-mcard border border-mborder rounded-lg p-3 mb-4">
+        <div class="flex flex-wrap items-center gap-2">
+
+          <!-- Search -->
+          <div class="relative">
+            <input id="search-input" type="text" placeholder="Search automation name or trigger…"
+              class="w-[280px] bg-msurface border border-mborder rounded-lg pl-8 pr-3 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent" />
+            <svg class="w-3.5 h-3.5 text-mtext3 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+
+          <div class="w-px h-5 bg-mborder"></div>
+
+          <!-- Status filter (on/off/all) -->
+          <div class="flex items-center gap-1">
+            <button class="filter-chip filter-status active" data-status="all">All</button>
+            <button class="filter-chip filter-status" data-status="on">On</button>
+            <button class="filter-chip filter-status" data-status="off">Off</button>
+          </div>
+
+          <div class="w-px h-5 bg-mborder"></div>
+
+          <!-- Tier filter -->
+          <div class="flex items-center gap-1">
+            <button class="filter-chip filter-tier" data-tier="Auto"><span class="inline-block w-1.5 h-1.5 rounded-full bg-msuccess mr-1.5"></span>Auto</button>
+            <button class="filter-chip filter-tier" data-tier="Assist"><span class="inline-block w-1.5 h-1.5 rounded-full bg-mamber mr-1.5"></span>Assist</button>
+            <button class="filter-chip filter-tier" data-tier="Escalate"><span class="inline-block w-1.5 h-1.5 rounded-full bg-mdanger mr-1.5"></span>Escalate</button>
+          </div>
+
+          <div class="w-px h-5 bg-mborder"></div>
+
+          <!-- Origin dropdown -->
+          <div class="flex items-center gap-1.5">
+            <label class="text-[11px] text-mtext3">Origin:</label>
+            <select id="origin-select" class="bg-msurface border border-mborder rounded-md px-2 py-1 text-xs text-mtext2 focus:outline-none focus:border-maccent">
+              <option value="all" selected>All</option>
+              <option value="Trip-lifecycle">Trip-lifecycle</option>
+              <option value="Internal operations">Internal operations</option>
+              <option value="World-driven">World-driven</option>
+              <option value="Relationship">Relationship</option>
+              <option value="Client-driven (explicit)">Client-driven (explicit)</option>
+              <option value="Client-driven (implicit)">Client-driven (implicit)</option>
+            </select>
+          </div>
+
+          <!-- Type dropdown -->
+          <div class="ml-1 flex items-center gap-1.5">
+            <label class="text-[11px] text-mtext3">Type:</label>
+            <select id="type-select" class="bg-msurface border border-mborder rounded-md px-2 py-1 text-xs text-mtext2 focus:outline-none focus:border-maccent">
+              <option value="all" selected>All</option>
+              <option value="trip-prep">Trip prep</option>
+              <option value="messaging">Messaging</option>
+              <option value="disruption-response">Disruption response</option>
+              <option value="ops-internal">Ops internal</option>
+              <option value="booking-action">Booking action</option>
+            </select>
+          </div>
+
+          <div class="flex-1"></div>
+
+          <button id="clear-filters" class="text-xs text-mtext3 hover:text-mtext2 px-2 transition-colors hidden">Clear filters</button>
+        </div>
+      </div>
+
+      <!-- Bulk actions toolbar -->
+      <div id="bulk-bar" class="hidden bg-mraised border border-maccent/40 rounded-lg p-3 mb-4 flex items-center gap-3 sticky top-2 z-30">
+        <span class="text-sm text-mtext"><span id="bulk-count">0</span> selected</span>
+        <div class="w-px h-5 bg-mborder"></div>
+        <button id="bulk-on" class="bulk-action text-sm text-msuccess hover:text-msuccess/80 transition-colors">Turn ON</button>
+        <button id="bulk-off" class="bulk-action text-sm text-mtext2 hover:text-maccent transition-colors">Turn OFF</button>
+        <div class="flex-1"></div>
+        <button id="bulk-clear" class="text-xs text-mtext3 hover:text-mtext2 transition-colors">Clear</button>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-mborder bg-mraised/30">
+                <th class="w-10 px-4 py-3">
+                  <input type="checkbox" id="select-all" class="rounded border-mborder bg-mcard text-maccent focus:ring-maccent focus:ring-offset-mcard" />
+                </th>
+                <th class="text-left px-4 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider">Automation</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider">Origin</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider">Type</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider">Tier</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider">State</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider" title="Tasks this automation created in the last 7 days">Created 7d</th>
+                <th class="text-left px-3 py-3 text-[11px] font-semibold text-mtext3 uppercase tracking-wider">Last change</th>
+                <th class="w-24 px-3 py-3"></th>
+              </tr>
+            </thead>
+            <tbody id="admin-tbody" class="divide-y divide-mborder">
+              <!-- rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="empty-state" class="hidden text-center py-16 text-sm text-mtext3">
+          No automations match the current filters.
+          <button id="empty-clear" class="ml-2 text-maccent hover:text-maccenth">Clear filters</button>
+        </div>
+      </div>
+
+      <!-- Footer note -->
+      <div class="mt-4 text-[11px] text-mtext3 flex items-center gap-4">
+        <span>Showing P0 automations (21 mapped on 2026-05-28). Lower priorities surface as they land.</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── Audit drawer ─── -->
+  <div id="drawer-backdrop" class="modal-backdrop fixed inset-0 bg-black/40 z-40"></div>
+  <aside id="drawer" class="drawer fixed top-0 right-0 h-full w-full max-w-[480px] bg-mcard border-l border-mborder z-50 overflow-y-auto">
+    <div id="drawer-content"><!-- rendered by JS --></div>
+  </aside>
+
+  <!-- ─── Toast container ─── -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[70] flex flex-col gap-2 items-end"></div>
+
+  <!-- Topnav loader -->
+  <script>window.CURRENT_APP_TAB = 'settings';</script>
+  <script src="topnav.js"></script>
+
+  <script>
+    // ──────────────────────────────────────────────────────────
+    //  State
+    // ──────────────────────────────────────────────────────────
+    const State = {
+      currentUser: 'marco',
+      filters: { search: '', origin: 'all', taskType: 'all', status: 'all', tier: 'all' },
+      selected: new Set(),
+      drawerAutomationId: null,
+      automations: AUTOMATIONS.map(a => ({ ...a, audit: [...a.audit] })),
+    };
+
+    function canToggle() {
+      return State.currentUser !== 'jordan';
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Filter + render
+    // ──────────────────────────────────────────────────────────
+    function visibleAutomations() {
+      let list = State.automations;
+      if (State.filters.search) {
+        const q = State.filters.search.toLowerCase();
+        list = list.filter(a => a.name.toLowerCase().includes(q) || a.trigger.toLowerCase().includes(q));
+      }
+      if (State.filters.origin !== 'all') list = list.filter(a => a.origin_bucket === State.filters.origin);
+      if (State.filters.taskType !== 'all') list = list.filter(a => a.task_type === State.filters.taskType);
+      if (State.filters.tier !== 'all') list = list.filter(a => a.routing_tier === State.filters.tier);
+      if (State.filters.status === 'on') list = list.filter(a => a.enabled);
+      if (State.filters.status === 'off') list = list.filter(a => !a.enabled);
+      return list;
+    }
+
+    function updateStats() {
+      const all = State.automations;
+      document.getElementById('stat-total').textContent = all.length;
+      document.getElementById('stat-on').textContent = all.filter(a => a.enabled).length;
+      document.getElementById('stat-off').textContent = all.filter(a => !a.enabled).length;
+      const auto = all.filter(a => a.routing_tier === 'Auto').length;
+      const assist = all.filter(a => a.routing_tier === 'Assist').length;
+      const escalate = all.filter(a => a.routing_tier === 'Escalate').length;
+      document.getElementById('stat-tier-breakdown').textContent = `${auto} / ${assist} / ${escalate}`;
+      // Last change: find most recent audit event
+      const allEvents = [];
+      all.forEach(a => a.audit.forEach(ev => allEvents.push({ ...ev, automation: a.name })));
+      if (allEvents.length === 0) {
+        document.getElementById('stat-recent').textContent = '—';
+      } else {
+        // For prototype we trust "just now" / "X ago" labels; pick last in fixture order
+        const recent = allEvents[allEvents.length - 1];
+        document.getElementById('stat-recent').textContent = recent.time;
+      }
+    }
+
+    function rowHtml(a) {
+      const origin = ORIGIN_STYLES[a.origin_bucket];
+      const tier = TIER_STYLES_ADMIN[a.routing_tier];
+      const lastEvent = a.audit[a.audit.length - 1];
+      const lastChange = lastEvent
+        ? `<span class="font-mono">${ADMIN_TEAM[lastEvent.actor].initials}</span> · ${lastEvent.time}`
+        : '<span class="text-mborder">never</span>';
+      const checked = State.selected.has(a.id);
+      const canT = canToggle();
+      const rowClass = a.enabled ? 'row-enabled' : '';
+      const metrics = getAutomationMetrics(a.id);
+      return `
+        <tr data-id="${a.id}" class="admin-row hover:bg-mraised/30 transition-colors ${rowClass}">
+          <td class="px-4 py-3" onclick="event.stopPropagation()">
+            <input type="checkbox" class="row-check rounded border-mborder bg-mcard text-maccent focus:ring-maccent focus:ring-offset-mcard" ${checked ? 'checked' : ''} ${canT ? '' : 'disabled'} />
+          </td>
+          <td class="px-4 py-3">
+            <div class="text-sm text-mtext leading-snug">${a.name}</div>
+            <div class="text-[11px] text-mtext3 mt-0.5 flex items-center gap-1.5 flex-wrap">
+              <span class="font-mono text-mborder">${a.ref}</span>
+              <span class="text-mborder">·</span>
+              <span class="text-mtext3">${a.trigger}</span>
+            </div>
+          </td>
+          <td class="px-3 py-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] ${origin.bg} ${origin.text} border ${origin.border}">${a.origin_bucket}</span>
+          </td>
+          <td class="px-3 py-3">
+            <span class="text-xs text-mtext3">${TASK_TYPE_LABELS_ADMIN[a.task_type]}</span>
+          </td>
+          <td class="px-3 py-3">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${a.routing_tier}</span>
+          </td>
+          <td class="px-3 py-3" onclick="event.stopPropagation()">
+            <label class="toggle ${canT ? '' : 'disabled'}" title="${canT ? 'Click to toggle' : 'Read-only — switch to Ops Lead to change'}">
+              <input type="checkbox" class="row-toggle" data-id="${a.id}" ${a.enabled ? 'checked' : ''} ${canT ? '' : 'disabled'} />
+              <span class="toggle-slider"></span>
+            </label>
+          </td>
+          <td class="px-3 py-3">
+            ${metrics.counts.last_7d > 0
+              ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-msuccessl text-msuccess border border-msuccess/30 font-mono" title="Total ${metrics.counts.total} since enabled · ${metrics.counts.last_24h} in last 24h">${metrics.counts.last_7d}</span>`
+              : '<span class="text-xs text-mborder">—</span>'}
+          </td>
+          <td class="px-3 py-3 text-xs text-mtext3">${lastChange}</td>
+          <td class="px-3 py-3 text-right">
+            <button class="audit-btn text-[11px] text-mtext3 hover:text-maccent" data-id="${a.id}">Details ›</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    function renderRows() {
+      const list = visibleAutomations();
+      const tbody = document.getElementById('admin-tbody');
+      const empty = document.getElementById('empty-state');
+      if (list.length === 0) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        tbody.innerHTML = list.map(rowHtml).join('');
+      }
+      // Bind events
+      tbody.querySelectorAll('.row-check').forEach(cb => {
+        cb.addEventListener('change', e => {
+          const id = Number(e.target.closest('tr').dataset.id);
+          if (e.target.checked) State.selected.add(id);
+          else State.selected.delete(id);
+          updateBulkBar();
+        });
+      });
+      tbody.querySelectorAll('.row-toggle').forEach(t => {
+        t.addEventListener('change', e => {
+          const id = Number(e.target.dataset.id);
+          doToggle(id, e.target.checked);
+        });
+      });
+      tbody.querySelectorAll('.audit-btn').forEach(b => {
+        b.addEventListener('click', () => openDrawer(Number(b.dataset.id)));
+      });
+      // Master checkbox state
+      const master = document.getElementById('select-all');
+      const visibleIds = list.map(a => a.id);
+      const selectedVisible = visibleIds.filter(id => State.selected.has(id)).length;
+      master.indeterminate = selectedVisible > 0 && selectedVisible < visibleIds.length;
+      master.checked = visibleIds.length > 0 && selectedVisible === visibleIds.length;
+    }
+
+    function updateBulkBar() {
+      const bar = document.getElementById('bulk-bar');
+      const count = State.selected.size;
+      if (count > 0) {
+        bar.classList.remove('hidden');
+        bar.classList.add('flex');
+        document.getElementById('bulk-count').textContent = count;
+      } else {
+        bar.classList.add('hidden');
+        bar.classList.remove('flex');
+      }
+    }
+
+    function renderFilterChips() {
+      document.querySelectorAll('.filter-status').forEach(b => {
+        b.classList.toggle('active', b.dataset.status === State.filters.status);
+      });
+      document.querySelectorAll('.filter-tier').forEach(b => {
+        b.classList.toggle('active', b.dataset.tier === State.filters.tier);
+      });
+      const anyFilter = State.filters.search || State.filters.origin !== 'all' ||
+                        State.filters.taskType !== 'all' || State.filters.status !== 'all' ||
+                        State.filters.tier !== 'all';
+      document.getElementById('clear-filters').classList.toggle('hidden', !anyFilter);
+    }
+
+    function rerender() {
+      renderFilterChips();
+      renderRows();
+      updateStats();
+      updateBulkBar();
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Toggle actions
+    // ──────────────────────────────────────────────────────────
+    function doToggle(id, newState) {
+      if (!canToggle()) {
+        toast('Read-only mode. Frontline TA cannot toggle automations.', 'warn');
+        renderRows();
+        return;
+      }
+      const a = State.automations.find(x => x.id === id);
+      if (!a) return;
+      if (a.enabled === newState) return;
+      a.enabled = newState;
+      a.audit.push({
+        actor: State.currentUser,
+        action: newState ? 'enabled' : 'disabled',
+        time: 'just now',
+        reason: '',
+      });
+      toast(`${a.name}: ${newState ? 'enabled' : 'disabled'}`, newState ? 'success' : 'info');
+      updateStats();
+      renderRows();
+      // If drawer is open on this row, re-render
+      if (State.drawerAutomationId === id) renderDrawer();
+    }
+
+    function doBulkToggle(newState) {
+      if (!canToggle()) {
+        toast('Read-only mode.', 'warn');
+        return;
+      }
+      let changed = 0;
+      State.selected.forEach(id => {
+        const a = State.automations.find(x => x.id === id);
+        if (a && a.enabled !== newState) {
+          a.enabled = newState;
+          a.audit.push({
+            actor: State.currentUser,
+            action: newState ? 'enabled' : 'disabled',
+            time: 'just now',
+            reason: 'Bulk action',
+          });
+          changed++;
+        }
+      });
+      toast(`${changed} automation${changed === 1 ? '' : 's'} ${newState ? 'enabled' : 'disabled'}`, newState ? 'success' : 'info');
+      State.selected.clear();
+      rerender();
+    }
+
+    function clearFilters() {
+      State.filters = { search: '', origin: 'all', taskType: 'all', status: 'all', tier: 'all' };
+      document.getElementById('search-input').value = '';
+      document.getElementById('origin-select').value = 'all';
+      document.getElementById('type-select').value = 'all';
+      rerender();
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Drawer
+    // ──────────────────────────────────────────────────────────
+    function openDrawer(id) {
+      State.drawerAutomationId = id;
+      renderDrawer();
+      document.getElementById('drawer').classList.add('open');
+      document.getElementById('drawer-backdrop').classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('open');
+      document.getElementById('drawer-backdrop').classList.remove('open');
+      State.drawerAutomationId = null;
+    }
+
+    function renderDrawer() {
+      const id = State.drawerAutomationId;
+      if (id === null) return;
+      const a = State.automations.find(x => x.id === id);
+      if (!a) return;
+      const origin = ORIGIN_STYLES[a.origin_bucket];
+      const tier = TIER_STYLES_ADMIN[a.routing_tier];
+      const canT = canToggle();
+
+      const auditHtml = a.audit.length === 0
+        ? '<div class="text-xs text-mtext3 italic py-4 text-center border border-dashed border-mborder rounded">No toggle history. This automation has been off since launch.</div>'
+        : a.audit.slice().reverse().map(ev => {
+            const actor = ADMIN_TEAM[ev.actor];
+            const isEnabled = ev.action === 'enabled';
+            const icon = isEnabled ? '✓' : '✕';
+            const ringColor = isEnabled ? 'text-msuccess bg-msuccessl border-msuccess/30' : 'text-mtext3 bg-msurface border-mborder';
+            return `
+              <div class="flex gap-3 pb-3 border-b border-mborder last:border-0 last:pb-0">
+                <div class="w-7 h-7 rounded-full ${ringColor} border flex items-center justify-center flex-shrink-0 text-xs font-semibold">${icon}</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm text-mtext">
+                    <strong class="${isEnabled ? 'text-msuccess' : 'text-mtext2'}">${isEnabled ? 'Enabled' : 'Disabled'}</strong>
+                    <span class="text-mtext3">by ${actor.name}</span>
+                    <span class="text-[11px] text-mtext3">(${actor.role})</span>
+                  </div>
+                  <div class="text-[11px] text-mtext3 mt-0.5">${ev.time}</div>
+                  ${ev.reason ? `<div class="text-[11px] text-mtext3 mt-1 leading-relaxed bg-msurface border border-mborder rounded p-2">${ev.reason}</div>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('');
+
+      const linkedTaskRefs = a.linked_linear_ticket ? a.linked_linear_ticket : null;
+
+      document.getElementById('drawer-content').innerHTML = `
+        <div class="px-5 py-4 border-b border-mborder sticky top-0 bg-mcard z-10">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex-1 min-w-0">
+              <div class="font-mono text-[10px] text-mtext3 mb-1">${a.ref} · inventory ID ${a.id}</div>
+              <h3 class="text-base font-semibold text-mtext leading-snug">${a.name}</h3>
+            </div>
+            <button id="drawer-close" class="p-1 rounded hover:bg-mraised text-mtext3 hover:text-mtext flex-shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] ${origin.bg} ${origin.text} border ${origin.border}">${a.origin_bucket}</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${a.routing_tier}</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-mraised text-mtext2 border border-mborder">${TASK_TYPE_LABELS_ADMIN[a.task_type]}</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-mraised text-mtext3 border border-mborder">${PHASE_LABELS[a.phase] || a.phase}</span>
+          </div>
+        </div>
+
+        <div class="p-5 space-y-5">
+
+          <!-- Trigger -->
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-1">Trigger</div>
+            <div class="text-sm text-mtext leading-relaxed">${a.trigger}</div>
+          </div>
+
+          <!-- Expected behavior -->
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-1">Expected behavior</div>
+            <p class="text-sm text-mtext2 leading-relaxed">${a.expected}</p>
+          </div>
+
+          <!-- Current state + toggle -->
+          <div class="bg-msurface border border-mborder rounded-lg p-4 flex items-center justify-between gap-3">
+            <div>
+              <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-0.5">Current state</div>
+              <div class="text-base font-semibold ${a.enabled ? 'text-msuccess' : 'text-mtext3'}">${a.enabled ? '● Enabled' : '○ Disabled'}</div>
+              <div class="text-[11px] text-mtext3 mt-0.5">${a.enabled ? 'Automation runs on trigger.' : 'Automation suppressed. Tasks of this type will not propose.'}</div>
+            </div>
+            <label class="toggle ${canT ? '' : 'disabled'}" title="${canT ? 'Click to toggle' : 'Read-only'}">
+              <input type="checkbox" id="drawer-toggle" ${a.enabled ? 'checked' : ''} ${canT ? '' : 'disabled'} />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Activity (tasks this automation has created) -->
+          ${(() => {
+            const m = getAutomationMetrics(a.id);
+            const recentHtml = m.recent.length === 0
+              ? '<div class="text-xs text-mtext3 italic py-3 text-center border border-dashed border-mborder rounded">No tasks created yet.</div>'
+              : `<div class="space-y-1.5">${m.recent.map(r => {
+                  const s = TASK_STATUS_STYLES[r.status] || TASK_STATUS_STYLES.completed;
+                  return `
+                    <div class="flex items-center justify-between gap-3 px-3 py-2 bg-msurface border border-mborder rounded">
+                      <div class="flex-1 min-w-0">
+                        <div class="text-xs text-mtext truncate">${r.trip}</div>
+                        <div class="text-[10px] text-mtext3 font-mono mt-0.5">${r.id}</div>
+                      </div>
+                      <div class="text-right flex-shrink-0">
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] ${s.bg} ${s.text} border ${s.border}">${s.label}</span>
+                        <div class="text-[10px] text-mtext3 mt-0.5">${r.when}</div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}</div>`;
+            return `
+              <div>
+                <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-2 flex items-center justify-between">
+                  <span>Activity</span>
+                  ${m.counts.last_fired ? `<span class="text-[11px] text-mtext3 normal-case tracking-normal">Last fired ${m.counts.last_fired}</span>` : ''}
+                </div>
+                <div class="grid grid-cols-3 gap-2 mb-3">
+                  <div class="bg-msurface border border-mborder rounded-lg p-3">
+                    <div class="font-mono text-lg font-semibold ${m.counts.total > 0 ? 'text-mtext' : 'text-mborder'}">${m.counts.total}</div>
+                    <div class="text-[10px] text-mtext3 uppercase tracking-wider mt-0.5">Total</div>
+                  </div>
+                  <div class="bg-msurface border border-mborder rounded-lg p-3">
+                    <div class="font-mono text-lg font-semibold ${m.counts.last_7d > 0 ? 'text-msuccess' : 'text-mborder'}">${m.counts.last_7d}</div>
+                    <div class="text-[10px] text-mtext3 uppercase tracking-wider mt-0.5">Last 7d</div>
+                  </div>
+                  <div class="bg-msurface border border-mborder rounded-lg p-3">
+                    <div class="font-mono text-lg font-semibold ${m.counts.last_24h > 0 ? 'text-msuccess' : 'text-mborder'}">${m.counts.last_24h}</div>
+                    <div class="text-[10px] text-mtext3 uppercase tracking-wider mt-0.5">Last 24h</div>
+                  </div>
+                </div>
+                <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-2">Recent tasks</div>
+                ${recentHtml}
+              </div>
+            `;
+          })()}
+
+          <!-- Audit log -->
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-2 flex items-center justify-between">
+              <span>Audit log</span>
+              <span class="font-mono text-mborder normal-case tracking-normal">${a.audit.length} event${a.audit.length === 1 ? '' : 's'}</span>
+            </div>
+            <div class="space-y-3">${auditHtml}</div>
+          </div>
+
+          <!-- Links back to source -->
+          <div class="pt-3 border-t border-mborder">
+            <div class="text-[10px] uppercase tracking-wider text-mtext3 mb-2">Source</div>
+            <div class="flex flex-col gap-1.5">
+              <a href="https://www.notion.so/3662321e910742e3baeaffa14b6e221b?v=e51fb5c948594c38a3311df3aa4668dc" target="_blank" class="text-[11px] text-mtext3 hover:text-maccent transition-colors inline-flex items-center gap-1.5">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                Notion Task Inventory · row ID ${a.id}
+              </a>
+              <a href="https://www.notion.so/36ed1ecb2189819595eee88d28a6efff" target="_blank" class="text-[11px] text-mtext3 hover:text-maccent transition-colors inline-flex items-center gap-1.5">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                PRD v1.1 §A1 Addendum
+              </a>
+            </div>
+          </div>
+
+        </div>
+      `;
+
+      document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+      const drawerToggle = document.getElementById('drawer-toggle');
+      if (drawerToggle) {
+        drawerToggle.addEventListener('change', e => {
+          doToggle(id, e.target.checked);
+        });
+      }
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Toast
+    // ──────────────────────────────────────────────────────────
+    function toast(msg, kind) {
+      const c = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      let cls = 'bg-mraised border border-mborder text-mtext';
+      if (kind === 'success') cls = 'bg-msuccessl border border-msuccess/40 text-msuccess';
+      if (kind === 'warn')    cls = 'bg-mwarningl border border-mwarning/40 text-mwarning';
+      if (kind === 'info')    cls = 'bg-mraised border border-mborder text-mtext';
+      el.className = `toast ${cls} text-sm px-4 py-2 rounded-lg shadow-lg max-w-sm`;
+      el.textContent = msg;
+      c.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .2s'; }, 2400);
+      setTimeout(() => el.remove(), 2700);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    //  Wire up
+    // ──────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial render
+      updateStats();
+      renderRows();
+
+      // Role switcher
+      document.getElementById('role-select').addEventListener('change', e => {
+        State.currentUser = e.target.value;
+        const banner = document.getElementById('readonly-banner');
+        if (State.currentUser === 'jordan') banner.classList.remove('hidden');
+        else banner.classList.add('hidden');
+        State.selected.clear();
+        rerender();
+        toast(`Now acting as ${ADMIN_TEAM[State.currentUser].name}`, 'info');
+      });
+
+      // Search
+      document.getElementById('search-input').addEventListener('input', e => {
+        State.filters.search = e.target.value;
+        renderFilterChips();
+        renderRows();
+      });
+
+      // Status filter
+      document.querySelectorAll('.filter-status').forEach(b => {
+        b.addEventListener('click', () => {
+          State.filters.status = b.dataset.status;
+          rerender();
+        });
+      });
+
+      // Tier filter (toggle behaviour: click again to clear)
+      document.querySelectorAll('.filter-tier').forEach(b => {
+        b.addEventListener('click', () => {
+          State.filters.tier = State.filters.tier === b.dataset.tier ? 'all' : b.dataset.tier;
+          rerender();
+        });
+      });
+
+      // Origin + type dropdowns
+      document.getElementById('origin-select').addEventListener('change', e => {
+        State.filters.origin = e.target.value;
+        rerender();
+      });
+      document.getElementById('type-select').addEventListener('change', e => {
+        State.filters.taskType = e.target.value;
+        rerender();
+      });
+
+      // Clear filters
+      document.getElementById('clear-filters').addEventListener('click', clearFilters);
+      document.getElementById('empty-clear').addEventListener('click', clearFilters);
+
+      // Select-all
+      document.getElementById('select-all').addEventListener('change', e => {
+        const checked = e.target.checked;
+        const visible = visibleAutomations();
+        if (checked) visible.forEach(a => State.selected.add(a.id));
+        else visible.forEach(a => State.selected.delete(a.id));
+        renderRows();
+        updateBulkBar();
+      });
+
+      // Bulk actions
+      document.getElementById('bulk-on').addEventListener('click', () => doBulkToggle(true));
+      document.getElementById('bulk-off').addEventListener('click', () => doBulkToggle(false));
+      document.getElementById('bulk-clear').addEventListener('click', () => {
+        State.selected.clear();
+        renderRows();
+        updateBulkBar();
+      });
+
+      // Drawer backdrop closes
+      document.getElementById('drawer-backdrop').addEventListener('click', closeDrawer);
+
+      // Esc closes drawer
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && State.drawerAutomationId !== null) closeDrawer();
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Definitions — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,87 +84,87 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Definitions</h2>
-        <p class="text-sm text-slate-500 mt-1">Locked vocabulary for the alignment meeting</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Definitions</h2>
+        <p class="text-sm text-mtext3 mt-1">Locked vocabulary for the alignment meeting</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Task</div>
-          <p class="text-sm text-slate-300 leading-relaxed">A discrete actionable item that needs to happen for a trip to be delivered correctly. Has an owner (human or AI), a definition of done, and a closeable lifecycle.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Task</div>
+          <p class="text-sm text-mtext2 leading-relaxed">A discrete actionable item that needs to happen for a trip to be delivered correctly. Has an owner (human or AI), a definition of done, and a closeable lifecycle.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Signal</div>
-          <p class="text-sm text-slate-300 leading-relaxed">A raw event or sensed condition that may be task-shaped — a client message, an external alert, a sensor reading, a scheduled-query hit. Not yet a task. The system evaluates whether to promote one or more signals into a Suggestion.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Signal</div>
+          <p class="text-sm text-mtext2 leading-relaxed">A raw event or sensed condition that may be task-shaped — a client message, an external alert, a sensor reading, a scheduled-query hit. Not yet a task. The system evaluates whether to promote one or more signals into a Suggestion.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Suggestion</div>
-          <p class="text-sm text-slate-300 leading-relaxed">The system's proposed task, synthesized from one or more Signals and awaiting an Approval gate. May be auto-approved (above threshold) or routed to a human reviewer. Often simultaneous with the Signal for simple cases (one message → one suggestion); distinct when the system correlates multiple signals into one suggestion (3 messages + 1 vendor email about the same hotel issue → one suggestion, not four) or filters out signals that don't warrant a task.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Suggestion</div>
+          <p class="text-sm text-mtext2 leading-relaxed">The system's proposed task, synthesized from one or more Signals and awaiting an Approval gate. May be auto-approved (above threshold) or routed to a human reviewer. Often simultaneous with the Signal for simple cases (one message → one suggestion); distinct when the system correlates multiple signals into one suggestion (3 messages + 1 vendor email about the same hotel issue → one suggestion, not four) or filters out signals that don't warrant a task.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Approval gate</div>
-          <p class="text-sm text-slate-300 leading-relaxed">The decision point between Suggestion and Canonical task. Two paths: auto-approval (system confidence above threshold for that origin / routing tier) or human approval (operator reviews, can edit, then approves or rejects). Manual task creation bypasses the gate.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Approval gate</div>
+          <p class="text-sm text-mtext2 leading-relaxed">The decision point between Suggestion and Canonical task. Two paths: auto-approval (system confidence above threshold for that origin / routing tier) or human approval (operator reviews, can edit, then approves or rejects). Manual task creation bypasses the gate.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Canonical task</div>
-          <p class="text-sm text-slate-300 leading-relaxed">The approved task record — same as Task, but emphasises that this is the single source of truth. Different surfaces (board, trip page, account page, agent mode) render this record differently. A Suggestion becomes a Canonical task once it passes the Approval gate. See §7.2 for the schema.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Canonical task</div>
+          <p class="text-sm text-mtext2 leading-relaxed">The approved task record — same as Task, but emphasises that this is the single source of truth. Different surfaces (board, trip page, account page, agent mode) render this record differently. A Suggestion becomes a Canonical task once it passes the Approval gate. See §7.2 for the schema.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Origin</div>
-          <p class="text-sm text-slate-300 leading-relaxed">The <em>why</em> a task exists — the underlying reason it needs to happen. See §3 for the taxonomy. Distinct from <em>creation surface</em> (below).</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Origin</div>
+          <p class="text-sm text-mtext2 leading-relaxed">The <em>why</em> a task exists — the underlying reason it needs to happen. See §3 for the taxonomy. Distinct from <em>creation surface</em> (below).</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Creation surface</div>
-          <p class="text-sm text-slate-300 leading-relaxed">The <em>where / how</em> a task was created or detected — message bubble action, inline suggestion, agent mode, trip view, signal monitor, scheduled query. A single origin can be reached from multiple surfaces. See §7.1 for the creation paths.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Creation surface</div>
+          <p class="text-sm text-mtext2 leading-relaxed">The <em>where / how</em> a task was created or detected — message bubble action, inline suggestion, agent mode, trip view, signal monitor, scheduled query. A single origin can be reached from multiple surfaces. See §7.1 for the creation paths.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">AI task</div>
-          <p class="text-sm text-slate-300 leading-relaxed">A task whose execution is performed by AI — either fully (auto tier) or with a human approval gate (assist / escalate tiers).</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">AI task</div>
+          <p class="text-sm text-mtext2 leading-relaxed">A task whose execution is performed by AI — either fully (auto tier) or with a human approval gate (assist / escalate tiers).</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Human task</div>
-          <p class="text-sm text-slate-300 leading-relaxed">A task that requires a human (ops associate, TA, supplier-relationship owner) to execute. Typically relationship-critical, judgement-dependent, or phone-based.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Human task</div>
+          <p class="text-sm text-mtext2 leading-relaxed">A task that requires a human (ops associate, TA, supplier-relationship owner) to execute. Typically relationship-critical, judgement-dependent, or phone-based.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Routing tier</div>
-          <p class="text-sm text-slate-300 leading-relaxed">How the task is handled. <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">auto</code> = AI handles end-to-end. <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">assist</code> = AI proposes, human approves. <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">escalate</code> = immediate human attention required.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Routing tier</div>
+          <p class="text-sm text-mtext2 leading-relaxed">How the task is handled. <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">auto</code> = AI handles end-to-end. <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">assist</code> = AI proposes, human approves. <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">escalate</code> = immediate human attention required.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Primary context anchor</div>
-          <p class="text-sm text-slate-300 leading-relaxed">The system object a task is bound to — typically <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">trip</code>, <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">message/conversation</code>, or <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-xs">account/member</code>. Internal-ops tasks may be anchor-less in the data model, but the UI does not surface 'global' as a user-facing option (avoids becoming a catch-all). The anchor determines where the task surfaces (trip page, conversation thread, account view) and is the key handle for filtering.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Primary context anchor</div>
+          <p class="text-sm text-mtext2 leading-relaxed">The system object a task is bound to — typically <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">trip</code>, <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">message/conversation</code>, or <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-xs">account/member</code>. Internal-ops tasks may be anchor-less in the data model, but the UI does not surface 'global' as a user-facing option (avoids becoming a catch-all). The anchor determines where the task surfaces (trip page, conversation thread, account view) and is the key handle for filtering.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Listening cadence</div>
-          <p class="text-sm text-slate-300 leading-relaxed">How often (or how reactively) an AI capability checks for triggers. Per-message, ambient, periodic poll, or daily batch — different per stream.</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Listening cadence</div>
+          <p class="text-sm text-mtext2 leading-relaxed">How often (or how reactively) an AI capability checks for triggers. Per-message, ambient, periodic poll, or daily batch — different per stream.</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Event-driven stream</div>
-          <p class="text-sm text-slate-300 leading-relaxed">A continuous feed of events arriving in our system from outside that <em>may</em> spawn a task. See §4. (Engineering term: WRITE / push.)</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Event-driven stream</div>
+          <p class="text-sm text-mtext2 leading-relaxed">A continuous feed of events arriving in our system from outside that <em>may</em> spawn a task. See §4. (Engineering term: WRITE / push.)</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-          <div class="font-mono text-xs uppercase tracking-wider text-orange-500 mb-2">Schedule-driven stream</div>
-          <p class="text-sm text-slate-300 leading-relaxed">A query we run on our own stored data on a schedule, surfacing tasks from patterns or absences. See §5. (Engineering term: READ / pull.)</p>
+        <div class="bg-mcard border border-mborder rounded-lg p-4">
+          <div class="font-mono text-xs uppercase tracking-wider text-maccent mb-2">Schedule-driven stream</div>
+          <p class="text-sm text-mtext2 leading-relaxed">A query we run on our own stored data on a schedule, surfacing tasks from patterns or absences. See §5. (Engineering term: READ / pull.)</p>
         </div>
 
       </div>

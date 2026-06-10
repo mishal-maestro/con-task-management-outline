@@ -5,25 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prototype — Conductor Task Mgmt</title>
 
+  <style>
+    /* Maestro design tokens MUST be defined before Tailwind CDN loads */
+    :root {
+      --maestro-bg: 24 24 27;
+      --maestro-card: 38 38 42;
+      --maestro-surface: 32 32 36;
+      --maestro-surface-raised: 40 40 45;
+      --maestro-border: 50 50 56;
+      --maestro-border-hover: 70 70 78;
+      --maestro-text-primary: 240 238 235;
+      --maestro-text-secondary: 180 175 168;
+      --maestro-text-tertiary: 140 135 128;
+      --maestro-accent: 255 110 70;
+      --maestro-accent-hover: 255 130 95;
+      --maestro-accent-light: 50 30 25;
+      --maestro-on-accent: 255 255 255;
+      --maestro-success: 60 180 100;
+      --maestro-success-light: 25 45 35;
+      --maestro-danger: 230 90 70;
+      --maestro-danger-light: 50 30 25;
+      --maestro-warning: 210 160 60;
+      --maestro-warning-light: 50 40 25;
+      --maestro-amber: 251 191 36;
+      --maestro-amber-soft: 50 38 18;
+      --maestro-info: 80 160 220;
+      --maestro-info-light: 25 35 45;
+      --maestro-chip-green: 60 180 100;
+      --maestro-chip-green-soft: 25 45 35;
+      --maestro-chip-orange: 255 140 80;
+      --maestro-chip-orange-soft: 50 35 25;
+      --maestro-chip-blue: 80 160 220;
+      --maestro-chip-blue-soft: 25 35 45;
+      --maestro-chip-teal: 70 190 180;
+      --maestro-chip-teal-soft: 25 45 45;
+      --maestro-chip-purple: 160 120 230;
+      --maestro-chip-purple-soft: 40 35 55;
+      --maestro-chip-pink: 240 120 180;
+      --maestro-chip-pink-soft: 50 30 45;
+      --maestro-control-knob: 255 255 255;
+      --maestro-overlay: 0 0 0;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
+  </style>
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
 
   <script src="../theme.js"></script>
   <script src="../data.js"></script>
   <script>window.CURRENT_PAGE = 'proto-index';</script>
   <script src="../nav.js"></script>
-
-  <style>
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-  </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -33,7 +122,7 @@
       <!-- Source link chip -->
       <div class="mb-6">
         <a href="https://www.notion.so/Conductor-Task-Creation-Management-v1-0-35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           PRD v1.0 (source of truth)
         </a>
@@ -41,25 +130,25 @@
 
       <!-- Page title -->
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Prototype</h2>
-        <p class="text-sm text-slate-500 mt-1">Clickable mockups of the v1 task management surfaces. Simulated data, no backend.</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Prototype</h2>
+        <p class="text-sm text-mtext3 mt-1">Clickable mockups of the v1 task management surfaces. Simulated data, no backend.</p>
       </div>
 
       <!-- What this is -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">What this is</h3>
-        <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
-          <p>The outline (sections §1 to §8) describes the model. This prototype shows the surfaces that ship — restructured to match what's currently live at <code class="px-1.5 py-0.5 bg-slate-800 rounded text-[11px] font-mono text-slate-300">dev.conductor.askmaestro.ai/tasks</code>.</p>
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-8">
+        <h3 class="text-base font-semibold text-mtext mb-3">What this is</h3>
+        <div class="space-y-3 text-sm text-mtext2 leading-relaxed">
+          <p>The outline (sections §1 to §8) describes the model. This prototype shows the surfaces that ship — restructured to match what's currently live at <code class="px-1.5 py-0.5 bg-msurface rounded text-[11px] font-mono text-mtext2">dev.conductor.askmaestro.ai/tasks</code>.</p>
           <p>Three surfaces in v1:</p>
-          <ul class="list-disc list-inside space-y-1 text-slate-400 pl-2">
-            <li><strong class="text-slate-200">Tasks page</strong> — one shared inbox with tabs: <strong>All Tasks</strong>, <strong>My Tasks</strong>, <strong>Urgent</strong>, <strong>Needs Review</strong>. AI-flagged tasks live in Needs Review tab; clicking one opens the drawer with an "ACCEPT OR DROP" block.</li>
-            <li><strong class="text-slate-200">In-context create</strong> — where most tasks actually originate. Hover a client message → "Create task"; AI proactively suggests tasks inline as the conversation happens.</li>
-            <li><strong class="text-slate-200">Agent</strong> — the AI workspace for advisors (Sunthar's Agent Mode PRD). Grounded hotel-search threads, helper-verified recommendations, operator memory; "Add to Trip" and supplier drafts create real tasks in the shared task layer.</li>
+          <ul class="list-disc list-inside space-y-1 text-mtext3 pl-2">
+            <li><strong class="text-mtext">Tasks page</strong> — one shared inbox with tabs: <strong>All Tasks</strong>, <strong>My Tasks</strong>, <strong>Urgent</strong>, <strong>Needs Review</strong>. AI-flagged tasks live in Needs Review tab; clicking one opens the drawer with an "ACCEPT OR DROP" block.</li>
+            <li><strong class="text-mtext">In-context create</strong> — where most tasks actually originate. Hover a client message → "Create task"; AI proactively suggests tasks inline as the conversation happens.</li>
+            <li><strong class="text-mtext">Agent</strong> — the AI workspace for advisors (Sunthar's Agent Mode PRD). Grounded hotel-search threads, helper-verified recommendations, operator memory; "Add to Trip" and supplier drafts create real tasks in the shared task layer.</li>
           </ul>
           <p>Patterns that overlay:</p>
-          <ul class="list-disc list-inside space-y-1 text-slate-400 pl-2">
-            <li><strong class="text-slate-200">Task detail drawer</strong> — slides in from the right when you click a row. Shows source, tier, rationale, AI reasoning, evidence, activity log.</li>
-            <li><strong class="text-slate-200">Manual create modal</strong> — press <code class="px-1.5 py-0.5 bg-slate-800 rounded text-[11px] font-mono text-orange-300">c</code> from anywhere on the board. Title + owner only by default (preserves 2-second creation per PRD §5d); collapsible "More options" reveals priority, due, type.</li>
+          <ul class="list-disc list-inside space-y-1 text-mtext3 pl-2">
+            <li><strong class="text-mtext">Task detail drawer</strong> — slides in from the right when you click a row. Shows source, tier, rationale, AI reasoning, evidence, activity log.</li>
+            <li><strong class="text-mtext">Manual create modal</strong> — press <code class="px-1.5 py-0.5 bg-msurface rounded text-[11px] font-mono text-maccent">c</code> from anywhere on the board. Title + owner only by default (preserves 2-second creation per PRD §5d); collapsible "More options" reveals priority, due, type.</li>
           </ul>
         </div>
       </div>
@@ -71,129 +160,129 @@
         <!-- NOTE: hrefs include the `prototype/` prefix so they work when the URL bar is
              `/prototype` (no trailing slash, browser base = /). When the URL is `/prototype/`
              with trailing slash, the inline-link-fixup script below strips the prefix. -->
-        <div class="relative bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-orange-500 hover:bg-slate-800/30 transition-all group">
+        <div class="relative bg-mcard border border-mborder rounded-lg p-6 hover:border-maccent hover:bg-mraised transition-all group">
           <!-- Main card overlay link (covers the card; chips above sit on top of it) -->
           <a href="prototype/task-board.html" class="proto-link absolute inset-0 z-10 rounded-lg" aria-label="Open Tasks board"></a>
           <div class="relative z-20 pointer-events-none">
             <div class="flex items-start justify-between mb-4">
               <div>
-                <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">Primary surface · tabbed</div>
-                <div class="text-lg font-semibold text-slate-100 group-hover:text-orange-400 transition-colors">Tasks</div>
+                <div class="text-xs uppercase tracking-wider text-mtext3 mb-1">Primary surface · tabbed</div>
+                <div class="text-lg font-semibold text-mtext group-hover:text-maccent transition-colors">Tasks</div>
               </div>
-              <svg class="w-5 h-5 text-slate-600 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              <svg class="w-5 h-5 text-mtext3 group-hover:text-maccent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </div>
-            <p class="text-sm text-slate-400 leading-relaxed mb-4">All Tasks / My Tasks / Urgent / <strong class="text-orange-300">Needs Review</strong> tabs. AI-flagged tasks → drawer → Approve / Dismiss. Source column, group + sort, filter chips, bulk actions.</p>
+            <p class="text-sm text-mtext3 leading-relaxed mb-4">All Tasks / My Tasks / Urgent / <strong class="text-maccent">Needs Review</strong> tabs. AI-flagged tasks → drawer → Approve / Dismiss. Source column, group + sort, filter chips, bulk actions.</p>
           </div>
           <!-- Chips sit ABOVE the overlay link so each can deep-link to its tab -->
           <div class="relative z-30 flex flex-wrap gap-2">
-            <a href="prototype/task-board.html#tab=all" class="proto-link px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700 hover:border-orange-500/40 transition-colors">All 21</a>
-            <a href="prototype/task-board.html#tab=my" class="proto-link px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-300 border border-slate-700 hover:border-orange-500/40 transition-colors">My 9</a>
-            <a href="prototype/task-board.html#tab=urgent" class="proto-link px-2 py-0.5 rounded text-[11px] bg-red-500/10 text-red-300 border border-red-500/30 hover:bg-red-500/20 transition-colors">Urgent 3</a>
-            <a href="prototype/task-board.html#tab=needs-review" class="proto-link px-2 py-0.5 rounded text-[11px] bg-orange-500/10 text-orange-300 border border-orange-500/30 hover:bg-orange-500/20 transition-colors">Needs Review 8</a>
+            <a href="prototype/task-board.html#tab=all" class="proto-link px-2 py-0.5 rounded text-[11px] bg-msurface text-mtext2 border border-mborder hover:border-maccent/40 transition-colors">All 21</a>
+            <a href="prototype/task-board.html#tab=my" class="proto-link px-2 py-0.5 rounded text-[11px] bg-msurface text-mtext2 border border-mborder hover:border-maccent/40 transition-colors">My 9</a>
+            <a href="prototype/task-board.html#tab=urgent" class="proto-link px-2 py-0.5 rounded text-[11px] bg-mdangerl text-mdanger border border-mdanger/30 hover:bg-mdanger/20 transition-colors">Urgent 3</a>
+            <a href="prototype/task-board.html#tab=needs-review" class="proto-link px-2 py-0.5 rounded text-[11px] bg-maccentl text-maccent border border-maccent/30 hover:bg-maccent/20 transition-colors">Needs Review 8</a>
           </div>
         </div>
 
         <!-- Card 2: In-context create (no inner links so plain <a> is fine) -->
-        <a href="prototype/inline-create.html" class="proto-link block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-orange-500 hover:bg-slate-800/30 transition-all group">
+        <a href="prototype/inline-create.html" class="proto-link block bg-mcard border border-mborder rounded-lg p-6 hover:border-maccent hover:bg-mraised transition-all group">
           <div class="flex items-start justify-between mb-4">
             <div>
-              <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">Where tasks come from</div>
-              <div class="text-lg font-semibold text-slate-100 group-hover:text-orange-400 transition-colors">In-context create</div>
+              <div class="text-xs uppercase tracking-wider text-mtext3 mb-1">Where tasks come from</div>
+              <div class="text-lg font-semibold text-mtext group-hover:text-maccent transition-colors">In-context create</div>
             </div>
-            <svg class="w-5 h-5 text-slate-600 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <svg class="w-5 h-5 text-mtext3 group-hover:text-maccent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </div>
-          <p class="text-sm text-slate-400 leading-relaxed mb-4">Composer mock. Two patterns: (a) hover a client message → Create task with thread context; (b) AI suggestion bubble inline → one-click Approve / Edit / Dismiss.</p>
+          <p class="text-sm text-mtext3 leading-relaxed mb-4">Composer mock. Two patterns: (a) hover a client message → Create task with thread context; (b) AI suggestion bubble inline → one-click Approve / Edit / Dismiss.</p>
           <div class="flex flex-wrap gap-2">
-            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-orange-500/10 text-orange-300 border border-orange-500/30">Composer mock</span>
-            <span class="px-2 py-0.5 rounded text-[11px] text-slate-500 border border-slate-800">Greer thread · WhatsApp</span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-maccentl text-maccent border border-maccent/30">Composer mock</span>
+            <span class="px-2 py-0.5 rounded text-[11px] text-mtext3 border border-mborder">Greer thread · WhatsApp</span>
           </div>
         </a>
 
         <!-- Card 3: Agent -->
-        <a href="prototype/agent.html" class="proto-link block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-orange-500 hover:bg-slate-800/30 transition-all group">
+        <a href="prototype/agent.html" class="proto-link block bg-mcard border border-mborder rounded-lg p-6 hover:border-maccent hover:bg-mraised transition-all group">
           <div class="flex items-start justify-between mb-4">
             <div>
-              <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">AI workspace · new</div>
-              <div class="text-lg font-semibold text-slate-100 group-hover:text-orange-400 transition-colors">Agent</div>
+              <div class="text-xs uppercase tracking-wider text-mtext3 mb-1">AI workspace · new</div>
+              <div class="text-lg font-semibold text-mtext group-hover:text-maccent transition-colors">Agent</div>
             </div>
-            <svg class="w-5 h-5 text-slate-600 group-hover:text-orange-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <svg class="w-5 h-5 text-mtext3 group-hover:text-maccent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </div>
-          <p class="text-sm text-slate-400 leading-relaxed mb-4">The <code class="px-1 py-0.5 bg-slate-800 rounded text-[11px] font-mono text-slate-300">/agent</code> route — ProjectList, threads, grounded hotel-search recs, helper findings, operator memory. "Add to Trip" and supplier drafts create real tasks on the board. Press <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">⌘K</code> on any page to dock it.</p>
+          <p class="text-sm text-mtext3 leading-relaxed mb-4">The <code class="px-1 py-0.5 bg-msurface rounded text-[11px] font-mono text-mtext2">/agent</code> route — ProjectList, threads, grounded hotel-search recs, helper findings, operator memory. "Add to Trip" and supplier drafts create real tasks on the board. Press <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">⌘K</code> on any page to dock it.</p>
           <div class="flex flex-wrap gap-2">
-            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-orange-500/10 text-orange-300 border border-orange-500/30">Master-detail app</span>
-            <span class="px-2 py-0.5 rounded text-[11px] text-slate-500 border border-slate-800">Khan family · Tokyo</span>
+            <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-maccentl text-maccent border border-maccent/30">Master-detail app</span>
+            <span class="px-2 py-0.5 rounded text-[11px] text-mtext3 border border-mborder">Khan family · Tokyo</span>
           </div>
         </a>
 
       </div>
 
       <!-- Operator essentials checklist -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">Operator essentials simulated</h3>
-        <p class="text-sm text-slate-400 mb-4">Per PRD §5a — day 1 mandatory. All present in this prototype.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-300">
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-8">
+        <h3 class="text-base font-semibold text-mtext mb-3">Operator essentials simulated</h3>
+        <p class="text-sm text-mtext3 mb-4">Per PRD §5a — day 1 mandatory. All present in this prototype.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-mtext2">
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">Keyboard shortcuts</span>
-              <span class="text-slate-500 text-xs ml-1">
-                <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">c</code>
-                <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">j</code>
-                <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">k</code>
-                <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">x</code>
-                <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">Esc</code>
+              <span class="text-mtext">Keyboard shortcuts</span>
+              <span class="text-mtext3 text-xs ml-1">
+                <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">c</code>
+                <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">j</code>
+                <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">k</code>
+                <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">x</code>
+                <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">Esc</code>
               </span>
             </div>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">Batch-close with confirm</span>
-              <div class="text-slate-500 text-xs">Select 2+ rows → bulk actions bar</div>
+              <span class="text-mtext">Batch-close with confirm</span>
+              <div class="text-mtext3 text-xs">Select 2+ rows → bulk actions bar</div>
             </div>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">Snooze</span>
-              <div class="text-slate-500 text-xs">2h or end of shift</div>
+              <span class="text-mtext">Snooze</span>
+              <div class="text-mtext3 text-xs">2h or end of shift</div>
             </div>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">Mute signal for this trip</span>
-              <div class="text-slate-500 text-xs">Per-row action in drawer</div>
+              <span class="text-mtext">Mute signal for this trip</span>
+              <div class="text-mtext3 text-xs">Per-row action in drawer</div>
             </div>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">Undo on dismissal</span>
-              <div class="text-slate-500 text-xs">10-second window</div>
+              <span class="text-mtext">Undo on dismissal</span>
+              <div class="text-mtext3 text-xs">10-second window</div>
             </div>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">End-of-shift handoff view</span>
-              <div class="text-slate-500 text-xs">Filter button on task board</div>
+              <span class="text-mtext">End-of-shift handoff view</span>
+              <div class="text-mtext3 text-xs">Filter button on task board</div>
             </div>
           </div>
           <div class="flex items-start gap-2">
-            <span class="text-green-400 mt-0.5">✓</span>
+            <span class="text-msuccess mt-0.5">✓</span>
             <div>
-              <span class="text-slate-200">Manual create now</span>
-              <div class="text-slate-500 text-xs">Title + owner only. Always available via <code class="px-1 py-0.5 bg-slate-800 rounded text-[10px] font-mono text-orange-300">c</code>.</div>
+              <span class="text-mtext">Manual create now</span>
+              <div class="text-mtext3 text-xs">Title + owner only. Always available via <code class="px-1 py-0.5 bg-msurface rounded text-[10px] font-mono text-maccent">c</code>.</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- What's NOT in this prototype -->
-      <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-5">
-        <p class="text-sm font-semibold text-slate-200 mb-2">What's NOT here (deliberately)</p>
-        <ul class="text-xs text-slate-300 leading-relaxed space-y-1 list-disc list-inside">
+      <div class="bg-mambersoft border border-mamber/30 rounded-lg p-5">
+        <p class="text-sm font-semibold text-mtext mb-2">What's NOT here (deliberately)</p>
+        <ul class="text-xs text-mtext2 leading-relaxed space-y-1 list-disc list-inside">
           <li>In-context approval surfaces (composer view, trip page, ops dashboard). The PRD's <em>dominant</em> approval flow lives in the real app where messages and trips already render. These mockups isolate the <em>dedicated</em> task surfaces only.</li>
           <li>Phase 2 task types (member-context, ops-internal, agent-subtask) and Phase 3 (compliance-safety, discovery).</li>
           <li>Auto-approval threshold tuning UI (v2).</li>

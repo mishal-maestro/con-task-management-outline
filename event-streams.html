@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event-driven Streams — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
   <link rel="stylesheet" href="bpmn.css">
 
   <script src="theme.js"></script>
@@ -21,13 +73,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -36,104 +88,104 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">§4 Real-time event-driven streams (data arriving from outside)</h2>
-        <p class="text-sm text-slate-500 mt-1">The push side — events arriving continuously</p>
+        <h2 class="text-2xl font-semibold text-mtext tracking-tight">§4 Real-time event-driven streams (data arriving from outside)</h2>
+        <p class="text-sm text-mtext3 mt-1">The push side — events arriving continuously</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Events arriving in our system continuously. Each row identifies the source of the event, how often it fires, the kinds of tasks it can spawn, and which origin bucket(s) it feeds.</p>
+      <p class="text-sm text-mtext2 mb-6 leading-relaxed">Events arriving in our system continuously. Each row identifies the source of the event, how often it fires, the kinds of tasks it can spawn, and which origin bucket(s) it feeds.</p>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden mb-8">
+      <div class="bg-mcard border border-mborder rounded-lg overflow-hidden mb-8">
         <table class="w-full">
           <thead>
-            <tr class="bg-slate-800/50 border-b border-slate-800">
-              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Stream</th>
-              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Source</th>
-              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Velocity</th>
-              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Tasks it can spawn</th>
-              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Origin bucket</th>
+            <tr class="bg-msurface/50 border-b border-mborder">
+              <th class="text-left px-6 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Stream</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Source</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Velocity</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Tasks it can spawn</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Origin bucket</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800">
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Inbound client messages</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Channels: app chat, WhatsApp, email, voice transcript</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Sec-min</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Respond, clarify, book, capture preference</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Client-driven</td>
+          <tbody class="divide-y divide-mborder">
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Inbound client messages</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Channels: app chat, WhatsApp, email, voice transcript</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Sec-min</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Respond, clarify, book, capture preference</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Client-driven</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Outbound advisor messages</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Concierge typing</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Sec-min</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Auto follow-up reminder if no client reply, log relationship moment</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Client-driven, Internal ops</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Outbound advisor messages</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Concierge typing</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Sec-min</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Auto follow-up reminder if no client reply, log relationship moment</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Client-driven, Internal ops</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Trip pipeline state changes</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Pipeline lane move, component edit, dates change</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Min-hours</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Pre-arrival prep, post-trip follow-up, payment chase, invoice</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Trip lifecycle</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Trip pipeline state changes</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Pipeline lane move, component edit, dates change</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Min-hours</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Pre-arrival prep, post-trip follow-up, payment chase, invoice</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Trip lifecycle</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Booking confirmation events</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Supplier confirms (parsed email or supplier API)</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Min-hours</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Send confirmation to client, update component, release room block</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Trip lifecycle</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Booking confirmation events</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Supplier confirms (parsed email or supplier API)</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Min-hours</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Send confirmation to client, update component, release room block</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Trip lifecycle</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Payment events</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Payment processor webhook</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Sec</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Re-charge on failure, invoice on success, reconcile refunds</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Trip lifecycle</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Payment events</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Payment processor webhook</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Sec</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Re-charge on failure, invoice on success, reconcile refunds</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Trip lifecycle</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">AI agent runs</td>
-              <td class="px-6 py-4 text-xs text-slate-300">TA prompts the agent in Conductor's agent workspace</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Min</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Sub-tasks split into AI work + human work</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Client-driven</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">AI agent runs</td>
+              <td class="px-6 py-4 text-xs text-mtext2">TA prompts the agent in Conductor's agent workspace</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Min</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Sub-tasks split into AI work + human work</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Client-driven</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">External signals captured</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Weather, flight tracking, vendor data feeds, advisory feeds</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Min-hours</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Alert client, rebook, re-shop, re-route</td>
-              <td class="px-6 py-4 text-xs text-slate-400">World-driven</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">External signals captured</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Weather, flight tracking, vendor data feeds, advisory feeds</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Min-hours</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Alert client, rebook, re-shop, re-route</td>
+              <td class="px-6 py-4 text-xs text-mtext3">World-driven</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Client profile mutations</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Preference / family / loyalty updates</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Days</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Surface new context on next conversation, gesture on milestone</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Relationship</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Client profile mutations</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Preference / family / loyalty updates</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Days</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Surface new context on next conversation, gesture on milestone</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Relationship</td>
             </tr>
-            <tr class="hover:bg-slate-800/30 transition-colors">
-              <td class="px-6 py-4 text-sm font-mono text-slate-100">Activity / audit events</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Every internal state change</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">Sec</td>
-              <td class="px-6 py-4 text-xs text-slate-300">Audit-only directly, but feeds SLA timers and stuck-stage detection downstream</td>
-              <td class="px-6 py-4 text-xs text-slate-400">Internal ops</td>
+            <tr class="hover:bg-msurface/30 transition-colors">
+              <td class="px-6 py-4 text-sm font-mono text-mtext">Activity / audit events</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Every internal state change</td>
+              <td class="px-6 py-4 text-xs font-mono text-mtext3">Sec</td>
+              <td class="px-6 py-4 text-xs text-mtext2">Audit-only directly, but feeds SLA timers and stuck-stage detection downstream</td>
+              <td class="px-6 py-4 text-xs text-mtext3">Internal ops</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="bg-slate-900 border border-amber-500/30 rounded-lg p-4 mb-8">
+      <div class="bg-mcard border border-mamber/30 rounded-lg p-4 mb-8">
         <div class="flex gap-3">
-          <div class="text-amber-500 flex-shrink-0">
+          <div class="text-mamber flex-shrink-0">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
           </div>
-          <div class="text-sm text-slate-300">
+          <div class="text-sm text-mtext2">
             <div class="font-semibold mb-1">What's open about event-driven streams (see §8)</div>
             <div>Listening cadence per stream, false-positive tolerance, and whether each stream's tasks default to auto / assist / escalate.</div>
           </div>

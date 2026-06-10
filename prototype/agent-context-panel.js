@@ -49,7 +49,7 @@
     const wrap = document.createElement('div');
     wrap.innerHTML = `
       <div id="agent-ctx-backdrop" class="actx-mb fixed inset-0 bg-black/40 z-[52]"></div>
-      <aside id="agent-ctx-panel" class="actx-panel fixed top-0 right-0 h-full w-full max-w-[460px] bg-slate-900 border-l border-slate-800 z-[54] overflow-y-auto">
+      <aside id="agent-ctx-panel" class="actx-panel fixed top-0 right-0 h-full w-full max-w-[460px] bg-mcard border-l border-mborder z-[54] overflow-y-auto">
         <div id="actx-content"></div>
       </aside>
       <style>
@@ -123,15 +123,15 @@
 
     const canBack = stack.length > 1;
     document.getElementById('actx-content').innerHTML = `
-      <div class="sticky top-0 bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center gap-2 z-10">
-        ${canBack ? `<button data-actx="back" title="Back" class="p-1 -ml-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-100 flex-shrink-0">
+      <div class="sticky top-0 bg-mcard border-b border-mborder px-4 py-3 flex items-center gap-2 z-10">
+        ${canBack ? `<button data-actx="back" title="Back" class="p-1 -ml-1 rounded hover:bg-msurface text-mtext2 hover:text-mtext flex-shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>` : ''}
         <div class="min-w-0 flex-1">
-          <div class="text-[10px] font-mono uppercase tracking-widest text-orange-500">${eyebrow}</div>
-          <div class="text-sm font-semibold text-slate-100 truncate">${esc(proj.name)}</div>
+          <div class="text-[10px] font-mono uppercase tracking-widest text-maccent">${eyebrow}</div>
+          <div class="text-sm font-semibold text-mtext truncate">${esc(proj.name)}</div>
         </div>
-        <button data-actx="close" title="Close" class="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 flex-shrink-0">
+        <button data-actx="close" title="Close" class="p-1 rounded hover:bg-msurface text-mtext2 hover:text-mtext flex-shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
@@ -175,32 +175,32 @@
 
     const ctxBlock = (label, items) => (!items || !items.length) ? '' : `
       <div class="mt-2.5">
-        <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-1">${label}</div>
+        <div class="text-[10px] font-mono uppercase tracking-wider text-mtext3 mb-1">${label}</div>
         <ul class="space-y-1">${items.map(i =>
-          `<li class="text-xs text-slate-400 leading-snug flex gap-1.5"><span class="text-slate-600 flex-shrink-0">·</span><span>${esc(i)}</span></li>`
+          `<li class="text-xs text-mtext2 leading-snug flex gap-1.5"><span class="text-mtext3 flex-shrink-0">·</span><span>${esc(i)}</span></li>`
         ).join('')}</ul>
       </div>`;
 
     const navRow = (action, title, sub) => `
-      <button data-actx="${action}" class="w-full text-left bg-slate-950 border border-slate-800 rounded-lg p-3 hover:border-slate-700 transition-colors flex items-center gap-3 mb-2">
+      <button data-actx="${action}" class="w-full text-left bg-mbg border border-mborder rounded-lg p-3 hover:border-mborderh transition-colors flex items-center gap-3 mb-2">
         <div class="flex-1 min-w-0">
-          <div class="text-sm font-medium text-slate-200">${title}</div>
-          <div class="text-[11px] text-slate-500 mt-0.5">${sub}</div>
+          <div class="text-sm font-medium text-mtext">${title}</div>
+          <div class="text-[11px] text-mtext3 mt-0.5">${sub}</div>
         </div>
-        <svg class="w-4 h-4 text-slate-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <svg class="w-4 h-4 text-mtext3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>`;
 
     return `
       <div class="flex items-center gap-2 mb-3">
-        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-400 bg-slate-800 rounded px-1.5 py-0.5">${kindLabel}</span>
-        <span class="text-[11px] text-slate-500">${esc(proj.meta)}</span>
+        <span class="text-[9px] font-mono uppercase tracking-wider text-mtext2 bg-msurface rounded px-1.5 py-0.5">${kindLabel}</span>
+        <span class="text-[11px] text-mtext3">${esc(proj.meta)}</span>
       </div>
 
-      <div class="bg-slate-950 border border-slate-800 rounded-lg p-3 mb-4">
-        <div class="text-[10px] font-mono uppercase tracking-widest text-orange-500 mb-1">Trip context</div>
-        <div class="text-[11px] text-slate-500 leading-snug">Project knowledge the agent grounds on. Pre-loaded into every thread.</div>
+      <div class="bg-mbg border border-mborder rounded-lg p-3 mb-4">
+        <div class="text-[10px] font-mono uppercase tracking-widest text-maccent mb-1">Trip context</div>
+        <div class="text-[11px] text-mtext3 leading-snug">Project knowledge the agent grounds on. Pre-loaded into every thread.</div>
         ${ctx ? (ctxBlock('Trip', ctx.trip) + ctxBlock('Org insights', ctx.org))
-              : '<div class="text-xs text-slate-600 mt-2">No context on file for this project.</div>'}
+              : '<div class="text-xs text-mtext3 mt-2">No context on file for this project.</div>'}
       </div>
 
       ${navRow('go-memory', 'Memory',
@@ -222,11 +222,11 @@
       if (!facts.length) return;
       groupsHtml += `
         <div class="mb-4">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500 mb-1.5">${label}</div>
+          <div class="text-[10px] font-mono uppercase tracking-wider text-mtext3 mb-1.5">${label}</div>
           <div class="space-y-1.5">${facts.map(factRow).join('')}</div>
         </div>`;
     });
-    if (!groupsHtml) groupsHtml = '<div class="text-xs text-slate-600 mb-4">No memory yet for this project.</div>';
+    if (!groupsHtml) groupsHtml = '<div class="text-xs text-mtext3 mb-4">No memory yet for this project.</div>';
 
     const insHtml = ins.length ? `
       <div class="mb-4">
@@ -235,23 +235,23 @@
       </div>` : '';
 
     const addHtml = addOpen ? `
-      <div class="bg-slate-950 border border-slate-700 rounded-lg p-3">
+      <div class="bg-mbg border border-mborderh rounded-lg p-3">
         <input id="actx-add-input" type="text" placeholder="A fact the agent should remember…"
-          class="w-full bg-slate-900 border border-slate-800 rounded-md px-2.5 py-1.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-orange-500/50 mb-2">
+          class="w-full bg-mcard border border-mborder rounded-md px-2.5 py-1.5 text-sm text-mtext placeholder-mtext3 outline-none focus:border-maccent/50 mb-2">
         <div class="flex items-center gap-2">
-          <select id="actx-add-group" class="bg-slate-900 border border-slate-800 rounded-md px-2 py-1.5 text-xs text-slate-300 outline-none">
+          <select id="actx-add-group" class="bg-mcard border border-mborder rounded-md px-2 py-1.5 text-xs text-mtext outline-none">
             ${GROUPS.map(([k, l]) => `<option value="${k}">${l}</option>`).join('')}
           </select>
           <div class="flex-1"></div>
-          <button data-actx="add-cancel" class="px-2.5 py-1.5 rounded-md text-xs text-slate-400 hover:text-slate-200">Cancel</button>
-          <button data-actx="add-save" class="px-2.5 py-1.5 rounded-md bg-orange-500 text-white text-xs font-medium hover:bg-orange-600">Save</button>
+          <button data-actx="add-cancel" class="px-2.5 py-1.5 rounded-md text-xs text-mtext2 hover:text-mtext">Cancel</button>
+          <button data-actx="add-save" class="px-2.5 py-1.5 rounded-md bg-maccent text-white text-xs font-medium hover:bg-maccenth">Save</button>
         </div>
       </div>` : `
-      <button data-actx="add-open" class="w-full text-xs text-slate-400 hover:text-orange-300 border border-dashed border-slate-700 hover:border-orange-500/40 rounded-lg py-2 transition-colors">+ Add a fact to memory</button>`;
+      <button data-actx="add-open" class="w-full text-xs text-mtext2 hover:text-maccent border border-dashed border-mborderh hover:border-maccent/40 rounded-lg py-2 transition-colors">+ Add a fact to memory</button>`;
 
     return `
-      <div class="text-[11px] text-slate-500 leading-relaxed mb-4">
-        Project-scoped — what the agent remembers for <span class="text-slate-300">${esc(proj.name)}</span>.
+      <div class="text-[11px] text-mtext3 leading-relaxed mb-4">
+        Project-scoped — what the agent remembers for <span class="text-mtext">${esc(proj.name)}</span>.
         These facts guide every thread. The agent suggests; the operator decides what memory holds.
       </div>
       ${groupsHtml}
@@ -263,18 +263,18 @@
   function factRow(f) {
     const dot = f.exclusion ? '#f87171' : '#34d399';
     return `
-      <div class="bg-slate-950 border border-slate-800 rounded-lg p-2.5 ${f.stale ? 'opacity-50' : ''}">
+      <div class="bg-mbg border border-mborder rounded-lg p-2.5 ${f.stale ? 'opacity-50' : ''}">
         <div class="flex gap-2">
           <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:${dot}"></span>
           <div class="flex-1 min-w-0">
-            <div class="text-[12px] text-slate-300 leading-relaxed ${f.stale ? 'line-through' : ''}">${esc(f.body)}</div>
+            <div class="text-[12px] text-mtext leading-relaxed ${f.stale ? 'line-through' : ''}">${esc(f.body)}</div>
             <div class="flex items-center gap-2 mt-1 flex-wrap">
               ${f.exclusion ? '<span class="text-[9px] font-mono text-rose-400">EXCLUSION</span>' : ''}
-              ${f.stale ? '<span class="text-[9px] font-mono text-slate-500">STALE</span>' : ''}
-              ${f.note ? `<span class="text-[10px] text-slate-600">${esc(f.note)}</span>` : ''}
+              ${f.stale ? '<span class="text-[9px] font-mono text-mtext3">STALE</span>' : ''}
+              ${f.note ? `<span class="text-[10px] text-mtext3">${esc(f.note)}</span>` : ''}
               <div class="flex-1"></div>
-              <button data-actx="stale" data-id="${f.id}" class="text-[10px] text-slate-500 hover:text-amber-300">${f.stale ? 'Mark current' : 'Mark stale'}</button>
-              <button data-actx="remove" data-id="${f.id}" class="text-[10px] text-slate-500 hover:text-rose-300">Remove</button>
+              <button data-actx="stale" data-id="${f.id}" class="text-[10px] text-mtext3 hover:text-mamber">${f.stale ? 'Mark current' : 'Mark stale'}</button>
+              <button data-actx="remove" data-id="${f.id}" class="text-[10px] text-mtext3 hover:text-rose-300">Remove</button>
             </div>
           </div>
         </div>
@@ -283,12 +283,12 @@
 
   function insightRow(i) {
     return `
-      <div class="bg-blue-500/5 border border-blue-500/25 rounded-lg p-2.5">
-        <div class="text-[12px] text-slate-300 leading-relaxed">${esc(i.body)}</div>
-        <div class="text-[10px] text-slate-500 mt-1">noticed in “${esc(i.sourceLabel)}”</div>
-        <div class="flex items-center gap-2 mt-2">
-          <button data-actx="promote" data-id="${i.id}" class="px-2 py-1 rounded-md bg-slate-800 text-slate-200 border border-slate-700 hover:bg-orange-500 hover:border-orange-500 hover:text-white text-[11px] font-medium transition-colors">Promote to memory</button>
-          <button data-actx="dismiss" data-id="${i.id}" class="px-2 py-1 rounded-md text-[11px] text-slate-500 hover:text-slate-300">Dismiss</button>
+      <div class=”bg-minfol border border-minfo/25 rounded-lg p-2.5”>
+        <div class=”text-[12px] text-mtext leading-relaxed”>${esc(i.body)}</div>
+        <div class=”text-[10px] text-mtext3 mt-1”>noticed in “${esc(i.sourceLabel)}”</div>
+        <div class=”flex items-center gap-2 mt-2”>
+          <button data-actx=”promote” data-id=”${i.id}” class=”px-2 py-1 rounded-md bg-msurface text-mtext border border-mborder hover:bg-maccent hover:border-maccent hover:text-white text-[11px] font-medium transition-colors”>Promote to memory</button>
+          <button data-actx=”dismiss” data-id=”${i.id}” class=”px-2 py-1 rounded-md text-[11px] text-mtext3 hover:text-mtext”>Dismiss</button>
         </div>
       </div>`;
   }
@@ -299,24 +299,24 @@
   function viewTasks(proj) {
     const tasks = AgentData.tasksFor(proj.id);
     if (!tasks.length) {
-      return '<div class="text-xs text-slate-600 py-2">No Agent-created tasks for this project yet.</div>';
+      return '<div class="text-xs text-mtext3 py-2">No Agent-created tasks for this project yet.</div>';
     }
     const rows = tasks.map(t => {
       const tier = (typeof TIER_STYLES !== 'undefined' && TIER_STYLES[t.routing_tier])
-        || { bg: 'bg-slate-800', text: 'text-slate-300', border: 'border-slate-700', label: t.routing_tier };
+        || { bg: 'bg-msurface', text: 'text-mtext', border: 'border-mborder', label: t.routing_tier };
       const bar = t.routing_tier === 'escalate' ? '#f87171' : t.routing_tier === 'assist' ? '#fbbf24' : '#34d399';
       return `
-        <a class="task-id-link block bg-slate-950 border border-slate-800 rounded-lg p-2.5 hover:border-slate-700 transition-colors" style="border-left:3px solid ${bar};" href="task-board.html#task=${t.id}">
+        <a class="task-id-link block bg-mbg border border-mborder rounded-lg p-2.5 hover:border-mborderh transition-colors" style="border-left:3px solid ${bar};" href="task-board.html#task=${t.id}">
           <div class="flex items-center gap-2 mb-1">
             <span class="px-1.5 py-0.5 rounded text-[9px] font-mono ${tier.bg} ${tier.text} border ${tier.border}">${tier.label}</span>
-            <span class="text-[9px] font-mono text-slate-600 ml-auto">${t.id}</span>
+            <span class="text-[9px] font-mono text-mtext3 ml-auto">${t.id}</span>
           </div>
-          <div class="text-[12px] text-slate-200 leading-snug">${esc(t.title)}</div>
-          <div class="text-[10px] text-slate-500 mt-1 capitalize">${esc(t.status)} · ${esc(String(t.approval_state || '').replace(/-/g, ' '))}</div>
+          <div class="text-[12px] text-mtext leading-snug">${esc(t.title)}</div>
+          <div class="text-[10px] text-mtext3 mt-1 capitalize">${esc(t.status)} · ${esc(String(t.approval_state || '').replace(/-/g, ' '))}</div>
         </a>`;
     }).join('');
     return `
-      <div class="text-[11px] text-slate-500 leading-relaxed mb-3">Agent-created tasks for this project — real records in the shared task layer. Click one to open it in the task drawer.</div>
+      <div class="text-[11px] text-mtext3 leading-relaxed mb-3">Agent-created tasks for this project — real records in the shared task layer. Click one to open it in the task drawer.</div>
       <div class="space-y-2">${rows}</div>
     `;
   }

@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Success Metrics — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,68 +84,68 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Success Metrics</h2>
-        <p class="text-sm text-slate-500 mt-1">Signals, not targets</p>
+        <h2 class="text-2xl font-semibold text-mtext tracking-tight">Success Metrics</h2>
+        <p class="text-sm text-mtext3 mt-1">Signals, not targets</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Whether the task layer is working — the signals we'll watch once Conductor is live. Targets are out of scope for this outline; they get set at the alignment meeting with the PM + TA leads, informed by the current ops baseline.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">Whether the task layer is working — the signals we'll watch once Conductor is live. Targets are out of scope for this outline; they get set at the alignment meeting with the PM + TA leads, informed by the current ops baseline.</p>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden mb-6">
+      <div class="bg-mcard border border-mborder rounded-lg overflow-hidden mb-6">
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
-              <tr class="border-b border-slate-800 bg-slate-800/30">
-                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-300 uppercase tracking-wider">Metric</th>
-                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-300 uppercase tracking-wider">What it tells us</th>
-                <th class="text-left px-5 py-3 text-xs font-semibold text-slate-300 uppercase tracking-wider">Why it matters</th>
+              <tr class="border-b border-mborder bg-msurface/30">
+                <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider">Metric</th>
+                <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider">What it tells us</th>
+                <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider">Why it matters</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20 transition-colors">
-                <td class="px-5 py-4 text-sm font-medium text-slate-200">Suggestion acceptance rate</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">% of AI-proposed suggestions that operators approve (vs dismiss or ignore until expiry)</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">Trust signal. Low = noise; high = the suggestion model is calibrated to real work.</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-msurface/20 transition-colors">
+                <td class="px-5 py-4 text-sm font-medium text-mtext">Suggestion acceptance rate</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">% of AI-proposed suggestions that operators approve (vs dismiss or ignore until expiry)</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">Trust signal. Low = noise; high = the suggestion model is calibrated to real work.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20 transition-colors">
-                <td class="px-5 py-4 text-sm font-medium text-slate-200">Auto-approved task accuracy</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">For tasks that bypass human review, % completed without reopen / correction / complaint</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">Tells us where the auto-tier confidence threshold is right vs too aggressive.</td>
+              <tr class="hover:bg-msurface/20 transition-colors">
+                <td class="px-5 py-4 text-sm font-medium text-mtext">Auto-approved task accuracy</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">For tasks that bypass human review, % completed without reopen / correction / complaint</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">Tells us where the auto-tier confidence threshold is right vs too aggressive.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20 transition-colors">
-                <td class="px-5 py-4 text-sm font-medium text-slate-200">False positive rate</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">% of all AI-generated suggestions that turn out not to be tasks at all (operators dismiss as noise)</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">The fatigue signal. Above the noise floor and operators stop reading suggestions.</td>
+              <tr class="hover:bg-msurface/20 transition-colors">
+                <td class="px-5 py-4 text-sm font-medium text-mtext">False positive rate</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">% of all AI-generated suggestions that turn out not to be tasks at all (operators dismiss as noise)</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">The fatigue signal. Above the noise floor and operators stop reading suggestions.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20 transition-colors">
-                <td class="px-5 py-4 text-sm font-medium text-slate-200">Time to first action</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">Time from task creation to first operator touch (or AI auto-execution)</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">Speed signal. Especially important on World-driven (flight delays, weather) where minutes matter.</td>
+              <tr class="hover:bg-msurface/20 transition-colors">
+                <td class="px-5 py-4 text-sm font-medium text-mtext">Time to first action</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">Time from task creation to first operator touch (or AI auto-execution)</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">Speed signal. Especially important on World-driven (flight delays, weather) where minutes matter.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20 transition-colors">
-                <td class="px-5 py-4 text-sm font-medium text-slate-200">Completion / closure rate</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">% of created tasks closed within the expected window for their origin bucket</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">Throughput signal. Stuck-task accumulation is the early indicator of process drift.</td>
+              <tr class="hover:bg-msurface/20 transition-colors">
+                <td class="px-5 py-4 text-sm font-medium text-mtext">Completion / closure rate</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">% of created tasks closed within the expected window for their origin bucket</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">Throughput signal. Stuck-task accumulation is the early indicator of process drift.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20 transition-colors">
-                <td class="px-5 py-4 text-sm font-medium text-slate-200">Reduction in missed operational moments</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">Count of post-hoc-detected misses (a moment we should have caught but didn't)</td>
-                <td class="px-5 py-4 text-xs text-slate-400 leading-relaxed">The hardest metric, partly self-reported, partly client-reported. The whole point of the proactive schedule-driven side is to drive this down.</td>
+              <tr class="hover:bg-msurface/20 transition-colors">
+                <td class="px-5 py-4 text-sm font-medium text-mtext">Reduction in missed operational moments</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">Count of post-hoc-detected misses (a moment we should have caught but didn't)</td>
+                <td class="px-5 py-4 text-xs text-mtext3 leading-relaxed">The hardest metric, partly self-reported, partly client-reported. The whole point of the proactive schedule-driven side is to drive this down.</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-5">
-        <p class="text-sm font-semibold text-slate-200 mb-2">Signals, not targets</p>
-        <p class="text-xs text-slate-400 leading-relaxed">Each signal needs a baseline (where are we today?) and a target (where do we want it after N weeks of Conductor live?). Both belong in the PRD, not this outline.</p>
+      <div class="bg-mambersoft border border-mamber/30 rounded-lg p-5">
+        <p class="text-sm font-semibold text-mtext mb-2">Signals, not targets</p>
+        <p class="text-xs text-mtext3 leading-relaxed">Each signal needs a baseline (where are we today?) and a target (where do we want it after N weeks of Conductor live?). Both belong in the PRD, not this outline.</p>
       </div>
 
     </div>

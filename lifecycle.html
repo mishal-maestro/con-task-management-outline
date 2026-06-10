@@ -5,11 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lifecycle — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
   <link rel="stylesheet" href="bpmn.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -21,13 +73,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -36,110 +88,110 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext2 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Task Lifecycle</h2>
-        <p class="text-sm text-slate-500 mt-1">How tasks move through the system</p>
+        <h2 class="text-2xl font-semibold text-mtext tracking-tight font-serif">Task Lifecycle</h2>
+        <p class="text-sm text-mtext3 mt-1">How tasks move through the system</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-4 leading-relaxed">Where §3-§6 covered <em>what tasks are</em> and <em>who does them</em>, this section covers how they move through the system.</p>
+      <p class="text-sm text-mtext3 mb-4 leading-relaxed">Where §3-§6 covered <em>what tasks are</em> and <em>who does them</em>, this section covers how they move through the system.</p>
 
       <!-- Color legend (matches routing-tier palette) -->
-      <div class="flex flex-wrap gap-4 mb-6 text-xs text-slate-400 bg-slate-900/40 border border-slate-800 rounded-lg px-4 py-2.5">
-        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span><span>AI / auto-tier</span></div>
-        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span>Manual / hybrid (assist-tier)</span></div>
-        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span><span>Dismissal</span></div>
-        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span><span>Descriptive bullets</span></div>
+      <div class="flex flex-wrap gap-4 mb-6 text-xs text-mtext3 bg-msurface/40 border border-mborder rounded-lg px-4 py-2.5">
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-msuccess"></span><span>AI / auto-tier</span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-mamber"></span><span>Manual / hybrid (assist-tier)</span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-mdanger"></span><span>Dismissal</span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-maccent"></span><span>Descriptive bullets</span></div>
       </div>
 
       <!-- 3-column grid: Creation / Management / Closure -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 
         <!-- 7.1 Creation -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-3">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">7.1</span>
-            <h3 class="text-base font-semibold text-slate-100">Creation — the 4 stages</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">7.1</span>
+            <h3 class="text-base font-semibold text-mtext">Creation — the 4 stages</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4">A task enters the system through four conceptual stages. The flow is the same for every task, but the time each task spends in each stage varies wildly — a templated trip-lifecycle task passes through in milliseconds; a relationship gesture may live as a suggestion for hours awaiting TA approval.</p>
+          <p class="text-sm text-mtext3 mb-4">A task enters the system through four conceptual stages. The flow is the same for every task, but the time each task spends in each stage varies wildly — a templated trip-lifecycle task passes through in milliseconds; a relationship gesture may live as a suggestion for hours awaiting TA approval.</p>
           <div class="space-y-3">
             <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold">1</div>
+              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mborderh text-mtext flex items-center justify-center text-xs font-bold">1</div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">Signal</div>
-                <p class="text-xs text-slate-400 leading-relaxed">A raw event or sensed condition: a client message arrives, a flight feed pushes a delay, a scheduled query returns a hit. The signal is <em>not</em> a task — it's a candidate. Stored briefly while the system decides whether to make something of it.</p>
+                <div class="text-sm font-medium text-mtext mb-1">Signal</div>
+                <p class="text-xs text-mtext2 leading-relaxed">A raw event or sensed condition: a client message arrives, a flight feed pushes a delay, a scheduled query returns a hit. The signal is <em>not</em> a task — it's a candidate. Stored briefly while the system decides whether to make something of it.</p>
               </div>
             </div>
             <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold">2</div>
+              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mborderh text-mtext flex items-center justify-center text-xs font-bold">2</div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">Suggestion</div>
-                <p class="text-xs text-slate-400 leading-relaxed">The system promotes one or more signals into a proposed task. At this stage the task is <em>not yet canonical</em> — it has draft fields (title, rationale, evidence, proposed routing tier) but no entry on the main board. Suggestions live in the Review queue (see §7.2 Surface model). Stale suggestions expire silently after a window (24h default; see §8 for cadence questions).</p>
+                <div class="text-sm font-medium text-mtext mb-1">Suggestion</div>
+                <p class="text-xs text-mtext2 leading-relaxed">The system promotes one or more signals into a proposed task. At this stage the task is <em>not yet canonical</em> — it has draft fields (title, rationale, evidence, proposed routing tier) but no entry on the main board. Suggestions live in the Review queue (see §7.2 Surface model). Stale suggestions expire silently after a window (24h default; see §8 for cadence questions).</p>
               </div>
             </div>
             <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold">3</div>
+              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mborderh text-mtext flex items-center justify-center text-xs font-bold">3</div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">Approval gate</div>
-                <p class="text-xs text-slate-400 leading-relaxed mb-2">The decision point between Suggestion and Canonical task. Every suggestion carries a <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">confidence_score</code>. The approval policy evolves in two phases:</p>
-                <ul class="text-xs text-slate-400 space-y-1 ml-3">
-                  <li><strong class="text-amber-400">v1 (launch):</strong> every suggestion requires human review. The operator reviews (sees the rationale + evidence per §7.4), can edit any field, then approves or rejects. The <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">confidence_score</code> is captured from day 1 for telemetry / calibration only — to learn where the auto-approval threshold should live per task type.</li>
+                <div class="text-sm font-medium text-mtext mb-1">Approval gate</div>
+                <p class="text-xs text-mtext2 leading-relaxed mb-2">The decision point between Suggestion and Canonical task. Every suggestion carries a <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">confidence_score</code>. The approval policy evolves in two phases:</p>
+                <ul class="text-xs text-mtext2 space-y-1 ml-3">
+                  <li><strong class="text-amber-400">v1 (launch):</strong> every suggestion requires human review. The operator reviews (sees the rationale + evidence per §7.4), can edit any field, then approves or rejects. The <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">confidence_score</code> is captured from day 1 for telemetry / calibration only — to learn where the auto-approval threshold should live per task type.</li>
                   <li><strong class="text-amber-400">v2 (post-calibration):</strong> auto-approve above a confidence threshold (e.g. ~90%) per origin / task type. Below threshold still routes to human review. Threshold is product-tunable per type once telemetry supports the cut-over.</li>
                 </ul>
-                <p class="text-[11px] text-slate-500 italic mt-2 leading-relaxed">Distinct from the <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">auto</code> routing tier in <a href="routing.html" class="text-orange-400 hover:text-orange-300">§6.1</a> — that one describes post-canonical execution, not the creation gate. Auto-tier tasks (e.g. trip-prep templated checklists) still need a human approval click at creation in v1.</p>
+                <p class="text-[11px] text-mtext3 italic mt-2 leading-relaxed">Distinct from the <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">auto</code> routing tier in <a href="routing.html" class="text-maccent hover:text-maccenth">§6.1</a> — that one describes post-canonical execution, not the creation gate. Auto-tier tasks (e.g. trip-prep templated checklists) still need a human approval click at creation in v1.</p>
               </div>
             </div>
             <div class="flex gap-3">
-              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold">4</div>
+              <div class="flex-shrink-0 w-6 h-6 rounded-full bg-mborderh text-mtext flex items-center justify-center text-xs font-bold">4</div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">Canonical task</div>
-                <p class="text-xs text-slate-400 leading-relaxed">The approved task record (see §7.2 schema). Lives on the task board, executes per its routing tier (auto / assist / escalate per §6), closes per §7.3.</p>
+                <div class="text-sm font-medium text-mtext mb-1">Canonical task</div>
+                <p class="text-xs text-mtext2 leading-relaxed">The approved task record (see §7.2 schema). Lives on the task board, executes per its routing tier (auto / assist / escalate per §6), closes per §7.3.</p>
               </div>
             </div>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-700 space-y-2">
-            <p class="text-xs text-slate-300"><strong>Manual creation bypasses Stages 1–3 — a first-class fast path, not a fallback.</strong> A TA or ops associate can create a task directly — typing into the New Task modal, or hovering a message and clicking "create task." The keyboard shortcut (see §7.2 Operator essentials) is always available, even when suggestions are firing — TAs who need to create a task NOW must never be forced through the suggestion pipeline. Manual creation skips Signal / Suggestion / Approval gate and lands the task directly in Canonical. Per §7.2, the manual-create UI surfaces ≤ 2 fields (title + owner); everything else is inferred from context.</p>
-            <p class="text-xs text-slate-400"><strong>Agent mode is a hybrid.</strong> When a TA prompts the agent (<em>"research connecting rooms at the Aman Tokyo"</em>), the agent's run may spawn AI sub-tasks and human sub-tasks. AI sub-tasks travel the full 4-stage flow inside the agent run; human sub-tasks emerge as direct Canonical tasks routed to the appropriate operator.</p>
-            <p class="text-xs text-slate-400"><strong>AI-suggested replies are tasks too.</strong> When the AI proposes a reply to a client message (e.g. the TA is away from their computer and a customer has messaged), that proposal travels the same 4-stage flow. TA approves inline ("yes"), the action (send the message) fires immediately, the canonical task is created and auto-closed in the same step. The whole interaction takes one click. Keeping this in the task model rather than as a separate "AI suggestion" feature: the audit trail (who approved sending which message) lives in one canonical record.</p>
+          <div class="mt-4 pt-3 border-t border-mborder space-y-2">
+            <p class="text-xs text-mtext2"><strong>Manual creation bypasses Stages 1–3 — a first-class fast path, not a fallback.</strong> A TA or ops associate can create a task directly — typing into the New Task modal, or hovering a message and clicking "create task." The keyboard shortcut (see §7.2 Operator essentials) is always available, even when suggestions are firing — TAs who need to create a task NOW must never be forced through the suggestion pipeline. Manual creation skips Signal / Suggestion / Approval gate and lands the task directly in Canonical. Per §7.2, the manual-create UI surfaces ≤ 2 fields (title + owner); everything else is inferred from context.</p>
+            <p class="text-xs text-mtext2"><strong>Agent mode is a hybrid.</strong> When a TA prompts the agent (<em>"research connecting rooms at the Aman Tokyo"</em>), the agent's run may spawn AI sub-tasks and human sub-tasks. AI sub-tasks travel the full 4-stage flow inside the agent run; human sub-tasks emerge as direct Canonical tasks routed to the appropriate operator.</p>
+            <p class="text-xs text-mtext2"><strong>AI-suggested replies are tasks too.</strong> When the AI proposes a reply to a client message (e.g. the TA is away from their computer and a customer has messaged), that proposal travels the same 4-stage flow. TA approves inline ("yes"), the action (send the message) fires immediately, the canonical task is created and auto-closed in the same step. The whole interaction takes one click. Keeping this in the task model rather than as a separate "AI suggestion" feature: the audit trail (who approved sending which message) lives in one canonical record.</p>
           </div>
         </div>
 
         <!-- 7.2 Management -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-3">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">7.2</span>
-            <h3 class="text-base font-semibold text-slate-100">Management</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">7.2</span>
+            <h3 class="text-base font-semibold text-mtext">Management</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4">Once approved, tasks live on the <strong class="text-slate-200">task board</strong>:</p>
-          <ul class="space-y-2 text-xs text-slate-400 mb-4">
-            <li class="flex gap-2"><span class="text-orange-500 flex-shrink-0">•</span> One filterable list across all clients — AI tasks and human tasks share the same surface, distinguished by routing tier badge rather than by separation</li>
-            <li class="flex gap-2"><span class="text-orange-500 flex-shrink-0">•</span> <span><strong class="text-slate-300">Ownership: one primary, many watchers.</strong> Each task has exactly one <strong>primary owner</strong> — accountable for closure. Other people can be added as <strong>watchers</strong> for visibility / collaboration; they see the task on their personal list but don't share accountability. Single ownership keeps responsibility unambiguous.</span></li>
-            <li class="flex gap-2"><span class="text-orange-500 flex-shrink-0">•</span> Filters: status, priority, origin bucket, routing tier, owner, source</li>
-            <li class="flex gap-2"><span class="text-orange-500 flex-shrink-0">•</span> Default views per role (open question — see §8: TA dashboard ≠ ops dashboard)</li>
-            <li class="flex gap-2"><span class="text-orange-500 flex-shrink-0">•</span> Bulk operations: assign, reassign, complete, dismiss</li>
-            <li class="flex gap-2"><span class="text-orange-500 flex-shrink-0">•</span> Inline AI assistant accepts natural-language queries: <em>"show me overdue", "what should I work on first", "give me an end-of-day summary"</em></li>
+          <p class="text-sm text-mtext3 mb-4">Once approved, tasks live on the <strong class="text-mtext">task board</strong>:</p>
+          <ul class="space-y-2 text-xs text-mtext3 mb-4">
+            <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> One filterable list across all clients — AI tasks and human tasks share the same surface, distinguished by routing tier badge rather than by separation</li>
+            <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> <span><strong class="text-mtext2">Ownership: one primary, many watchers.</strong> Each task has exactly one <strong>primary owner</strong> — accountable for closure. Other people can be added as <strong>watchers</strong> for visibility / collaboration; they see the task on their personal list but don't share accountability. Single ownership keeps responsibility unambiguous.</span></li>
+            <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> Filters: status, priority, origin bucket, routing tier, owner, source</li>
+            <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> Default views per role (open question — see §8: TA dashboard ≠ ops dashboard)</li>
+            <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> Bulk operations: assign, reassign, complete, dismiss</li>
+            <li class="flex gap-2"><span class="text-maccent flex-shrink-0">•</span> Inline AI assistant accepts natural-language queries: <em>"show me overdue", "what should I work on first", "give me an end-of-day summary"</em></li>
           </ul>
 
-          <div class="bg-slate-800/50 border border-slate-700 rounded p-3 mb-4">
-            <p class="text-xs font-semibold text-slate-200 mb-2">Surface model: in-context approval is primary, Review queue is the catch-up surface</p>
-            <p class="text-xs text-slate-400 mb-2">Most approvals happen <strong class="text-slate-300">in-context</strong>, where the operator is already working: TA messaging a client and AI proposes a follow-up reply (Claude-style "yes, yes, yes" inline approval); TA on a trip page and AI suggests a hotel re-shop after a vendor change; TA prompts the agent and approves both AI sub-tasks + human sub-tasks within the agent run; TA on a member page and AI suggests scheduling a call to capture credit-card details.</p>
-            <ul class="text-xs text-slate-400 space-y-1.5">
+          <div class="bg-msurface/50 border border-mborder rounded p-3 mb-4">
+            <p class="text-xs font-semibold text-mtext mb-2">Surface model: in-context approval is primary, Review queue is the catch-up surface</p>
+            <p class="text-xs text-mtext2 mb-2">Most approvals happen <strong class="text-mtext2">in-context</strong>, where the operator is already working: TA messaging a client and AI proposes a follow-up reply (Claude-style "yes, yes, yes" inline approval); TA on a trip page and AI suggests a hotel re-shop after a vendor change; TA prompts the agent and approves both AI sub-tasks + human sub-tasks within the agent run; TA on a member page and AI suggests scheduling a call to capture credit-card details.</p>
+            <ul class="text-xs text-mtext2 space-y-1.5">
               <li>Main <strong>task board</strong>: approved, executable tasks. Stays clean and trusted, never shows unapproved suggestions.</li>
               <li><strong>Review queue</strong>: secondary catch-up surface for suggestions the operator didn't see (or didn't act on) in context. Filterable by trip, member, type, age. Used for batch-approve / batch-dismiss when clearing backlog.</li>
             </ul>
-            <p class="text-xs text-slate-500 mt-2">Risk to manage in implementation: the review queue can become a dead inbox if it accumulates faster than operators clear it. Mitigations: silent expiry on stale suggestions, batch operations, in-context approval as the dominant flow. Placement and expiry policy details are open in §8 q11.</p>
+            <p class="text-xs text-mtext3 mt-2">Risk to manage in implementation: the review queue can become a dead inbox if it accumulates faster than operators clear it. Mitigations: silent expiry on stale suggestions, batch operations, in-context approval as the dominant flow. Placement and expiry policy details are open in §8 q11.</p>
           </div>
 
-          <div class="bg-slate-800/50 border border-slate-700 rounded p-3 mb-4">
-            <p class="text-xs font-semibold text-slate-200 mb-2">Operator essentials (day 1)</p>
-            <p class="text-xs text-slate-400 mb-2">The TA-side experience requires these from CC v1's baseline forward:</p>
-            <ul class="text-xs text-slate-400 space-y-1">
-              <li>• <strong>Keyboard shortcuts</strong> — <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">c</code> create, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">e</code> assign, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">j/k</code> navigate, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">x</code> dismiss, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">Esc</code> close</li>
+          <div class="bg-msurface/50 border border-mborder rounded p-3 mb-4">
+            <p class="text-xs font-semibold text-mtext mb-2">Operator essentials (day 1)</p>
+            <p class="text-xs text-mtext2 mb-2">The TA-side experience requires these from CC v1's baseline forward:</p>
+            <ul class="text-xs text-mtext2 space-y-1">
+              <li>• <strong>Keyboard shortcuts</strong> — <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">c</code> create, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">e</code> assign, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">j/k</code> navigate, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">x</code> dismiss, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">Esc</code> close</li>
               <li>• <strong>Batch-close</strong> — multi-select with a confirm step before commit</li>
               <li>• <strong>Snooze</strong> — "not now, remind me in 2h" / "remind me end of shift"</li>
               <li>• <strong>Mute signal for this trip</strong> — TA already handled the weather alert; don't re-fire on the next monitor sweep</li>
@@ -147,51 +199,51 @@
               <li>• <strong>End-of-shift handoff view</strong> — my open tasks + owner-context, one click → hand off to the next shift</li>
               <li>• <strong>Manual create now</strong> — keyboard shortcut available even when suggestions are firing; see §7.1 for the bypass path</li>
             </ul>
-            <p class="text-xs text-slate-500 mt-2">These are not optional features — CC v1 has most of them, and v1 of Conductor can't be worse without breaking operator trust.</p>
+            <p class="text-xs text-mtext3 mt-2">These are not optional features — CC v1 has most of them, and v1 of Conductor can't be worse without breaking operator trust.</p>
           </div>
 
-          <div class="bg-amber-500/10 border border-amber-500/30 rounded p-3">
-            <p class="text-xs font-semibold text-slate-200 mb-2">Canonical task fields (data layer — not the manual-create UI)</p>
-            <p class="text-xs text-slate-400 mb-2">Once approved, a task is a single record with 29 fields. Different surfaces (board, trip page, account page, agent mode) render this same record differently — the <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">task_type</code> field drives which fields are visible per surface. Fields: <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">id</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">title</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">action</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">actor</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">when</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">primary_owner</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">watchers</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">status</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">approval_state</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">confidence_score</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">primary_context</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">origin</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">task_type</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">subtype</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">creator</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">creation_surface</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">routing_tier</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">priority</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">due_at</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">rationale</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">evidence_refs</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">created_at</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">updated_at</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">snooze_until</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">dismissal_reason</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">reopen_count</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">last_reopened_at</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">parent_task_id</code>, <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">agent_run_id</code>. <span class="text-amber-400">Status enum: <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">pending</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">in_progress</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">blocked</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">snoozed</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">done</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">dismissed</code>. Priority enum: <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">High</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">Normal</code> / <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">Low</code>.</span> Activity log is a separate entity (per-task append-only) capturing every state transition; not denormalised onto this record.</p>
-            <p class="text-xs text-slate-400 mb-2"><strong>UI constraint: manual creation surfaces ≤ 2 fields.</strong> When a TA or ops associate creates a task manually, they see only <strong>title</strong> and (optionally) <strong>owner</strong>. Everything else is inferred from context or filled with defaults. Schema-for-system, not schema-for-hand-entry — preserves CC v1's 2-second task creation speed.</p>
-            <p class="text-xs text-slate-500">Full field table and worked examples of populated records are in Appendix D.</p>
+          <div class="bg-mambersoft border border-mamber/30 rounded p-3">
+            <p class="text-xs font-semibold text-mtext mb-2">Canonical task fields (data layer — not the manual-create UI)</p>
+            <p class="text-xs text-mtext2 mb-2">Once approved, a task is a single record with 29 fields. Different surfaces (board, trip page, account page, agent mode) render this same record differently — the <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">task_type</code> field drives which fields are visible per surface. Fields: <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">id</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">title</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">action</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">actor</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">when</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">primary_owner</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">watchers</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">status</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">approval_state</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">confidence_score</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">primary_context</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">origin</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">task_type</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">subtype</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">creator</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">creation_surface</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">routing_tier</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">priority</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">due_at</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">rationale</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">evidence_refs</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">created_at</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">updated_at</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">snooze_until</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">dismissal_reason</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">reopen_count</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">last_reopened_at</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">parent_task_id</code>, <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">agent_run_id</code>. <span class="text-amber-400">Status enum: <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">pending</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">in_progress</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">blocked</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">snoozed</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">done</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">dismissed</code>. Priority enum: <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">High</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">Normal</code> / <code class="px-1 py-0.5 bg-mborderh rounded text-mtext2 font-mono text-[10px]">Low</code>.</span> Activity log is a separate entity (per-task append-only) capturing every state transition; not denormalised onto this record.</p>
+            <p class="text-xs text-mtext2 mb-2"><strong>UI constraint: manual creation surfaces ≤ 2 fields.</strong> When a TA or ops associate creates a task manually, they see only <strong>title</strong> and (optionally) <strong>owner</strong>. Everything else is inferred from context or filled with defaults. Schema-for-system, not schema-for-hand-entry — preserves CC v1's 2-second task creation speed.</p>
+            <p class="text-xs text-mtext3">Full field table and worked examples of populated records are in Appendix D.</p>
           </div>
         </div>
 
         <!-- 7.3 Closure -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-3">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">7.3</span>
-            <h3 class="text-base font-semibold text-slate-100">Closure</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">7.3</span>
+            <h3 class="text-base font-semibold text-mtext">Closure</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4">A task leaves the system in one of four ways:</p>
+          <p class="text-sm text-mtext3 mb-4">A task leaves the system in one of four ways:</p>
           <div class="space-y-3">
             <div class="flex gap-3">
               <div class="flex-shrink-0 w-3 h-3 mt-1 rounded-full bg-amber-500"></div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">Manual completion</div>
-                <p class="text-xs text-slate-400 leading-relaxed">A human marks it done. Always available, lowest trust bar.</p>
+                <div class="text-sm font-medium text-mtext mb-1">Manual completion</div>
+                <p class="text-xs text-mtext2 leading-relaxed">A human marks it done. Always available, lowest trust bar.</p>
               </div>
             </div>
             <div class="flex gap-3">
               <div class="flex-shrink-0 w-3 h-3 mt-1 rounded-full bg-green-500"></div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">AI auto-close</div>
-                <p class="text-xs text-slate-400 leading-relaxed">For <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">auto</code>-tier tasks the AI fully executed. The AI knows it's done because it did it.</p>
+                <div class="text-sm font-medium text-mtext mb-1">AI auto-close</div>
+                <p class="text-xs text-mtext2 leading-relaxed">For <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">auto</code>-tier tasks the AI fully executed. The AI knows it's done because it did it.</p>
               </div>
             </div>
             <div class="flex gap-3">
               <div class="flex-shrink-0 w-3 h-3 mt-1 rounded-full bg-amber-500"></div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">AI-proposed close</div>
-                <p class="text-xs text-slate-400 leading-relaxed">AI detects evidence of completion (a confirmation arrived, the conversation moved past the issue) and surfaces a "close this?" prompt for a one-click human ACK.</p>
+                <div class="text-sm font-medium text-mtext mb-1">AI-proposed close</div>
+                <p class="text-xs text-mtext2 leading-relaxed">AI detects evidence of completion (a confirmation arrived, the conversation moved past the issue) and surfaces a "close this?" prompt for a one-click human ACK.</p>
               </div>
             </div>
             <div class="flex gap-3">
               <div class="flex-shrink-0 w-3 h-3 mt-1 rounded-full bg-red-500"></div>
               <div>
-                <div class="text-sm font-medium text-slate-200 mb-1">Manual dismissal</div>
-                <p class="text-xs text-slate-400 leading-relaxed">A human closes the task without completion, with a reason captured for audit. Distinct from "completed."</p>
+                <div class="text-sm font-medium text-mtext mb-1">Manual dismissal</div>
+                <p class="text-xs text-mtext2 leading-relaxed">A human closes the task without completion, with a reason captured for audit. Distinct from "completed."</p>
               </div>
             </div>
           </div>
@@ -200,33 +252,33 @@
       </div>
 
       <!-- Activity log annotation, full-width below the 3 cards -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 mb-6">
-        <p class="text-xs text-slate-400"><strong class="text-slate-200">Audit:</strong> Every state change writes to an activity log. Reopening is supported. For high-stakes tasks (VVIP, large bookings) we may need a "soft-closed" intermediate state — see §8.</p>
+      <div class="bg-mcard border border-mborder rounded-lg p-4 mb-6">
+        <p class="text-xs text-mtext2"><strong class="text-mtext">Audit:</strong> Every state change writes to an activity log. Reopening is supported. For high-stakes tasks (VVIP, large bookings) we may need a "soft-closed" intermediate state — see §8.</p>
       </div>
 
       <!-- 7.4 Explainability -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8">
+      <div class="bg-mcard border border-mborder rounded-lg p-6 mb-8">
         <div class="flex items-center gap-3 mb-3">
-          <span class="font-mono text-xs uppercase tracking-wider text-orange-500">7.4</span>
-          <h3 class="text-base font-semibold text-slate-100">Explainability</h3>
+          <span class="font-mono text-xs uppercase tracking-wider text-maccent">7.4</span>
+          <h3 class="text-base font-semibold text-mtext">Explainability</h3>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Every AI-suggested or AI-auto-approved task surfaces <em>why it exists</em> and <em>what evidence triggered it</em> — at a glance, not buried.</p>
-        <ul class="space-y-3 text-xs text-slate-300 mb-4">
+        <p class="text-sm text-mtext2 mb-4">Every AI-suggested or AI-auto-approved task surfaces <em>why it exists</em> and <em>what evidence triggered it</em> — at a glance, not buried.</p>
+        <ul class="space-y-3 text-xs text-mtext2 mb-4">
           <li class="flex gap-3">
             <span class="flex-shrink-0 text-orange-500 font-semibold">Rationale</span>
-            <span class="text-slate-400">One line, plain English. <em>"Client message mentioned dietary preference."</em> / <em>"Flight SQ232 delayed 4 hrs."</em> / <em>"SLA timer < 30 min to breach."</em> Length cap is intentional: multi-paragraph LLM justifications get skipped.</span>
+            <span class="text-mtext2">One line, plain English. <em>"Client message mentioned dietary preference."</em> / <em>"Flight SQ232 delayed 4 hrs."</em> / <em>"SLA timer < 30 min to breach."</em> Length cap is intentional: multi-paragraph LLM justifications get skipped.</span>
           </li>
           <li class="flex gap-3">
             <span class="flex-shrink-0 text-orange-500 font-semibold">Evidence</span>
-            <span class="text-slate-400">One link (or two, max) to the source signal: the message, the alert, the query result, the prior task. Full audit trail lives in the activity log on demand.</span>
+            <span class="text-mtext2">One link (or two, max) to the source signal: the message, the alert, the query result, the prior task. Full audit trail lives in the activity log on demand.</span>
           </li>
           <li class="flex gap-3">
             <span class="flex-shrink-0 text-orange-500 font-semibold">Manual tasks</span>
-            <span class="text-slate-400">Rationale is optional. If a TA created it manually they know why; the field is open if they want others to.</span>
+            <span class="text-mtext2">Rationale is optional. If a TA created it manually they know why; the field is open if they want others to.</span>
           </li>
         </ul>
         <div class="bg-amber-500/10 border border-amber-500/30 rounded px-3 py-2">
-          <p class="text-xs text-slate-300"><strong>Constraint:</strong> one line + one link. Walls of text go banner-blind faster than no rationale at all.</p>
+          <p class="text-xs text-mtext2"><strong>Constraint:</strong> one line + one link. Walls of text go banner-blind faster than no rationale at all.</p>
         </div>
       </div>
 
@@ -313,9 +365,9 @@
 </div>
 </div>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 mt-8">
-        <div class="text-xs text-slate-400">
-          <strong class="text-slate-200">Side annotation:</strong> Activity log records every state change (creation method, routing tier, assignee, status transitions, closure reason). Reopening is supported for audit and recovery.
+      <div class="bg-mcard border border-mborder rounded-lg p-4 mt-8">
+        <div class="text-xs text-mtext2">
+          <strong class="text-mtext">Side annotation:</strong> Activity log records every state change (creation method, routing tier, assignee, status transitions, closure reason). Reopening is supported for audit and recovery.
         </div>
       </div>
 

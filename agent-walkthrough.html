@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Mode — Hero-flow Walkthrough — Conductor Task Mgmt</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,16 +69,16 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #334155; transition: background .2s, box-shadow .2s; cursor: pointer; flex-shrink: 0; }
-    .step-dot.done { background: #ff5e32; }
-    .step-dot.active { background: #ff5e32; box-shadow: 0 0 0 4px rgba(255,94,50,.2); }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
+    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: rgb(var(--maestro-border)); transition: background .2s, box-shadow .2s; cursor: pointer; flex-shrink: 0; }
+    .step-dot.done { background: rgb(var(--maestro-accent)); }
+    .step-dot.active { background: rgb(var(--maestro-accent)); box-shadow: 0 0 0 4px rgb(var(--maestro-accent-light)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -35,40 +87,40 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/PRD-Conductor-Agent-Mode-V1-35ed1ecb218981bdbf77f0cf027059a8" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Sunthar's PRD §3 — "The 90-second moment"
         </a>
       </div>
 
       <div class="mb-6">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Agent Mode — Hero-flow Walkthrough</h2>
-        <p class="text-sm text-slate-500 mt-1">The 90-second moment, narrated step by step.</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Agent Mode — Hero-flow Walkthrough</h2>
+        <p class="text-sm text-mtext3 mt-1">The 90-second moment, narrated step by step.</p>
       </div>
 
       <!-- Demo-aid disclaimer -->
-      <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg px-4 py-2.5 mb-6 text-xs text-slate-300 flex items-start gap-2">
-        <svg class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span>This stepper is a <strong class="text-slate-100">guided demo aid</strong>, not a UI element. In the real product the advisor just has a conversation — see it finished in the <a href="prototype/agent.html" class="text-orange-400 hover:text-orange-300">clickable Agent tab</a>.</span>
+      <div class="bg-mambersoft border border-mamber/30 rounded-lg px-4 py-2.5 mb-6 text-xs text-mtext2 flex items-start gap-2">
+        <svg class="w-4 h-4 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>This stepper is a <strong class="text-mtext">guided demo aid</strong>, not a UI element. In the real product the advisor just has a conversation — see it finished in the <a href="prototype/agent.html" class="text-maccent hover:text-maccenth">clickable Agent tab</a>.</span>
       </div>
 
       <!-- Stepper -->
-      <div class="bg-slate-900 border border-orange-500/40 rounded-lg p-6">
+      <div class="bg-mcard border border-maccent/40 rounded-lg p-6">
         <div class="flex items-center justify-between gap-4 mb-4">
-          <span class="font-mono text-[11px] uppercase tracking-widest text-orange-500">Hero flow — the 90-second moment</span>
+          <span class="font-mono text-[11px] uppercase tracking-widest text-maccent">Hero flow — the 90-second moment</span>
           <div class="flex items-center gap-1.5">
-            <button onclick="go(step-1)" class="px-2.5 py-1 rounded-md bg-slate-800 text-xs text-slate-300 hover:bg-slate-700 transition-colors">← Back</button>
-            <span id="counter" class="font-mono text-xs text-slate-400 w-16 text-center"></span>
-            <button onclick="go(step+1)" class="px-2.5 py-1 rounded-md bg-orange-500 text-xs text-white font-medium hover:bg-orange-600 transition-colors">Next →</button>
+            <button onclick="go(step-1)" class="px-2.5 py-1 rounded-md bg-msurface text-xs text-mtext2 hover:bg-mborderh transition-colors">← Back</button>
+            <span id="counter" class="font-mono text-xs text-mtext3 w-16 text-center"></span>
+            <button onclick="go(step+1)" class="px-2.5 py-1 rounded-md bg-maccent text-xs text-white font-medium hover:bg-maccenth transition-colors">Next →</button>
           </div>
         </div>
         <div id="dots" class="flex items-center gap-2 mb-6"></div>
 
         <div class="flex items-start gap-4">
-          <div id="step-num" class="font-mono text-3xl font-semibold text-orange-500 flex-shrink-0 w-14"></div>
+          <div id="step-num" class="font-mono text-3xl font-semibold text-maccent flex-shrink-0 w-14"></div>
           <div class="flex-1">
-            <h3 id="step-title" class="text-lg font-semibold text-slate-100"></h3>
-            <p id="step-caption" class="text-sm text-slate-300 leading-relaxed mt-2"></p>
+            <h3 id="step-title" class="text-lg font-semibold text-mtext"></h3>
+            <p id="step-caption" class="text-sm text-mtext2 leading-relaxed mt-2"></p>
             <div id="step-proves" class="mt-3 flex flex-wrap gap-1.5"></div>
           </div>
         </div>
@@ -76,12 +128,12 @@
 
       <!-- Full flow: all steps laid out for reading end to end -->
       <div class="mt-8 mb-3">
-        <div class="font-mono text-[11px] uppercase tracking-widest text-orange-500">The full flow, step by step</div>
-        <p class="text-sm text-slate-500 mt-1">All nine steps in sequence, laid out to read end to end.</p>
+        <div class="font-mono text-[11px] uppercase tracking-widest text-maccent">The full flow, step by step</div>
+        <p class="text-sm text-mtext3 mt-1">All nine steps in sequence, laid out to read end to end.</p>
       </div>
       <div id="full-flow" class="space-y-3"></div>
 
-      <p class="text-xs text-slate-600 mt-6">The stories these steps prove are in <a href="agent-epics.html" class="text-orange-400 hover:text-orange-300">Epics &amp; Stories</a>.</p>
+      <p class="text-xs text-mtext3 mt-6">The stories these steps prove are in <a href="agent-epics.html" class="text-maccent hover:text-maccenth">Epics &amp; Stories</a>.</p>
 
     </div>
   </main>
@@ -122,12 +174,12 @@
       document.getElementById('step-title').textContent = s.title;
       document.getElementById('step-caption').textContent = s.caption;
       document.getElementById('step-proves').innerHTML = s.proves.map(p =>
-        `<a href="agent-epics.html" class="font-mono text-[10px] text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5 hover:bg-orange-500/25">${p}</a>`).join('');
+        `<a href="agent-epics.html" class="font-mono text-[10px] text-maccenth bg-maccent/15 rounded px-1.5 py-0.5 hover:bg-maccent/25">${p}</a>`).join('');
       document.getElementById('dots').innerHTML = HERO_STEPS.map((_, i) => {
         const n = i + 1;
         const cls = n < step ? 'done' : n === step ? 'active' : '';
         return `<span class="step-dot ${cls}" onclick="go(${n})" title="Step ${n}"></span>`
-             + (n < TOTAL ? '<span class="flex-1 h-px bg-slate-800"></span>' : '');
+             + (n < TOTAL ? '<span class="flex-1 h-px bg-msurface"></span>' : '');
       }).join('');
     }
     // Static companion to the stepper — every step laid out at once.
@@ -135,13 +187,13 @@
       document.getElementById('full-flow').innerHTML = HERO_STEPS.map((s, i) => {
         const num = (i + 1) < 10 ? '0' + (i + 1) : '' + (i + 1);
         const chips = s.proves.map(p =>
-          `<a href="agent-epics.html" class="font-mono text-[10px] text-orange-300 bg-orange-500/15 rounded px-1.5 py-0.5 hover:bg-orange-500/25">${Theme.escapeHtml(p)}</a>`).join('');
+          `<a href="agent-epics.html" class="font-mono text-[10px] text-maccenth bg-maccent/15 rounded px-1.5 py-0.5 hover:bg-maccent/25">${Theme.escapeHtml(p)}</a>`).join('');
         return `
-          <div class="flex items-start gap-4 bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <div class="font-mono text-xl font-semibold text-orange-500 flex-shrink-0 w-9">${num}</div>
+          <div class="flex items-start gap-4 bg-mcard border border-mborder rounded-lg p-4">
+            <div class="font-mono text-xl font-semibold text-maccent flex-shrink-0 w-9">${num}</div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-sm font-semibold text-slate-100">${Theme.escapeHtml(s.title)}</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mt-1">${Theme.escapeHtml(s.caption)}</p>
+              <h3 class="text-sm font-semibold text-mtext">${Theme.escapeHtml(s.title)}</h3>
+              <p class="text-sm text-mtext3 leading-relaxed mt-1">${Theme.escapeHtml(s.caption)}</p>
               <div class="mt-2.5 flex flex-wrap gap-1.5">${chips}</div>
             </div>
           </div>`;

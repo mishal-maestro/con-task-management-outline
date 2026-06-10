@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analogy Walkthroughs — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,156 +84,156 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Hybrid Analogy in Action</h2>
-        <p class="text-sm text-slate-500 mt-1">End-to-end walkthroughs</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Hybrid Analogy in Action</h2>
+        <p class="text-sm text-mtext3 mt-1">End-to-end walkthroughs</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Three end-to-end walkthroughs showing the §6.5 analogies operating in practice. Each traces a task through the 4-stage flow under the analogy that fits its origin.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">Three end-to-end walkthroughs showing the §6.5 analogies operating in practice. Each traces a task through the 4-stage flow under the analogy that fits its origin.</p>
 
       <div class="space-y-8">
 
         <!-- E.1 PR-review walkthrough -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.1 PR-review walkthrough — Client-driven booking request</h3>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface/50 border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.1 PR-review walkthrough — Client-driven booking request</h3>
             <div class="mt-2 space-y-1">
-              <p class="text-xs text-slate-400"><strong>Origin:</strong> Client-driven (explicit) — §3.1</p>
-              <p class="text-xs text-slate-400"><strong>Analogy:</strong> PR-review</p>
+              <p class="text-xs text-mtext3"><strong>Origin:</strong> Client-driven (explicit) — §3.1</p>
+              <p class="text-xs text-mtext3"><strong>Analogy:</strong> PR-review</p>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="border-b border-slate-800">
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:20%">Stage</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">What happens</th>
+                <tr class="border-b border-mborder">
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider" style="width:20%">Stage</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">What happens</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800">
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">1. Signal</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Client sends a message at 09:43: <em>"We need a 4-night stay at the Aman Tokyo for our anniversary, last week of October — suite with city view."</em> The message classifier picks it up as a signal.</td>
+              <tbody class="divide-y divide-mborder">
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">1. Signal</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Client sends a message at 09:43: <em>"We need a 4-night stay at the Aman Tokyo for our anniversary, last week of October — suite with city view."</em> The message classifier picks it up as a signal.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">2. Suggestion</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Classifier promotes the signal to a Suggestion within seconds. Draft fields: title "Search: Aman Tokyo, suite, anniversary last week of Oct", rationale ("Client message requested hotel booking with specific property + dates + room type"), evidence (link to message), proposed routing tier Assist. The Suggestion is <em>not yet on the board</em>; it surfaces in the Review queue (per §7.2).</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">2. Suggestion</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Classifier promotes the signal to a Suggestion within seconds. Draft fields: title "Search: Aman Tokyo, suite, anniversary last week of Oct", rationale ("Client message requested hotel booking with specific property + dates + room type"), evidence (link to message), proposed routing tier Assist. The Suggestion is <em>not yet on the board</em>; it surfaces in the Review queue (per §7.2).</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">3. Approval gate</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">TA reviews the suggestion the same way they'd review a PR. Sees the rationale + evidence in one glance (§7.4). Optionally edits: changes the dates to be more specific, narrows the property list, adds a note about the client's preferences. Approves.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">3. Approval gate</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">TA reviews the suggestion the same way they'd review a PR. Sees the rationale + evidence in one glance (§7.4). Optionally edits: changes the dates to be more specific, narrows the property list, adds a note about the client's preferences. Approves.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">4. Canonical task</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Suggestion becomes a Canonical task on the board (D.1 in Appendix D shows the full record). Routing tier Assist — AI executes the property search, TA reviews results before sending to client.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">4. Canonical task</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Suggestion becomes a Canonical task on the board (D.1 in Appendix D shows the full record). Routing tier Assist — AI executes the property search, TA reviews results before sending to client.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">Closure</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">TA marks done after sending the booking confirmation, or AI auto-proposes close once the booking is confirmed (per §7.3).</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">Closure</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">TA marks done after sending the booking confirmation, or AI auto-proposes close once the booking is confirmed (per §7.3).</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="px-5 py-4 bg-blue-500/10 border-t border-slate-800">
-            <p class="text-xs text-slate-300 leading-relaxed"><strong>What makes this PR-review-shaped.</strong> The suggestion <em>waits</em> for the TA. There's no time pressure — if the TA reviews in 10 min or 2 hours, the task is the same. The TA is reviewing a draft response, not triaging an emergency. The edit-before-approve step matters because the AI's proposed scope (specific dates, specific property) needs human judgment on tone and accuracy.</p>
+          <div class="px-5 py-4 bg-minfol border-t border-mborder">
+            <p class="text-xs text-mtext2 leading-relaxed"><strong>What makes this PR-review-shaped.</strong> The suggestion <em>waits</em> for the TA. There's no time pressure — if the TA reviews in 10 min or 2 hours, the task is the same. The TA is reviewing a draft response, not triaging an emergency. The edit-before-approve step matters because the AI's proposed scope (specific dates, specific property) needs human judgment on tone and accuracy.</p>
           </div>
         </div>
 
         <!-- E.2 Incident walkthrough -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.2 Incident walkthrough — World-driven weather disruption</h3>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface/50 border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.2 Incident walkthrough — World-driven weather disruption</h3>
             <div class="mt-2 space-y-1">
-              <p class="text-xs text-slate-400"><strong>Origin:</strong> World-driven (disruption) — §3.2</p>
-              <p class="text-xs text-slate-400"><strong>Analogy:</strong> Incident</p>
+              <p class="text-xs text-mtext3"><strong>Origin:</strong> World-driven (disruption) — §3.2</p>
+              <p class="text-xs text-mtext3"><strong>Analogy:</strong> Incident</p>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="border-b border-slate-800">
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:20%">Stage</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">What happens</th>
+                <tr class="border-b border-mborder">
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider" style="width:20%">Stage</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">What happens</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800">
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">1. Signal</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Weather feed pushes alert at 11:02: typhoon warning for Seoul. The signal monitor receives it.</td>
+              <tbody class="divide-y divide-mborder">
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">1. Signal</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Weather feed pushes alert at 11:02: typhoon warning for Seoul. The signal monitor receives it.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">2. Suggestion</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Signal monitor queries active trips: the Wei family lands in Seoul in 48 hours. Within seconds, monitor synthesizes a Suggestion: "Typhoon warning Seoul — client arrival in 48hr." Rationale + evidence (link to weather alert, link to trip). Proposed routing tier Escalate.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">2. Suggestion</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Signal monitor queries active trips: the Wei family lands in Seoul in 48 hours. Within seconds, monitor synthesizes a Suggestion: "Typhoon warning Seoul — client arrival in 48hr." Rationale + evidence (link to weather alert, link to trip). Proposed routing tier Escalate.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">3. Approval gate</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed"><strong class="text-amber-400">In v1: pending review.</strong> Every suggestion goes to human review per §7.1 Stage 3, but the framing is "acknowledge an incident" (TA or ops manager ACKs in seconds), not "review a draft." Escalate-tier signals fire priority alerts to ensure fast ACK. <strong class="text-amber-400">Post-calibration v2: auto-approve above the confidence threshold</strong> for high-confidence Escalate-tier disruptions, because the alert is reliable, the trip is real, and the time-pressure is high.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">3. Approval gate</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed"><strong class="text-mamber">In v1: pending review.</strong> Every suggestion goes to human review per §7.1 Stage 3, but the framing is "acknowledge an incident" (TA or ops manager ACKs in seconds), not "review a draft." Escalate-tier signals fire priority alerts to ensure fast ACK. <strong class="text-mamber">Post-calibration v2: auto-approve above the confidence threshold</strong> for high-confidence Escalate-tier disruptions, because the alert is reliable, the trip is real, and the time-pressure is high.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">4. Canonical task</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Once acknowledged (v1) or auto-approved (v2), the Suggestion becomes a Canonical task (D.2 in Appendix D). Primary owner: TA on the trip. Watchers: ops manager (auto-added by Escalate policy). Priority: High (auto-bumped).</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">4. Canonical task</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Once acknowledged (v1) or auto-approved (v2), the Suggestion becomes a Canonical task (D.2 in Appendix D). Primary owner: TA on the trip. Watchers: ops manager (auto-added by Escalate policy). Priority: High (auto-bumped).</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">Closure</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">TA acknowledges, contacts the client, prepares reroute scenarios. When the disruption resolves (or the client accepts the contingency), TA marks done.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">Closure</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">TA acknowledges, contacts the client, prepares reroute scenarios. When the disruption resolves (or the client accepts the contingency), TA marks done.</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="px-5 py-4 bg-orange-500/10 border-t border-slate-800">
-            <p class="text-xs text-slate-300 leading-relaxed"><strong>What makes this Incident-shaped.</strong> Speed of triage, not deliberation. In v1 a human still ACKs at the gate, but the operator's action is "acknowledge an alert," not "review a draft response," measured in seconds rather than minutes. Post-calibration v2 above the confidence threshold, the system creates and routes without asking. Watchers were auto-added per escalation policy. Priority was auto-bumped by time-to-departure proximity. If a follow-up weather signal fires (warning escalates to "imminent landfall"), the system updates the <em>same</em> canonical task rather than creating a new one — see E.3 for the correlation case.</p>
+          <div class="px-5 py-4 bg-maccentl border-t border-mborder">
+            <p class="text-xs text-mtext2 leading-relaxed"><strong>What makes this Incident-shaped.</strong> Speed of triage, not deliberation. In v1 a human still ACKs at the gate, but the operator's action is "acknowledge an alert," not "review a draft response," measured in seconds rather than minutes. Post-calibration v2 above the confidence threshold, the system creates and routes without asking. Watchers were auto-added per escalation policy. Priority was auto-bumped by time-to-departure proximity. If a follow-up weather signal fires (warning escalates to "imminent landfall"), the system updates the <em>same</em> canonical task rather than creating a new one — see E.3 for the correlation case.</p>
           </div>
         </div>
 
         <!-- E.3 Incident walkthrough - multi-signal correlation -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.3 Incident walkthrough — multi-signal correlation</h3>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface/50 border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.3 Incident walkthrough — multi-signal correlation</h3>
             <div class="mt-2 space-y-1">
-              <p class="text-xs text-slate-400"><strong>Origin:</strong> Client-driven + World-driven (mixed) — §3.1 + §3.2</p>
-              <p class="text-xs text-slate-400"><strong>Analogy:</strong> Incident (because of the correlation property)</p>
+              <p class="text-xs text-mtext3"><strong>Origin:</strong> Client-driven + World-driven (mixed) — §3.1 + §3.2</p>
+              <p class="text-xs text-mtext3"><strong>Analogy:</strong> Incident (because of the correlation property)</p>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="border-b border-slate-800">
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:20%">Stage</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">What happens</th>
+                <tr class="border-b border-mborder">
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider" style="width:20%">Stage</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">What happens</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800">
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">1. Signal</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Three signals fire across 30 minutes for the same trip: (a) client message at 14:05 <em>"is my Tokyo hotel still confirmed?"</em>, (b) vendor email at 14:18 from Aman Tokyo reservations <em>"your booked suite category is unavailable for your dates — we can offer the next category up"</em>, (c) client message at 14:31 <em>"any update on the suite?"</em></td>
+              <tbody class="divide-y divide-mborder">
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">1. Signal</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Three signals fire across 30 minutes for the same trip: (a) client message at 14:05 <em>"is my Tokyo hotel still confirmed?"</em>, (b) vendor email at 14:18 from Aman Tokyo reservations <em>"your booked suite category is unavailable for your dates — we can offer the next category up"</em>, (c) client message at 14:31 <em>"any update on the suite?"</em></td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">2. Suggestion</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">The watcher correlates: same trip, same hotel, same issue. It synthesises <em>one</em> Suggestion: "Aman Tokyo — booked suite unavailable; vendor offered upgrade. Client asking twice." Rationale notes all three signals; evidence links to all three. Proposed routing tier Assist (or Escalate if VVIP).</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">2. Suggestion</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">The watcher correlates: same trip, same hotel, same issue. It synthesises <em>one</em> Suggestion: "Aman Tokyo — booked suite unavailable; vendor offered upgrade. Client asking twice." Rationale notes all three signals; evidence links to all three. Proposed routing tier Assist (or Escalate if VVIP).</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">3. Approval gate</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">Human approval (Assist). TA reviews the synthesised summary in one place, not three separate suggestions. Approves.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">3. Approval gate</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">Human approval (Assist). TA reviews the synthesised summary in one place, not three separate suggestions. Approves.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">4. Canonical task</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">One Canonical task with multi-signal evidence. The task is the right unit of work — the TA responds to the client once, having processed all three inputs together.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">4. Canonical task</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">One Canonical task with multi-signal evidence. The task is the right unit of work — the TA responds to the client once, having processed all three inputs together.</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-4 text-sm font-semibold text-slate-200">Closure</td>
-                  <td class="px-5 py-4 text-xs text-slate-300 leading-relaxed">TA confirms with vendor, responds to client, marks done.</td>
+                <tr class="hover:bg-msurface/20 transition-colors">
+                  <td class="px-5 py-4 text-sm font-semibold text-mtext">Closure</td>
+                  <td class="px-5 py-4 text-xs text-mtext2 leading-relaxed">TA confirms with vendor, responds to client, marks done.</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="px-5 py-4 bg-orange-500/10 border-t border-slate-800">
-            <p class="text-xs text-slate-300 leading-relaxed"><strong>What makes this Incident-shaped.</strong> Correlation. The PR-review model would have given the TA three separate suggestions to review, each linked to a single signal. That's how PR queues work — each PR is independent. The Incident model groups correlated signals into one task — which is what an on-call engineer expects when three alerts fire about the same service. Crucially: under PR-review the TA might approve all three as separate tasks, then dedupe manually. Under Incident, the dedupe is automatic.</p>
+          <div class="px-5 py-4 bg-maccentl border-t border-mborder">
+            <p class="text-xs text-mtext2 leading-relaxed"><strong>What makes this Incident-shaped.</strong> Correlation. The PR-review model would have given the TA three separate suggestions to review, each linked to a single signal. That's how PR queues work — each PR is independent. The Incident model groups correlated signals into one task — which is what an on-call engineer expects when three alerts fire about the same service. Crucially: under PR-review the TA might approve all three as separate tasks, then dedupe manually. Under Incident, the dedupe is automatic.</p>
           </div>
         </div>
 

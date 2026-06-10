@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Execution Examples — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,75 +84,75 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
-      <div class="mb-6 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mb-6 px-4 py-3 rounded-lg bg-mambersoft border border-mamber/30 flex items-start gap-3">
+        <svg class="w-5 h-5 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-300">Execution layer addendum · v0.1 draft proposal</p>
-          <p class="text-xs text-amber-200/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
+          <p class="text-sm font-semibold text-mamber">Execution layer addendum · v0.1 draft proposal</p>
+          <p class="text-xs text-mtext2 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
         </div>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Execution Examples</h2>
-        <p class="text-sm text-slate-500 mt-1">Worked execution contracts and attempt rows</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Execution Examples</h2>
+        <p class="text-sm text-mtext3 mt-1">Worked execution contracts and attempt rows</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Each example extends one of v1.0's Appendix D records with its execution-layer detail. The format mirrors Appendix D for ease of cross-reference.</p>
+      <p class="text-sm text-mtext2 mb-6 leading-relaxed">Each example extends one of v1.0's Appendix D records with its execution-layer detail. The format mirrors Appendix D for ease of cross-reference.</p>
 
       <!-- E.1 Aman Tokyo hotel search -->
       <div class="mb-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.1 Aman Tokyo hotel search (extends v1.0 Appendix D.1)</h3>
-            <p class="text-xs text-slate-400 mt-1">The v1.0 canonical task is shown in Appendix D.1. Once the TA approves, the execution contract resolves as follows:</p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.1 Aman Tokyo hotel search (extends v1.0 Appendix D.1)</h3>
+            <p class="text-xs text-mtext2 mt-1">The v1.0 canonical task is shown in Appendix D.1. Once the TA approves, the execution contract resolves as follows:</p>
           </div>
           <div class="px-5 py-4 space-y-6">
 
             <!-- Execution contract -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution contract</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution contract</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:25%">Contract element</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:35%">Value</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:40%">How resolved</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:25%">Contract element</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:35%">Value</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:40%">How resolved</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Trigger type</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">immediate</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">From when = immediately</td>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Trigger type</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">immediate</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">From when = immediately</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Executor binding</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">hotel_search_executor v1</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">Registry match on (task_type = booking-action, subtype = property-search, action pattern = "Search hotels...")</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Executor binding</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">hotel_search_executor v1</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">Registry match on (task_type = booking-action, subtype = property-search, action pattern = "Search hotels...")</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Runtime context</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">AI capability invocation</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">executor_kind = ai-capability</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Runtime context</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">AI capability invocation</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">executor_kind = ai-capability</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Approval and execution flow</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">assist</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">routing_tier = Assist. AI searches; TA reviews returned options before sending to client.</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Approval and execution flow</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">assist</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">routing_tier = Assist. AI searches; TA reviews returned options before sending to client.</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Closure rule</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">human ACK</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">task_type = booking-action closes on operator confirmation (booking made, results communicated, or task explicitly closed).</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Closure rule</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">human ACK</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">task_type = booking-action closes on operator confirmation (booking made, results communicated, or task explicitly closed).</td>
                     </tr>
                   </tbody>
                 </table>
@@ -109,53 +161,53 @@
 
             <!-- Execution attempt rows (success path) -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution attempt rows (success path)</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution attempt rows (success path)</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Field</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Attempt 1</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Field</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Attempt 1</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">execution_id</td><td class="px-3 py-2 text-xs text-slate-300">exec_01JX...</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">task_id</td><td class="px-3 py-2 text-xs text-slate-300">tsk_01HXY... (the Appendix D.1 task)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">executor_id</td><td class="px-3 py-2 text-xs text-slate-300">hotel_search_executor</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">executor_version</td><td class="px-3 py-2 text-xs text-slate-300">1</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">attempt_number</td><td class="px-3 py-2 text-xs text-slate-300">1</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">execution_status</td><td class="px-3 py-2 text-xs text-slate-300">succeeded</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">triggered_by</td><td class="px-3 py-2 text-xs text-slate-300">immediate</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">started_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-05-12T09:43:02Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">completed_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-05-12T09:43:18Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">result_payload</td><td class="px-3 py-2 text-xs text-slate-300">{ "options": [&lt;3 ranked hotel matches with rates, suite types, availability&gt;] }</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">error_payload</td><td class="px-3 py-2 text-xs text-slate-300">null</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">next_retry_at</td><td class="px-3 py-2 text-xs text-slate-300">null</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">execution_id</td><td class="px-3 py-2 text-xs text-mtext2">exec_01JX...</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">task_id</td><td class="px-3 py-2 text-xs text-mtext2">tsk_01HXY... (the Appendix D.1 task)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">executor_id</td><td class="px-3 py-2 text-xs text-mtext2">hotel_search_executor</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">executor_version</td><td class="px-3 py-2 text-xs text-mtext2">1</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">attempt_number</td><td class="px-3 py-2 text-xs text-mtext2">1</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">execution_status</td><td class="px-3 py-2 text-xs text-mtext2">succeeded</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">triggered_by</td><td class="px-3 py-2 text-xs text-mtext2">immediate</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">started_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-05-12T09:43:02Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">completed_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-05-12T09:43:18Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">result_payload</td><td class="px-3 py-2 text-xs text-mtext2">{ "options": [&lt;3 ranked hotel matches with rates, suite types, availability&gt;] }</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">error_payload</td><td class="px-3 py-2 text-xs text-mtext2">null</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">next_retry_at</td><td class="px-3 py-2 text-xs text-mtext2">null</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p class="text-xs text-slate-400 mt-2">Result: 3 ranked options written back to the task surface. TA reviews, picks one (or dismisses all and runs a manual followup). Task status stays in_progress until the operator closes manually.</p>
+              <p class="text-xs text-mtext2 mt-2">Result: 3 ranked options written back to the task surface. TA reviews, picks one (or dismisses all and runs a manual followup). Task status stays in_progress until the operator closes manually.</p>
             </div>
 
             <!-- Failure path (alternate) -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Failure path (alternate attempt 1, for illustration)</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Failure path (alternate attempt 1, for illustration)</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Field</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Attempt 1 (failed)</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Field</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Attempt 1 (failed)</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">execution_status</td><td class="px-3 py-2 text-xs text-slate-300">failed</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">error_payload</td><td class="px-3 py-2 text-xs text-slate-300">{ "code": "BOOKING_ENGINE_TIMEOUT", "message": "Aman Tokyo source returned no response in 30s" }</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">next_retry_at</td><td class="px-3 py-2 text-xs text-slate-300">null (v1 no auto-retry)</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">execution_status</td><td class="px-3 py-2 text-xs text-mtext2">failed</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">error_payload</td><td class="px-3 py-2 text-xs text-mtext2">{ "code": "BOOKING_ENGINE_TIMEOUT", "message": "Aman Tokyo source returned no response in 30s" }</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">next_retry_at</td><td class="px-3 py-2 text-xs text-mtext2">null (v1 no auto-retry)</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p class="text-xs text-slate-400 mt-2">Canonical task status flips to blocked. Watchers notified. TA decides whether to retry manually or re-scope.</p>
+              <p class="text-xs text-mtext2 mt-2">Canonical task status flips to blocked. Watchers notified. TA decides whether to retry manually or re-scope.</p>
             </div>
 
           </div>
@@ -164,50 +216,50 @@
 
       <!-- E.2 Seoul typhoon disruption -->
       <div class="mb-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.2 Seoul typhoon disruption (extends v1.0 Appendix D.2)</h3>
-            <p class="text-xs text-slate-400 mt-1">The v1.0 task in Appendix D.2 is escalate-tier. The execution contract:</p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.2 Seoul typhoon disruption (extends v1.0 Appendix D.2)</h3>
+            <p class="text-xs text-mtext2 mt-1">The v1.0 task in Appendix D.2 is escalate-tier. The execution contract:</p>
           </div>
           <div class="px-5 py-4 space-y-6">
 
             <!-- Execution contract -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution contract</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution contract</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:25%">Contract element</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:35%">Value</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:40%">How resolved</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:25%">Contract element</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:35%">Value</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:40%">How resolved</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Trigger type</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">immediate</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">From when = immediately</td>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Trigger type</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">immediate</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">From when = immediately</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Executor binding</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">human_routing_executor v1</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">Registry match on (task_type = disruption-response, subtype = weather-alert-reroute, action pattern = wildcard) for v1</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Executor binding</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">human_routing_executor v1</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">Registry match on (task_type = disruption-response, subtype = weather-alert-reroute, action pattern = wildcard) for v1</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Runtime context</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">TA on the trip inbox; ops manager added as watcher (per v1.0 escalate-tier policy)</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">executor_kind = human-queue</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Runtime context</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">TA on the trip inbox; ops manager added as watcher (per v1.0 escalate-tier policy)</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">executor_kind = human-queue</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Approval and execution flow</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">escalate</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">routing_tier = Escalate. No AI execution step. Task lands in the TA's high-priority queue immediately.</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Approval and execution flow</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">escalate</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">routing_tier = Escalate. No AI execution step. Task lands in the TA's high-priority queue immediately.</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Closure rule</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">human ACK</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">task_type = disruption-response closes on operator confirmation that the client has been alerted and the situation is being handled.</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Closure rule</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">human ACK</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">task_type = disruption-response closes on operator confirmation that the client has been alerted and the situation is being handled.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -216,27 +268,27 @@
 
             <!-- Execution attempt rows -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution attempt rows</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution attempt rows</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Field</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Attempt 1</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Field</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Attempt 1</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">executor_id</td><td class="px-3 py-2 text-xs text-slate-300">human_routing_executor</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">execution_status</td><td class="px-3 py-2 text-xs text-slate-300">running (stays until operator marks the task done or dismissed)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">triggered_by</td><td class="px-3 py-2 text-xs text-slate-300">immediate</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">started_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-05-12T11:02:01Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">completed_at</td><td class="px-3 py-2 text-xs text-slate-300">null until operator closes</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">result_payload</td><td class="px-3 py-2 text-xs text-slate-300">null at this point</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">error_payload</td><td class="px-3 py-2 text-xs text-slate-300">null</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">executor_id</td><td class="px-3 py-2 text-xs text-mtext2">human_routing_executor</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">execution_status</td><td class="px-3 py-2 text-xs text-mtext2">running (stays until operator marks the task done or dismissed)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">triggered_by</td><td class="px-3 py-2 text-xs text-mtext2">immediate</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">started_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-05-12T11:02:01Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">completed_at</td><td class="px-3 py-2 text-xs text-mtext2">null until operator closes</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">result_payload</td><td class="px-3 py-2 text-xs text-mtext2">null at this point</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">error_payload</td><td class="px-3 py-2 text-xs text-mtext2">null</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p class="text-xs text-slate-400 mt-2">In v2 and beyond, disruption-response may get a specific executor (a composite that drafts a client alert message for the TA to send, plus a reroute-options search). v1 is human-driven; the AI work is implicit (the TA may invoke the agent themselves from the task surface).</p>
+              <p class="text-xs text-mtext2 mt-2">In v2 and beyond, disruption-response may get a specific executor (a composite that drafts a client alert message for the TA to send, plus a reroute-options search). v1 is human-driven; the AI work is implicit (the TA may invoke the agent themselves from the task surface).</p>
             </div>
 
           </div>
@@ -245,50 +297,50 @@
 
       <!-- E.3 Pre-arrival checklist -->
       <div class="mb-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.3 Pre-arrival checklist (extends v1.0 Appendix D.3)</h3>
-            <p class="text-xs text-slate-400 mt-1">The v1.0 task in Appendix D.3 is auto-tier. The execution contract:</p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.3 Pre-arrival checklist (extends v1.0 Appendix D.3)</h3>
+            <p class="text-xs text-mtext2 mt-1">The v1.0 task in Appendix D.3 is auto-tier. The execution contract:</p>
           </div>
           <div class="px-5 py-4 space-y-6">
 
             <!-- Execution contract -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution contract</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution contract</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:25%">Contract element</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:35%">Value</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:40%">How resolved</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:25%">Contract element</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:35%">Value</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:40%">How resolved</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Trigger type</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">scheduled</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">From when = scheduled:T-10d-from-departure</td>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Trigger type</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">scheduled</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">From when = scheduled:T-10d-from-departure</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Executor binding</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">pre_arrival_template_executor v1</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">Registry match on (task_type = trip-prep, subtype = pre-arrival-checklist)</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Executor binding</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">pre_arrival_template_executor v1</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">Registry match on (task_type = trip-prep, subtype = pre-arrival-checklist)</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Runtime context</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">Ops associate on the trip; TA on the trip added as watcher</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">executor_kind = composite. AI renders the templated comms and surfaces an operator checklist; ops associate handles transfer confirmations, restaurant briefs, weather notes.</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Runtime context</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">Ops associate on the trip; TA on the trip added as watcher</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">executor_kind = composite. AI renders the templated comms and surfaces an operator checklist; ops associate handles transfer confirmations, restaurant briefs, weather notes.</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Approval and execution flow</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">auto for the templated renders; assist for any client-facing sends</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">routing_tier = Auto at the v1.0 level. The composite executor splits internally: auto for the system-side sub-tasks (rendering, scheduling), assist for any sub-task that sends a client-facing message.</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Approval and execution flow</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">auto for the templated renders; assist for any client-facing sends</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">routing_tier = Auto at the v1.0 level. The composite executor splits internally: auto for the system-side sub-tasks (rendering, scheduling), assist for any sub-task that sends a client-facing message.</td>
                     </tr>
-                    <tr class="hover:bg-slate-800/20">
-                      <td class="px-3 py-2 text-xs text-slate-300">Closure rule</td>
-                      <td class="px-3 py-2 text-xs text-slate-300">auto-close on sub-task completion</td>
-                      <td class="px-3 py-2 text-xs text-slate-400">task_type = trip-prep closes when all spawned sub-tasks are done.</td>
+                    <tr class="hover:bg-mraised/50">
+                      <td class="px-3 py-2 text-xs text-mtext2">Closure rule</td>
+                      <td class="px-3 py-2 text-xs text-mtext2">auto-close on sub-task completion</td>
+                      <td class="px-3 py-2 text-xs text-mtext3">task_type = trip-prep closes when all spawned sub-tasks are done.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -297,27 +349,27 @@
 
             <!-- Execution attempt rows -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution attempt rows</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution attempt rows</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Field</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Attempt 1</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Field</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Attempt 1</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">executor_id</td><td class="px-3 py-2 text-xs text-slate-300">pre_arrival_template_executor</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">execution_status</td><td class="px-3 py-2 text-xs text-slate-300">succeeded</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">triggered_by</td><td class="px-3 py-2 text-xs text-slate-300">scheduled-fire (the daily scheduler picked up the task at T-10 days)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">started_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-10-05T00:01:03Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">completed_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-10-05T00:01:08Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">result_payload</td><td class="px-3 py-2 text-xs text-slate-300">{ "sub_tasks_created": [&lt;3 scheduled message tasks at T-7d, T-4h, T+24h, each with their own canonical record and executor binding&gt;] }</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">error_payload</td><td class="px-3 py-2 text-xs text-slate-300">null</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">executor_id</td><td class="px-3 py-2 text-xs text-mtext2">pre_arrival_template_executor</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">execution_status</td><td class="px-3 py-2 text-xs text-mtext2">succeeded</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">triggered_by</td><td class="px-3 py-2 text-xs text-mtext2">scheduled-fire (the daily scheduler picked up the task at T-10 days)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">started_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-10-05T00:01:03Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">completed_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-10-05T00:01:08Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">result_payload</td><td class="px-3 py-2 text-xs text-mtext2">{ "sub_tasks_created": [&lt;3 scheduled message tasks at T-7d, T-4h, T+24h, each with their own canonical record and executor binding&gt;] }</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">error_payload</td><td class="px-3 py-2 text-xs text-mtext2">null</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p class="text-xs text-slate-400 mt-2">The parent task moves to in_progress waiting on the sub-tasks. Each scheduled send fires its own task-completed event when done, which the parent listens for via the task-completed on-event trigger. When the last sub-task completes, the parent auto-closes.</p>
+              <p class="text-xs text-mtext2 mt-2">The parent task moves to in_progress waiting on the sub-tasks. Each scheduled send fires its own task-completed event when done, which the parent listens for via the task-completed on-event trigger. When the last sub-task completes, the parent auto-closes.</p>
             </div>
 
           </div>
@@ -326,40 +378,40 @@
 
       <!-- E.4 Scheduled anniversary message -->
       <div class="mb-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">E.4 Scheduled anniversary message (new example; covers the Sunthar 00:15:50 use case)</h3>
-            <p class="text-xs text-slate-400 mt-1">Scenario from the May 14 standup: TA approves a task on May 14 to "Send anniversary message July 1". Single message, no sub-tasks.</p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">E.4 Scheduled anniversary message (new example; covers the Sunthar 00:15:50 use case)</h3>
+            <p class="text-xs text-mtext2 mt-1">Scenario from the May 14 standup: TA approves a task on May 14 to "Send anniversary message July 1". Single message, no sub-tasks.</p>
           </div>
           <div class="px-5 py-4 space-y-6">
 
             <!-- v1.0 canonical fields -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">v1.0 canonical task fields</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">v1.0 canonical task fields</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">v1.0 canonical field</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Value</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">v1.0 canonical field</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Value</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">title</td><td class="px-3 py-2 text-xs text-slate-300">Send anniversary message to Anderson couple July 1</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">action</td><td class="px-3 py-2 text-xs text-slate-300">Send anniversary congrats message via app chat</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">actor</td><td class="px-3 py-2 text-xs text-slate-300">TA on the trip</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">when</td><td class="px-3 py-2 text-xs text-slate-300">scheduled:2026-07-01T09:00:00Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">primary_owner</td><td class="px-3 py-2 text-xs text-slate-300">TA on the trip</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">status</td><td class="px-3 py-2 text-xs text-slate-300">in_progress (task is approved and waiting to fire)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">approval_state</td><td class="px-3 py-2 text-xs text-slate-300">human-approved</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">confidence_score</td><td class="px-3 py-2 text-xs text-slate-300">0.95</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">primary_context</td><td class="px-3 py-2 text-xs text-slate-300">account-member:&lt;Anderson couple&gt;</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">origin</td><td class="px-3 py-2 text-xs text-slate-300">Relationship</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">task_type</td><td class="px-3 py-2 text-xs text-slate-300">messaging</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">subtype</td><td class="px-3 py-2 text-xs text-slate-300">scheduled-send</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">routing_tier</td><td class="px-3 py-2 text-xs text-slate-300">Auto</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">due_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-07-01T09:00:00Z</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">created_at</td><td class="px-3 py-2 text-xs text-slate-300">2026-05-14T16:30Z</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">title</td><td class="px-3 py-2 text-xs text-mtext2">Send anniversary message to Anderson couple July 1</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">action</td><td class="px-3 py-2 text-xs text-mtext2">Send anniversary congrats message via app chat</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">actor</td><td class="px-3 py-2 text-xs text-mtext2">TA on the trip</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">when</td><td class="px-3 py-2 text-xs text-mtext2">scheduled:2026-07-01T09:00:00Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">primary_owner</td><td class="px-3 py-2 text-xs text-mtext2">TA on the trip</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">status</td><td class="px-3 py-2 text-xs text-mtext2">in_progress (task is approved and waiting to fire)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">approval_state</td><td class="px-3 py-2 text-xs text-mtext2">human-approved</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">confidence_score</td><td class="px-3 py-2 text-xs text-mtext2">0.95</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">primary_context</td><td class="px-3 py-2 text-xs text-mtext2">account-member:&lt;Anderson couple&gt;</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">origin</td><td class="px-3 py-2 text-xs text-mtext2">Relationship</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">task_type</td><td class="px-3 py-2 text-xs text-mtext2">messaging</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">subtype</td><td class="px-3 py-2 text-xs text-mtext2">scheduled-send</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">routing_tier</td><td class="px-3 py-2 text-xs text-mtext2">Auto</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">due_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-07-01T09:00:00Z</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">created_at</td><td class="px-3 py-2 text-xs text-mtext2">2026-05-14T16:30Z</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -367,21 +419,21 @@
 
             <!-- Execution contract -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution contract</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution contract</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Contract element</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Value</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Contract element</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Value</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs text-slate-300">Trigger type</td><td class="px-3 py-2 text-xs text-slate-300">scheduled</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs text-slate-300">Executor binding</td><td class="px-3 py-2 text-xs text-slate-300">message_send_executor v1</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs text-slate-300">Runtime context</td><td class="px-3 py-2 text-xs text-slate-300">AI capability invocation (templated send)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs text-slate-300">Approval and execution flow</td><td class="px-3 py-2 text-xs text-slate-300">auto</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs text-slate-300">Closure rule</td><td class="px-3 py-2 text-xs text-slate-300">auto-close on message-receipt confirmation</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs text-mtext2">Trigger type</td><td class="px-3 py-2 text-xs text-mtext2">scheduled</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs text-mtext2">Executor binding</td><td class="px-3 py-2 text-xs text-mtext2">message_send_executor v1</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs text-mtext2">Runtime context</td><td class="px-3 py-2 text-xs text-mtext2">AI capability invocation (templated send)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs text-mtext2">Approval and execution flow</td><td class="px-3 py-2 text-xs text-mtext2">auto</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs text-mtext2">Closure rule</td><td class="px-3 py-2 text-xs text-mtext2">auto-close on message-receipt confirmation</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -389,25 +441,25 @@
 
             <!-- Execution attempt rows -->
             <div>
-              <h4 class="text-xs font-semibold text-slate-200 mb-2">Execution attempt rows</h4>
+              <h4 class="text-xs font-semibold text-mtext mb-2">Execution attempt rows</h4>
               <div class="overflow-x-auto">
                 <table class="w-full">
                   <thead>
-                    <tr class="border-b border-slate-800">
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Field</th>
-                      <th class="text-left px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Attempt 1</th>
+                    <tr class="border-b border-mborder">
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Field</th>
+                      <th class="text-left px-3 py-2 text-xs font-semibold text-mtext3 uppercase tracking-wider">Attempt 1</th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-800">
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">execution_status</td><td class="px-3 py-2 text-xs text-slate-300">queued (until the scheduler fires)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">triggered_by</td><td class="px-3 py-2 text-xs text-slate-300">(not yet fired)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">started_at</td><td class="px-3 py-2 text-xs text-slate-300">(null)</td></tr>
-                    <tr class="hover:bg-slate-800/20"><td class="px-3 py-2 text-xs font-mono text-slate-300">completed_at</td><td class="px-3 py-2 text-xs text-slate-300">(null)</td></tr>
+                  <tbody class="divide-y divide-mborder">
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">execution_status</td><td class="px-3 py-2 text-xs text-mtext2">queued (until the scheduler fires)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">triggered_by</td><td class="px-3 py-2 text-xs text-mtext2">(not yet fired)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">started_at</td><td class="px-3 py-2 text-xs text-mtext2">(null)</td></tr>
+                    <tr class="hover:bg-mraised/50"><td class="px-3 py-2 text-xs font-mono text-mtext2">completed_at</td><td class="px-3 py-2 text-xs text-mtext2">(null)</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p class="text-xs text-slate-400 mt-2">On 2026-07-01 at 09:00Z, the scheduler picks up the task and dispatches message_send_executor. Status flips to running. On successful send (sub-second), the executor writes the receipt id to result_payload and the task auto-closes per the messaging closure rule. Total lifecycle from approval to close: 48 days, three states, one execution attempt.</p>
-              <p class="text-xs text-slate-400 mt-2">This is the use case Sunthar called out in the standup at 00:15:50: "schedule a message would be a task". The execution contract above is how it works under this addendum.</p>
+              <p class="text-xs text-mtext2 mt-2">On 2026-07-01 at 09:00Z, the scheduler picks up the task and dispatches message_send_executor. Status flips to running. On successful send (sub-second), the executor writes the receipt id to result_payload and the task auto-closes per the messaging closure rule. Total lifecycle from approval to close: 48 days, three states, one execution attempt.</p>
+              <p class="text-xs text-mtext2 mt-2">This is the use case Sunthar called out in the standup at 00:15:50: "schedule a message would be a task". The execution contract above is how it works under this addendum.</p>
             </div>
 
           </div>

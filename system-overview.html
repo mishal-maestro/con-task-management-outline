@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>System Overview — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,9 +69,9 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
 
     /* System overview cards */
     .so-card {
@@ -52,14 +104,14 @@
       display: flex;
       justify-content: center;
       padding: 8px 0;
-      color: #475569;
+      color: rgb(var(--maestro-border-hover));
       font-size: 24px;
       line-height: 1;
     }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -68,121 +120,121 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-4">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">System Overview</h2>
-        <p class="text-sm text-slate-500 mt-1">The full task pipeline at a glance: origin → stream → flow → routing → closure</p>
+        <h2 class="text-2xl font-semibold text-mtext tracking-tight font-serif">System Overview</h2>
+        <p class="text-sm text-mtext3 mt-1">The full task pipeline at a glance: origin → stream → flow → routing → closure</p>
       </div>
 
       <!-- Reading guide -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 mb-8 flex items-start gap-3">
-        <div class="text-orange-400 flex-shrink-0 mt-0.5">↓</div>
-        <p class="text-xs text-slate-400 leading-relaxed"><strong class="text-slate-200">How to read this:</strong> a task moves through five layers, top to bottom. <strong class="text-slate-300">Click any card</strong> to expand it and see 2-3 concrete examples + a link to the relevant section. The pipeline shows the happy path; cross-cutting paths (manual bypass, agent-mode hybrid) are called out at the bottom.</p>
+      <div class="bg-mcard border border-mborder rounded-lg p-4 mb-8 flex items-start gap-3">
+        <div class="text-maccent flex-shrink-0 mt-0.5">↓</div>
+        <p class="text-xs text-mtext3 leading-relaxed"><strong class="text-mtext">How to read this:</strong> a task moves through five layers, top to bottom. <strong class="text-mtext2">Click any card</strong> to expand it and see 2-3 concrete examples + a link to the relevant section. The pipeline shows the happy path; cross-cutting paths (manual bypass, agent-mode hybrid) are called out at the bottom.</p>
       </div>
 
       <!-- ============================================================== -->
       <!-- LAYER 1: ORIGIN -->
       <!-- ============================================================== -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 mb-2">
+      <div class="bg-msurface/40 border border-mborder rounded-xl p-5 mb-2">
         <div class="flex items-baseline gap-3 mb-3">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Layer 1</span>
-          <h3 class="text-base font-semibold text-slate-100">Origin</h3>
-          <span class="text-xs text-slate-500 italic">— why does this task exist?</span>
+          <span class="font-mono text-[10px] uppercase tracking-wider text-mtext3">Layer 1</span>
+          <h3 class="text-base font-semibold text-mtext">Origin</h3>
+          <span class="text-xs text-mtext3 italic">— why does this task exist?</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
 
           <!-- Client-driven -->
-          <div class="so-card bg-slate-900 border border-blue-500/30 rounded-lg p-3 text-blue-400">
+          <div class="so-card bg-mcard border border-chip-blue/30 rounded-lg p-3 text-chip-blue">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Client-driven</div>
+              <div class="text-sm font-semibold text-mtext">Client-driven</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Client tells us — explicitly or implicitly — that they need or want something.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong class="text-slate-200">3.1a Explicit:</strong> "We need 4 nights at the Aman Tokyo for our anniversary, last week of October — suite with city view." → search task on the trip</li>
-                <li><strong class="text-slate-200">3.1a Explicit:</strong> Client lands in Mumbai, pre-arranged driver isn't there → re-dispatch transport + apologetic gesture from TA</li>
-                <li><strong class="text-slate-200">3.1b Behavioural:</strong> Client says "the Lutetia was way too modern for us" → save preference: avoid contemporary properties</li>
+            <p class="text-xs text-mtext3 leading-snug">Client tells us — explicitly or implicitly — that they need or want something.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong class="text-mtext">3.1a Explicit:</strong> "We need 4 nights at the Aman Tokyo for our anniversary, last week of October — suite with city view." → search task on the trip</li>
+                <li><strong class="text-mtext">3.1a Explicit:</strong> Client lands in Mumbai, pre-arranged driver isn't there → re-dispatch transport + apologetic gesture from TA</li>
+                <li><strong class="text-mtext">3.1b Behavioural:</strong> Client says "the Lutetia was way too modern for us" → save preference: avoid contemporary properties</li>
               </ul>
-              <a href="origins.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §3.1 →</a>
+              <a href="origins.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Read more in §3.1 →</a>
             </div>
           </div>
 
           <!-- World-driven -->
-          <div class="so-card bg-slate-900 border border-red-500/30 rounded-lg p-3 text-red-400">
+          <div class="so-card bg-mcard border border-mdanger/30 rounded-lg p-3 text-mdanger">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">World-driven</div>
+              <div class="text-sm font-semibold text-mtext">World-driven</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Something outside our system happens that affects an active or upcoming trip.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong class="text-slate-200">Weather:</strong> typhoon warning issued for Seoul, client arriving in 48 hrs → alert client, monitor hourly, prepare reroute scenarios</li>
-                <li><strong class="text-slate-200">Schedule cancellation:</strong> airline cancels client's outbound the day before departure → rebook on partner carrier, alert client, coordinate fresh ground transfers</li>
-                <li><strong class="text-slate-200">Award space:</strong> first-class award appears on client's saved LAX-SYD August dates → book within minutes before it disappears, then notify</li>
+            <p class="text-xs text-mtext3 leading-snug">Something outside our system happens that affects an active or upcoming trip.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong class="text-mtext">Weather:</strong> typhoon warning issued for Seoul, client arriving in 48 hrs → alert client, monitor hourly, prepare reroute scenarios</li>
+                <li><strong class="text-mtext">Schedule cancellation:</strong> airline cancels client's outbound the day before departure → rebook on partner carrier, alert client, coordinate fresh ground transfers</li>
+                <li><strong class="text-mtext">Award space:</strong> first-class award appears on client's saved LAX-SYD August dates → book within minutes before it disappears, then notify</li>
               </ul>
-              <a href="origins.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §3.2 →</a>
+              <a href="origins.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Read more in §3.2 →</a>
             </div>
           </div>
 
           <!-- Trip lifecycle -->
-          <div class="so-card bg-slate-900 border border-green-500/30 rounded-lg p-3 text-green-400">
+          <div class="so-card bg-mcard border border-msuccess/30 rounded-lg p-3 text-msuccess">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Trip lifecycle</div>
+              <div class="text-sm font-semibold text-mtext">Trip lifecycle</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">The trip itself, as it moves through pipeline or calendar, generates work.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong class="text-slate-200">Pre-arrival (T-10):</strong> trip enters final pre-departure week → spawn checklist (re-confirm transfers, brief restaurants on dietary notes, send weather + packing notes)</li>
-                <li><strong class="text-slate-200">Day-of-departure (T-4h):</strong> trip is hours from wheels-up → "have a wonderful trip" message with confirmations + 24/7 emergency contact</li>
-                <li><strong class="text-slate-200">Pipeline stall:</strong> trip sits in <code class="px-1 bg-slate-800 rounded text-[10px]">Booking</code> stage > 5 days with no component changes → flag to ops manager</li>
+            <p class="text-xs text-mtext3 leading-snug">The trip itself, as it moves through pipeline or calendar, generates work.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong class="text-mtext">Pre-arrival (T-10):</strong> trip enters final pre-departure week → spawn checklist (re-confirm transfers, brief restaurants on dietary notes, send weather + packing notes)</li>
+                <li><strong class="text-mtext">Day-of-departure (T-4h):</strong> trip is hours from wheels-up → "have a wonderful trip" message with confirmations + 24/7 emergency contact</li>
+                <li><strong class="text-mtext">Pipeline stall:</strong> trip sits in <code class="px-1 bg-msurface rounded text-[10px]">Booking</code> stage > 5 days with no component changes → flag to ops manager</li>
               </ul>
-              <a href="origins.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §3.3 →</a>
+              <a href="origins.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Read more in §3.3 →</a>
             </div>
           </div>
 
           <!-- Relationship -->
-          <div class="so-card bg-slate-900 border border-purple-500/30 rounded-lg p-3 text-purple-400">
+          <div class="so-card bg-mcard border border-chip-purple/30 rounded-lg p-3 text-chip-purple">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Relationship</div>
+              <div class="text-sm font-semibold text-mtext">Relationship</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Pure relationship moments, sourced from the client profile, surfaced by date or pattern.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong class="text-slate-200">Birthday (T-7):</strong> client's birthday in a week → TA hand-crafts a card or gift, ideally tied to a property or preference they love</li>
-                <li><strong class="text-slate-200">Returning client (3rd trip):</strong> client books their 3rd trip with us → trigger personalised welcome amenity at the destination property</li>
-                <li><strong class="text-slate-200">Care-context check-in:</strong> client mentioned a parent's chemo on a past trip → 6 weeks later, gentle "thinking of you" message <em>before</em> any commercial outreach</li>
+            <p class="text-xs text-mtext3 leading-snug">Pure relationship moments, sourced from the client profile, surfaced by date or pattern.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong class="text-mtext">Birthday (T-7):</strong> client's birthday in a week → TA hand-crafts a card or gift, ideally tied to a property or preference they love</li>
+                <li><strong class="text-mtext">Returning client (3rd trip):</strong> client books their 3rd trip with us → trigger personalised welcome amenity at the destination property</li>
+                <li><strong class="text-mtext">Care-context check-in:</strong> client mentioned a parent's chemo on a past trip → 6 weeks later, gentle "thinking of you" message <em>before</em> any commercial outreach</li>
               </ul>
-              <a href="origins.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §3.4 →</a>
+              <a href="origins.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Read more in §3.4 →</a>
             </div>
           </div>
 
           <!-- Internal ops -->
-          <div class="so-card bg-slate-900 border border-slate-500/40 rounded-lg p-3 text-slate-400">
+          <div class="so-card bg-mcard border border-mborder/40 rounded-lg p-3 text-mtext3">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Internal ops</div>
+              <div class="text-sm font-semibold text-mtext">Internal ops</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Our own workflow signals — surfaced by self-monitoring rather than external events.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong class="text-slate-200">Coverage gap:</strong> TA going on 2-week leave → reassign their 8 active trips, brief covering TAs, set OOO auto-replies</li>
-                <li><strong class="text-slate-200">SLA breach forming:</strong> VVIP client's message unanswered > 90 min → escalate to ops manager and assigned TA in parallel</li>
-                <li><strong class="text-slate-200">Workload imbalance:</strong> TA A has 12 active trips, TA B has 5 → recommend the next incoming request to TA B</li>
+            <p class="text-xs text-mtext3 leading-snug">Our own workflow signals — surfaced by self-monitoring rather than external events.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong class="text-mtext">Coverage gap:</strong> TA going on 2-week leave → reassign their 8 active trips, brief covering TAs, set OOO auto-replies</li>
+                <li><strong class="text-mtext">SLA breach forming:</strong> VVIP client's message unanswered > 90 min → escalate to ops manager and assigned TA in parallel</li>
+                <li><strong class="text-mtext">Workload imbalance:</strong> TA A has 12 active trips, TA B has 5 → recommend the next incoming request to TA B</li>
               </ul>
-              <a href="origins.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §3.5 →</a>
+              <a href="origins.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Read more in §3.5 →</a>
             </div>
           </div>
 
@@ -194,50 +246,50 @@
       <!-- ============================================================== -->
       <!-- LAYER 2: STREAM TYPE -->
       <!-- ============================================================== -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 mb-2">
+      <div class="bg-msurface/40 border border-mborder rounded-xl p-5 mb-2">
         <div class="flex items-baseline gap-3 mb-3">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Layer 2</span>
-          <h3 class="text-base font-semibold text-slate-100">Stream type</h3>
-          <span class="text-xs text-slate-500 italic">— how does the system find out about it?</span>
+          <span class="font-mono text-[10px] uppercase tracking-wider text-mtext3">Layer 2</span>
+          <h3 class="text-base font-semibold text-mtext">Stream type</h3>
+          <span class="text-xs text-mtext3 italic">— how does the system find out about it?</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
           <!-- Event-driven -->
-          <div class="so-card bg-slate-900 border border-amber-500/30 rounded-lg p-3 text-amber-400">
+          <div class="so-card bg-mcard border border-mamber/30 rounded-lg p-3 text-mamber">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Event-driven (push)</div>
+              <div class="text-sm font-semibold text-mtext">Event-driven (push)</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Events arriving in our system from outside, continuously. The system reacts to what just happened.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">9 streams (§4)</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">Events arriving in our system from outside, continuously. The system reacts to what just happened.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">9 streams (§4)</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li><strong>Inbound client messages</strong> — app chat, WhatsApp, email, voice transcript (sec-min)</li>
                 <li><strong>External signals captured</strong> — weather, flight tracking, vendor data feeds, advisory feeds (min-hours)</li>
                 <li><strong>Trip pipeline state changes</strong> — pipeline lane move, component edit, dates change (min-hours)</li>
                 <li><strong>Booking confirmation events</strong>, <strong>Payment events</strong>, <strong>AI agent runs</strong>, <strong>Client profile mutations</strong>, <strong>Activity / audit events</strong></li>
               </ul>
-              <a href="event-streams.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Full table + BPMN in §4 →</a>
+              <a href="event-streams.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Full table + BPMN in §4 →</a>
             </div>
           </div>
 
           <!-- Schedule-driven -->
-          <div class="so-card bg-slate-900 border border-amber-500/30 rounded-lg p-3 text-amber-400">
+          <div class="so-card bg-mcard border border-mamber/30 rounded-lg p-3 text-mamber">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Schedule-driven (pull)</div>
+              <div class="text-sm font-semibold text-mtext">Schedule-driven (pull)</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Queries we run on our own data on a schedule. The system goes <em>looking</em> for situations that warrant a task.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">11 queries (§5)</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">Queries we run on our own data on a schedule. The system goes <em>looking</em> for situations that warrant a task.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">11 queries (§5)</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li><strong>Trips departing in N days</strong> — daily, spawns pre-arrival checklist</li>
                 <li><strong>Saved searches: award space appears</strong> — 15-min, spawns "book award" alert</li>
                 <li><strong>SLA timers approaching breach</strong> — continuous, escalate / prioritise</li>
                 <li><strong>Birthday / anniversary in N days</strong>, <strong>Visa / passport expiring</strong>, <strong>Trips stuck in same stage</strong>, <strong>Workload check</strong>, etc.</li>
               </ul>
-              <p class="text-[11px] text-slate-500 italic">"The dog that didn't bark" failure modes — clients we forgot, trips that quietly stalled, deals we missed.</p>
-              <a href="schedule-streams.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Full table + BPMN in §5 →</a>
+              <p class="text-[11px] text-mtext3 italic">"The dog that didn't bark" failure modes — clients we forgot, trips that quietly stalled, deals we missed.</p>
+              <a href="schedule-streams.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Full table + BPMN in §5 →</a>
             </div>
           </div>
 
@@ -249,24 +301,24 @@
       <!-- ============================================================== -->
       <!-- LAYER 3: 4-STAGE FLOW -->
       <!-- ============================================================== -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 mb-2">
+      <div class="bg-msurface/40 border border-mborder rounded-xl p-5 mb-2">
         <div class="flex items-baseline gap-3 mb-3">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Layer 3</span>
-          <h3 class="text-base font-semibold text-slate-100">4-stage creation flow (§7.1)</h3>
-          <span class="text-xs text-slate-500 italic">— how does it become a task?</span>
+          <span class="font-mono text-[10px] uppercase tracking-wider text-mtext3">Layer 3</span>
+          <h3 class="text-base font-semibold text-mtext">4-stage creation flow (§7.1)</h3>
+          <span class="text-xs text-mtext3 italic">— how does it become a task?</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
 
           <!-- Signal -->
-          <div class="so-card bg-slate-900 border border-green-500/30 rounded-lg p-3 text-green-400">
+          <div class="so-card bg-mcard border border-msuccess/30 rounded-lg p-3 text-msuccess">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100"><span class="text-[10px] font-mono text-slate-500 mr-1">1.</span> Signal</div>
+              <div class="text-sm font-semibold text-mtext"><span class="text-[10px] font-mono text-mtext3 mr-1">1.</span> Signal</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Raw event or sensed condition. Not a task yet — a candidate.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">Raw event or sensed condition. Not a task yet — a candidate.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li>Client message arrives 09:43: <em>"We need 4 nights at the Aman Tokyo..."</em> The message classifier picks it up.</li>
                 <li>Weather feed pushes alert at 11:02: typhoon warning for Seoul. The signal monitor receives it.</li>
                 <li>Daily scheduled query at 00:01: finds Anderson Tokyo trip departing in 10 days.</li>
@@ -276,15 +328,15 @@
           </div>
 
           <!-- Suggestion -->
-          <div class="so-card bg-slate-900 border border-orange-500/30 rounded-lg p-3 text-orange-400">
+          <div class="so-card bg-mcard border border-maccent/30 rounded-lg p-3 text-maccent">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100"><span class="text-[10px] font-mono text-slate-500 mr-1">2.</span> Suggestion</div>
+              <div class="text-sm font-semibold text-mtext"><span class="text-[10px] font-mono text-mtext3 mr-1">2.</span> Suggestion</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">System's proposed task. Draft fields + <code class="px-1 bg-slate-800 rounded text-[10px]">confidence_score</code>. Lives in Review queue, not on the board yet.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">System's proposed task. Draft fields + <code class="px-1 bg-msurface rounded text-[10px]">confidence_score</code>. Lives in Review queue, not on the board yet.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li><strong>Single signal → suggestion:</strong> Classifier promotes the booking message to Suggestion: title "Search: Aman Tokyo, suite, anniversary last week of Oct" + rationale + evidence link.</li>
                 <li><strong>Multi-signal correlation → one suggestion:</strong> 3 signals about the same hotel issue (client message + vendor email + client follow-up) collapse into <em>one</em> suggestion with multi-signal evidence.</li>
                 <li><strong>Stale suggestions expire silently</strong> after 24h default (see §8 q11).</li>
@@ -294,38 +346,38 @@
           </div>
 
           <!-- Approval gate -->
-          <div class="so-card bg-slate-900 border border-amber-500/30 rounded-lg p-3 text-amber-400">
+          <div class="so-card bg-mcard border border-mamber/30 rounded-lg p-3 text-mamber">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100"><span class="text-[10px] font-mono text-slate-500 mr-1">3.</span> Approval gate</div>
+              <div class="text-sm font-semibold text-mtext"><span class="text-[10px] font-mono text-mtext3 mr-1">3.</span> Approval gate</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Decision point. <strong class="text-amber-300">v1:</strong> human review every time. <strong class="text-amber-300">v2:</strong> auto-approve above confidence threshold.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong class="text-blue-400">PR-review pattern:</strong> TA reviews suggestion the way they'd review a code PR — sees rationale + evidence in one glance, edits if needed (e.g. narrows the property list), approves.</li>
-                <li><strong class="text-amber-400">Incident pattern:</strong> Escalate-tier weather signal — human still ACKs at the gate in v1, but the action is "acknowledge an alert" measured in seconds, not "review a draft."</li>
-                <li><strong class="text-slate-300">Reject:</strong> ends the lifecycle. No canonical task created.</li>
+            <p class="text-xs text-mtext3 leading-snug">Decision point. <strong class="text-amber-300">v1:</strong> human review every time. <strong class="text-amber-300">v2:</strong> auto-approve above confidence threshold.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong class="text-chip-blue">PR-review pattern:</strong> TA reviews suggestion the way they'd review a code PR — sees rationale + evidence in one glance, edits if needed (e.g. narrows the property list), approves.</li>
+                <li><strong class="text-mamber">Incident pattern:</strong> Escalate-tier weather signal — human still ACKs at the gate in v1, but the action is "acknowledge an alert" measured in seconds, not "review a draft."</li>
+                <li><strong class="text-mtext2">Reject:</strong> ends the lifecycle. No canonical task created.</li>
               </ul>
-              <a href="analogy-walkthroughs.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Worked walkthroughs in App. E →</a>
+              <a href="analogy-walkthroughs.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Worked walkthroughs in App. E →</a>
             </div>
           </div>
 
           <!-- Canonical task -->
-          <div class="so-card bg-slate-900 border border-blue-500/30 rounded-lg p-3 text-blue-400">
+          <div class="so-card bg-mcard border border-chip-blue/30 rounded-lg p-3 text-chip-blue">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100"><span class="text-[10px] font-mono text-slate-500 mr-1">4.</span> Canonical task</div>
+              <div class="text-sm font-semibold text-mtext"><span class="text-[10px] font-mono text-mtext3 mr-1">4.</span> Canonical task</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Approved task record (29 fields). Lives on the task board. <code class="px-1 bg-slate-800 rounded text-[10px]">task_type</code> drives where it surfaces in the UI.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples (App. D)</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li><strong>D.1 Client booking:</strong> <code class="px-1 bg-slate-800 rounded text-[10px]">task_type: booking-action</code>, owner = TA on the trip, status = <code class="px-1 bg-slate-800 rounded text-[10px]">in_progress</code>, priority = Normal.</li>
-                <li><strong>D.2 Weather:</strong> <code class="px-1 bg-slate-800 rounded text-[10px]">task_type: disruption-response</code>, watchers auto-added (ops manager), priority auto-bumped to High.</li>
-                <li><strong>D.3 Pre-arrival:</strong> <code class="px-1 bg-slate-800 rounded text-[10px]">task_type: trip-prep</code>, owner = ops associate, due_at derived from trip departure.</li>
+            <p class="text-xs text-mtext3 leading-snug">Approved task record (29 fields). Lives on the task board. <code class="px-1 bg-msurface rounded text-[10px]">task_type</code> drives where it surfaces in the UI.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples (App. D)</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li><strong>D.1 Client booking:</strong> <code class="px-1 bg-msurface rounded text-[10px]">task_type: booking-action</code>, owner = TA on the trip, status = <code class="px-1 bg-msurface rounded text-[10px]">in_progress</code>, priority = Normal.</li>
+                <li><strong>D.2 Weather:</strong> <code class="px-1 bg-msurface rounded text-[10px]">task_type: disruption-response</code>, watchers auto-added (ops manager), priority auto-bumped to High.</li>
+                <li><strong>D.3 Pre-arrival:</strong> <code class="px-1 bg-msurface rounded text-[10px]">task_type: trip-prep</code>, owner = ops associate, due_at derived from trip departure.</li>
               </ul>
-              <a href="example-records.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Full 29-field records in App. D →</a>
+              <a href="example-records.html" class="inline-block text-[11px] text-maccent hover:text-maccenth">Full 29-field records in App. D →</a>
             </div>
           </div>
 
@@ -337,24 +389,24 @@
       <!-- ============================================================== -->
       <!-- LAYER 4: ROUTING TIER -->
       <!-- ============================================================== -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 mb-2">
+      <div class="bg-msurface/40 border border-mborder rounded-xl p-5 mb-2">
         <div class="flex items-baseline gap-3 mb-3">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Layer 4</span>
-          <h3 class="text-base font-semibold text-slate-100">Routing tier (§6)</h3>
-          <span class="text-xs text-slate-500 italic">— who actually does the work?</span>
+          <span class="font-mono text-[10px] uppercase tracking-wider text-mtext3">Layer 4</span>
+          <h3 class="text-base font-semibold text-mtext">Routing tier (§6)</h3>
+          <span class="text-xs text-mtext3 italic">— who actually does the work?</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
           <!-- Auto -->
-          <div class="so-card bg-slate-900 border border-green-500/30 rounded-lg p-3 text-green-400">
+          <div class="so-card bg-mcard border border-msuccess/30 rounded-lg p-3 text-msuccess">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Auto</div>
+              <div class="text-sm font-semibold text-mtext">Auto</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">AI handles end-to-end. No human gate after creation. Mechanical, structured, low cost-of-error.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">AI handles end-to-end. No human gate after creation. Mechanical, structured, low cost-of-error.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li><strong>Pre-arrival checklist (T-10):</strong> AI sends templated brief to restaurants on dietary notes, weather + packing notes to client.</li>
                 <li><strong>Compliance reminder:</strong> AI detects passport expiring < 6mo → sends renewal reminder.</li>
                 <li><strong>Internal-ops:</strong> shift handoff summary auto-generated for next shift.</li>
@@ -364,15 +416,15 @@
           </div>
 
           <!-- Assist -->
-          <div class="so-card bg-slate-900 border border-amber-500/30 rounded-lg p-3 text-amber-400">
+          <div class="so-card bg-mcard border border-mamber/30 rounded-lg p-3 text-mamber">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Assist</div>
+              <div class="text-sm font-semibold text-mtext">Assist</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">AI proposes; human reviews + approves before execution. Tone matters, judgment matters.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">AI proposes; human reviews + approves before execution. Tone matters, judgment matters.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li><strong>Client booking request:</strong> AI executes property search, TA reviews results before sending to client.</li>
                 <li><strong>Vendor change:</strong> AI detects suite category closed for renovation, drafts client notice with alternatives within preference profile, TA approves.</li>
                 <li><strong>Trip-lifecycle client comms:</strong> Day-1 check-in message — AI drafts in TA voice, TA approves before send.</li>
@@ -382,15 +434,15 @@
           </div>
 
           <!-- Escalate -->
-          <div class="so-card bg-slate-900 border border-red-500/30 rounded-lg p-3 text-red-400">
+          <div class="so-card bg-mcard border border-mdanger/30 rounded-lg p-3 text-mdanger">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Escalate</div>
+              <div class="text-sm font-semibold text-mtext">Escalate</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Immediate human attention. Time-sensitive, high-stakes (VVIP / >$X / safety), or AI confidence below threshold.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">Immediate human attention. Time-sensitive, high-stakes (VVIP / >$X / safety), or AI confidence below threshold.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li><strong>Typhoon warning Seoul, client arrives in 48hr:</strong> alert ops manager + TA in parallel. Watchers auto-added, priority auto-bumped to High.</li>
                 <li><strong>Mid-trip emergency:</strong> client's pre-arranged driver isn't there → re-dispatch transport + apologetic gesture from TA.</li>
                 <li><strong>Birthday / anniversary outreach:</strong> human voice irreplaceable. Even though it's scheduled, the gesture itself is human-only.</li>
@@ -401,7 +453,7 @@
 
         </div>
 
-        <p class="text-[11px] text-slate-500 italic mt-3 text-center">Default routing per origin bucket: see <a href="routing.html" class="text-orange-400 hover:text-orange-300">§6.4 matrix</a>. Mental model per origin (PR-review vs Incident): see <a href="routing.html" class="text-orange-400 hover:text-orange-300">§6.5</a>.</p>
+        <p class="text-[11px] text-mtext3 italic mt-3 text-center">Default routing per origin bucket: see <a href="routing.html" class="text-maccent hover:text-maccenth">§6.4 matrix</a>. Mental model per origin (PR-review vs Incident): see <a href="routing.html" class="text-orange-400 hover:text-orange-300">§6.5</a>.</p>
       </div>
 
       <div class="so-arrow">↓</div>
@@ -409,24 +461,24 @@
       <!-- ============================================================== -->
       <!-- LAYER 5: CLOSURE -->
       <!-- ============================================================== -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 mb-2">
+      <div class="bg-msurface/40 border border-mborder rounded-xl p-5 mb-2">
         <div class="flex items-baseline gap-3 mb-3">
-          <span class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Layer 5</span>
-          <h3 class="text-base font-semibold text-slate-100">Closure (§7.3)</h3>
-          <span class="text-xs text-slate-500 italic">— how does it leave the system?</span>
+          <span class="font-mono text-[10px] uppercase tracking-wider text-mtext3">Layer 5</span>
+          <h3 class="text-base font-semibold text-mtext">Closure (§7.3)</h3>
+          <span class="text-xs text-mtext3 italic">— how does it leave the system?</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
 
           <!-- Manual completion -->
-          <div class="so-card bg-slate-900 border border-amber-500/30 rounded-lg p-3 text-amber-400">
+          <div class="so-card bg-mcard border border-mamber/30 rounded-lg p-3 text-mamber">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Manual completion</div>
+              <div class="text-sm font-semibold text-mtext">Manual completion</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">A human marks it done. Always available, lowest trust bar.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">When</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">A human marks it done. Always available, lowest trust bar.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">When</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li>TA marks done after sending the booking confirmation to the client.</li>
                 <li>Ops associate marks done after re-confirming all transfers in pre-arrival checklist.</li>
               </ul>
@@ -434,32 +486,32 @@
           </div>
 
           <!-- AI auto-close -->
-          <div class="so-card bg-slate-900 border border-green-500/30 rounded-lg p-3 text-green-400">
+          <div class="so-card bg-mcard border border-msuccess/30 rounded-lg p-3 text-msuccess">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">AI auto-close</div>
+              <div class="text-sm font-semibold text-mtext">AI auto-close</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">AI fully executed the task. Knows it's done because it did it.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">When</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">AI fully executed the task. Knows it's done because it did it.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">When</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li>Pre-arrival templated message sent → AI marks task done in same step.</li>
                 <li>Auto-tier compliance reminder dispatched → done.</li>
-                <li>Status transitions to <code class="px-1 bg-slate-800 rounded text-[10px]">done</code> per the §7.2 status enum.</li>
+                <li>Status transitions to <code class="px-1 bg-msurface rounded text-[10px]">done</code> per the §7.2 status enum.</li>
               </ul>
             </div>
           </div>
 
           <!-- AI-proposed close -->
-          <div class="so-card bg-slate-900 border border-amber-500/30 rounded-lg p-3 text-amber-400">
+          <div class="so-card bg-mcard border border-mamber/30 rounded-lg p-3 text-mamber">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">AI-proposed close</div>
+              <div class="text-sm font-semibold text-mtext">AI-proposed close</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">AI detects evidence of completion, surfaces a "close this?" prompt for one-click human ACK.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">When</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">AI detects evidence of completion, surfaces a "close this?" prompt for one-click human ACK.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">When</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li>Vendor confirmation arrives in inbox → AI surfaces "Close this booking task?" to TA.</li>
                 <li>Conversation moved past the issue → AI proposes close on the related task.</li>
               </ul>
@@ -467,18 +519,18 @@
           </div>
 
           <!-- Manual dismissal -->
-          <div class="so-card bg-slate-900 border border-red-500/30 rounded-lg p-3 text-red-400">
+          <div class="so-card bg-mcard border border-mdanger/30 rounded-lg p-3 text-mdanger">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Manual dismissal</div>
+              <div class="text-sm font-semibold text-mtext">Manual dismissal</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">Human closes without completion, with <code class="px-1 bg-slate-800 rounded text-[10px]">dismissal_reason</code> captured. Distinct from "completed."</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">When</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">Human closes without completion, with <code class="px-1 bg-msurface rounded text-[10px]">dismissal_reason</code> captured. Distinct from "completed."</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">When</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li>Operator dismisses with reason: "duplicate of TSK-1234".</li>
                 <li>Operator dismisses: "client cancelled the trip — no longer relevant."</li>
-                <li>Status transitions to <code class="px-1 bg-slate-800 rounded text-[10px]">dismissed</code>; <code class="px-1 bg-slate-800 rounded text-[10px]">dismissal_reason</code> required.</li>
+                <li>Status transitions to <code class="px-1 bg-msurface rounded text-[10px]">dismissed</code>; <code class="px-1 bg-msurface rounded text-[10px]">dismissal_reason</code> required.</li>
               </ul>
             </div>
           </div>
@@ -490,7 +542,7 @@
 
       <!-- Final node -->
       <div class="flex justify-center mb-8">
-        <div class="px-6 py-3 rounded-full bg-slate-800 border-2 border-slate-700 text-slate-300 text-sm font-semibold tracking-wider uppercase">
+        <div class="px-6 py-3 rounded-full bg-msurface border-2 border-mborder text-mtext2 text-sm font-semibold tracking-wider uppercase">
           Closed (or reopened — see §8 q10)
         </div>
       </div>
@@ -498,22 +550,22 @@
       <!-- ============================================================== -->
       <!-- CROSS-CUTTING PATHS -->
       <!-- ============================================================== -->
-      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-5 mb-8">
-        <h3 class="text-base font-semibold text-slate-100 mb-3">Cross-cutting paths (don't follow the happy path)</h3>
+      <div class="bg-mcard/40 border border-mborder rounded-xl p-5 mb-8">
+        <h3 class="text-base font-semibold text-mtext mb-3">Cross-cutting paths (don't follow the happy path)</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
           <!-- Manual bypass -->
-          <div class="so-card bg-slate-900 border border-orange-500/30 rounded-lg p-3 text-orange-400">
+          <div class="so-card bg-mcard border border-maccent/30 rounded-lg p-3 text-maccent">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Manual bypass (Layer 1 → Layer 4)</div>
+              <div class="text-sm font-semibold text-mtext">Manual bypass (Layer 1 → Layer 4)</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">"Ops spots something" creates a task directly. Skips Layers 2 + 3 (Stream type, 4-stage flow). First-class fast path, not a fallback.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Examples</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
+            <p class="text-xs text-mtext3 leading-snug">"Ops spots something" creates a task directly. Skips Layers 2 + 3 (Stream type, 4-stage flow). First-class fast path, not a fallback.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Examples</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
                 <li>TA hovers a message and clicks "create task" — skips Suggestion + Approval gate, lands directly as Canonical.</li>
-                <li>Keyboard shortcut <code class="px-1 bg-slate-800 rounded text-[10px]">c</code> available even when suggestions are firing — TAs who need to create a task NOW must never be forced through the suggestion pipeline.</li>
+                <li>Keyboard shortcut <code class="px-1 bg-msurface rounded text-[10px]">c</code> available even when suggestions are firing — TAs who need to create a task NOW must never be forced through the suggestion pipeline.</li>
                 <li>Manual-create UI surfaces ≤ 2 fields (title + owner); everything else inferred from context.</li>
               </ul>
               <a href="lifecycle.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §7.1 →</a>
@@ -521,17 +573,17 @@
           </div>
 
           <!-- Agent mode hybrid -->
-          <div class="so-card bg-slate-900 border border-purple-500/30 rounded-lg p-3 text-purple-400">
+          <div class="so-card bg-mcard border border-chip-purple/30 rounded-lg p-3 text-chip-purple">
             <div class="flex items-start justify-between mb-1.5">
-              <div class="text-sm font-semibold text-slate-100">Agent mode hybrid (1 prompt → many tasks)</div>
+              <div class="text-sm font-semibold text-mtext">Agent mode hybrid (1 prompt → many tasks)</div>
               <span class="text-xs"><span class="so-icon-collapsed">+</span><span class="so-icon-expanded">−</span></span>
             </div>
-            <p class="text-xs text-slate-400 leading-snug">"Ops prompts agent" can spawn both AI sub-tasks (full 4-stage flow) and human sub-tasks (direct to Canonical). One agent run, multiple tasks.</p>
-            <div class="so-popover mt-3 pt-3 border-t border-slate-800 space-y-2">
-              <p class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Schema linkage</p>
-              <ul class="space-y-1.5 text-xs text-slate-300">
-                <li>AI sub-tasks carry <code class="px-1 bg-slate-800 rounded text-[10px]">parent_task_id</code> + <code class="px-1 bg-slate-800 rounded text-[10px]">agent_run_id</code>.</li>
-                <li>Human sub-tasks carry <code class="px-1 bg-slate-800 rounded text-[10px]">agent_run_id</code> only — they're peers of the agent run, not children of any specific task.</li>
+            <p class="text-xs text-mtext3 leading-snug">"Ops prompts agent" can spawn both AI sub-tasks (full 4-stage flow) and human sub-tasks (direct to Canonical). One agent run, multiple tasks.</p>
+            <div class="so-popover mt-3 pt-3 border-t border-mborder space-y-2">
+              <p class="text-[11px] font-semibold text-mtext2 uppercase tracking-wider">Schema linkage</p>
+              <ul class="space-y-1.5 text-xs text-mtext2">
+                <li>AI sub-tasks carry <code class="px-1 bg-msurface rounded text-[10px]">parent_task_id</code> + <code class="px-1 bg-msurface rounded text-[10px]">agent_run_id</code>.</li>
+                <li>Human sub-tasks carry <code class="px-1 bg-msurface rounded text-[10px]">agent_run_id</code> only — they're peers of the agent run, not children of any specific task.</li>
                 <li>Example: TA prompts <em>"research connecting rooms at the Aman Tokyo"</em> → agent spawns AI search task + human follow-up call task.</li>
               </ul>
               <a href="lifecycle.html" class="inline-block text-[11px] text-orange-400 hover:text-orange-300">Read more in §7.1 agent-mode →</a>

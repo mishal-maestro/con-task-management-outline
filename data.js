@@ -64,6 +64,8 @@ const NAV_CONFIG = [
       { id: 'proto-task-board',    section: '', label: 'App · Tasks',         href: 'prototype/task-board.html' },
       { id: 'proto-inline-create', section: '', label: 'App · Chat',          href: 'prototype/inline-create.html' },
       { id: 'proto-agent',         section: '', label: 'App · Agent',         href: 'prototype/agent.html' },
+      { id: 'proto-admin-panel',    section: '',  label: 'App · Admin',                href: 'prototype/admin-panel.html' },
+      { id: 'proto-admin-panel-v2', section: 'v2', label: 'App · Admin (v2 proposed)', href: 'prototype/admin-panel-v2.html' },
     ],
   },
 ];

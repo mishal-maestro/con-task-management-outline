@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Origins — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,83 +84,83 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">What is a Task?</h2>
-        <p class="text-sm text-slate-500 mt-1">Origin taxonomy — five buckets</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">What is a Task?</h2>
+        <p class="text-sm text-mtext3 mt-1">Origin taxonomy — five buckets</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">A task exists because <em>something needs to happen</em>. There are five buckets of "why" — every task we ever create maps to one or more of them. Origin answers <em>why does this task exist?</em> Creation surface (defined in §2, detailed in §7.1) answers <em>where was it created or detected?</em> A single origin can be reached from multiple surfaces.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">A task exists because <em>something needs to happen</em>. There are five buckets of "why" — every task we ever create maps to one or more of them. Origin answers <em>why does this task exist?</em> Creation surface (defined in §2, detailed in §7.1) answers <em>where was it created or detected?</em> A single origin can be reached from multiple surfaces.</p>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         <!-- Client-driven -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-2">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">3.1</span>
-            <h3 class="text-base font-semibold text-slate-100">Client-driven</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">3.1</span>
+            <h3 class="text-base font-semibold text-mtext">Client-driven</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4 leading-relaxed">The client tells us — explicitly or implicitly — that they need or want something. Client-driven signals split into two sub-buckets because confidence and routing implications differ.</p>
+          <p class="text-sm text-mtext3 mb-4 leading-relaxed">The client tells us — explicitly or implicitly — that they need or want something. Client-driven signals split into two sub-buckets because confidence and routing implications differ.</p>
 
           <div class="mb-4">
-            <h4 class="text-sm font-semibold text-slate-200 mb-2">3.1a Explicit — client stated something</h4>
-            <p class="text-xs text-slate-400 mb-3 leading-relaxed">The client directly said what they need or want, in a message, voice call, or stated in-app request.</p>
+            <h4 class="text-sm font-semibold text-mtext mb-2">3.1a Explicit — client stated something</h4>
+            <p class="text-xs text-mtext3 mb-3 leading-relaxed">The client directly said what they need or want, in a message, voice call, or stated in-app request.</p>
             <div class="space-y-2.5 mb-3">
-              <div class="text-xs text-slate-300">
-                <span class="font-semibold text-slate-200">Direct booking request</span> (transactional): <em>"We need a 4-night stay at the Aman Tokyo for our anniversary, last week of October — suite with city view."</em> → open a search task and map results onto trip components.
+              <div class="text-xs text-mtext2">
+                <span class="font-semibold text-mtext">Direct booking request</span> (transactional): <em>"We need a 4-night stay at the Aman Tokyo for our anniversary, last week of October — suite with city view."</em> → open a search task and map results onto trip components.
               </div>
-              <div class="text-xs text-slate-300">
-                <span class="font-semibold text-slate-200">Mid-trip emergency</span> (urgent): client lands in Mumbai and the pre-arranged driver isn't there → re-dispatch transport + send an apologetic gesture from the TA.
+              <div class="text-xs text-mtext2">
+                <span class="font-semibold text-mtext">Mid-trip emergency</span> (urgent): client lands in Mumbai and the pre-arranged driver isn't there → re-dispatch transport + send an apologetic gesture from the TA.
               </div>
-              <div class="text-xs text-slate-300">
-                <span class="font-semibold text-slate-200">Future-trip seed</span> (low priority): <em>"We're thinking about Patagonia for our 25th anniversary in 2027."</em> → create a soft trip + tickle file for outreach in late 2026.
+              <div class="text-xs text-mtext2">
+                <span class="font-semibold text-mtext">Future-trip seed</span> (low priority): <em>"We're thinking about Patagonia for our 25th anniversary in 2027."</em> → create a soft trip + tickle file for outreach in late 2026.
               </div>
             </div>
-            <div class="text-xs text-slate-500 border-t border-slate-700 pt-2">
-              <span class="font-semibold text-slate-400">Typical owner:</span> TA for relationship-critical responses; ops for transactional execution.<br>
-              <span class="font-semibold text-slate-400">Default routing:</span> Assist — AI drafts response, human approves.
+            <div class="text-xs text-mtext3 border-t border-mborder pt-2">
+              <span class="font-semibold text-mtext2">Typical owner:</span> TA for relationship-critical responses; ops for transactional execution.<br>
+              <span class="font-semibold text-mtext2">Default routing:</span> Assist — AI drafts response, human approves.
             </div>
           </div>
 
           <div>
-            <h4 class="text-sm font-semibold text-slate-200 mb-2">3.1b Behavioural / implicit — inferred from context</h4>
-            <p class="text-xs text-slate-400 mb-3 leading-relaxed">The client didn't directly ask for anything, but their behaviour (in chat or in the app) signals preference, intent, or need.</p>
+            <h4 class="text-sm font-semibold text-mtext mb-2">3.1b Behavioural / implicit — inferred from context</h4>
+            <p class="text-xs text-mtext3 mb-3 leading-relaxed">The client didn't directly ask for anything, but their behaviour (in chat or in the app) signals preference, intent, or need.</p>
             <div class="space-y-2.5 mb-3">
-              <div class="text-xs text-slate-300">
-                <span class="font-semibold text-slate-200">Vague taste signal</span> (from message content): on a past trip the client said <em>"the Lutetia was way too modern for us"</em> → save preference: avoid contemporary properties.
+              <div class="text-xs text-mtext2">
+                <span class="font-semibold text-mtext">Vague taste signal</span> (from message content): on a past trip the client said <em>"the Lutetia was way too modern for us"</em> → save preference: avoid contemporary properties.
               </div>
-              <div class="text-xs text-slate-300">
-                <span class="font-semibold text-slate-200">Health / dietary signal</span> (from message content): client mentions in passing <em>"I've been doing keto since January"</em> → update client profile dietary; brief all upcoming restaurant bookings.
+              <div class="text-xs text-mtext2">
+                <span class="font-semibold text-mtext">Health / dietary signal</span> (from message content): client mentions in passing <em>"I've been doing keto since January"</em> → update client profile dietary; brief all upcoming restaurant bookings.
               </div>
-              <div class="text-xs text-slate-300">
-                <span class="font-semibold text-slate-200">App behavioural signal:</span> client taps 4 Aman properties in same region during an active planning window → consider a planning nudge. Or: client saves 3 deals to Maldives over 2 weeks → consider a discovery push.
+              <div class="text-xs text-mtext2">
+                <span class="font-semibold text-mtext">App behavioural signal:</span> client taps 4 Aman properties in same region during an active planning window → consider a planning nudge. Or: client saves 3 deals to Maldives over 2 weeks → consider a discovery push.
               </div>
             </div>
-            <div class="bg-slate-800/50 border border-slate-700 rounded p-3 mb-3">
-              <p class="text-xs text-slate-300 mb-2 font-semibold">Key rule — behavioural signals don't become tasks by default.</p>
-              <p class="text-xs text-slate-400 mb-2">They feed the <strong>taste graph / client profile</strong> as background context. A Suggestion fires only when the signal meets a <strong>threshold + trip-context</strong> condition: enough signals in a tight window, plus an active or imminent trip the signal informs.</p>
+            <div class="bg-msurface border border-mborder rounded p-3 mb-3">
+              <p class="text-xs text-mtext2 mb-2 font-semibold">Key rule — behavioural signals don't become tasks by default.</p>
+              <p class="text-xs text-mtext3 mb-2">They feed the <strong>taste graph / client profile</strong> as background context. A Suggestion fires only when the signal meets a <strong>threshold + trip-context</strong> condition: enough signals in a tight window, plus an active or imminent trip the signal informs.</p>
               <table class="w-full text-xs mt-2">
                 <thead>
-                  <tr class="border-b border-slate-700">
-                    <th class="text-left py-1.5 text-slate-400 font-semibold">Behaviour</th>
-                    <th class="text-left py-1.5 text-slate-400 font-semibold">Outcome</th>
+                  <tr class="border-b border-mborder">
+                    <th class="text-left py-1.5 text-mtext2 font-semibold">Behaviour</th>
+                    <th class="text-left py-1.5 text-mtext2 font-semibold">Outcome</th>
                   </tr>
                 </thead>
-                <tbody class="text-slate-300">
-                  <tr class="border-b border-slate-700/50">
+                <tbody class="text-mtext2">
+                  <tr class="border-b border-mborder/50">
                     <td class="py-1.5">Single tap on a Maldives property</td>
                     <td class="py-1.5">Client profile update only, no task</td>
                   </tr>
-                  <tr class="border-b border-slate-700/50">
+                  <tr class="border-b border-mborder/50">
                     <td class="py-1.5">Liked 4 properties in same region during an active planning window</td>
                     <td class="py-1.5">Suggestion fires — "client seems decided on region X; explore?"</td>
                   </tr>
-                  <tr class="border-b border-slate-700/50">
+                  <tr class="border-b border-mborder/50">
                     <td class="py-1.5">Searched "honeymoon Bali" 3 times in a week, no active trip</td>
                     <td class="py-1.5">Client profile update + soft trip seed; no immediate task</td>
                   </tr>
@@ -119,126 +171,126 @@
                 </tbody>
               </table>
             </div>
-            <div class="text-xs text-slate-500 border-t border-slate-700 pt-2">
-              <span class="font-semibold text-slate-400">Typical owner:</span> TA for the inferred preference-to-trip translation; ops for client profile updates.<br>
-              <span class="font-semibold text-slate-400">Default routing:</span> Assist (preference capture) or Suggestion-only (behavioural threshold) — depending on confidence.
+            <div class="text-xs text-mtext3 border-t border-mborder pt-2">
+              <span class="font-semibold text-mtext2">Typical owner:</span> TA for the inferred preference-to-trip translation; ops for client profile updates.<br>
+              <span class="font-semibold text-mtext2">Default routing:</span> Assist (preference capture) or Suggestion-only (behavioural threshold) — depending on confidence.
             </div>
           </div>
         </div>
 
         <!-- World-driven -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-2">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">3.2</span>
-            <h3 class="text-base font-semibold text-slate-100">World-driven (external)</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">3.2</span>
+            <h3 class="text-base font-semibold text-mtext">World-driven (external)</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4 leading-relaxed">Something outside our system happens that affects an active or upcoming trip.</p>
+          <p class="text-sm text-mtext3 mb-4 leading-relaxed">Something outside our system happens that affects an active or upcoming trip.</p>
           <div class="space-y-2.5 mb-4">
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Weather disruption:</span> Typhoon warning issued for Seoul, client arriving in 48 hrs → alert client, monitor hourly, prepare reroute scenarios.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Weather disruption:</span> Typhoon warning issued for Seoul, client arriving in 48 hrs → alert client, monitor hourly, prepare reroute scenarios.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Schedule cancellation:</span> The airline cancels the client's outbound the day before departure → rebook on a partner carrier, alert client, coordinate fresh ground transfers.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Schedule cancellation:</span> The airline cancels the client's outbound the day before departure → rebook on a partner carrier, alert client, coordinate fresh ground transfers.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Vendor-side change:</span> Four Seasons George V notifies that the suite category the client booked is closed for renovation → inform client and offer alternatives within their preference profile.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Vendor-side change:</span> Four Seasons George V notifies that the suite category the client booked is closed for renovation → inform client and offer alternatives within their preference profile.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Award space opens:</span> First-class award appears on the client's saved LAX-SYD August dates → book within minutes before it disappears, then notify.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Award space opens:</span> First-class award appears on the client's saved LAX-SYD August dates → book within minutes before it disappears, then notify.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Compliance advisory:</span> State Dept upgrades a destination to Level 3 a week before departure → brief client on safety considerations, offer no-penalty cancellation, document the conversation for audit.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Compliance advisory:</span> State Dept upgrades a destination to Level 3 a week before departure → brief client on safety considerations, offer no-penalty cancellation, document the conversation for audit.
             </div>
           </div>
-          <div class="text-xs text-slate-500 border-t border-slate-800 pt-3">
-            <span class="font-semibold text-slate-400">Typical owner:</span> AI for detection and templated alerts; human for client-facing communication and re-booking decisions.
+          <div class="text-xs text-mtext3 border-t border-mborder pt-3">
+            <span class="font-semibold text-mtext2">Typical owner:</span> AI for detection and templated alerts; human for client-facing communication and re-booking decisions.
           </div>
         </div>
 
         <!-- Trip lifecycle -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-2">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">3.3</span>
-            <h3 class="text-base font-semibold text-slate-100">Trip lifecycle</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">3.3</span>
+            <h3 class="text-base font-semibold text-mtext">Trip lifecycle</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4 leading-relaxed">The trip itself, as it moves through our pipeline or its calendar, generates work.</p>
+          <p class="text-sm text-mtext3 mb-4 leading-relaxed">The trip itself, as it moves through our pipeline or its calendar, generates work.</p>
           <div class="space-y-2.5 mb-4">
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Pre-arrival window (T-10 days):</span> Trip enters its final pre-departure week → spawn pre-arrival checklist (re-confirm transfers, brief restaurants on dietary notes, send weather + packing notes).
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Pre-arrival window (T-10 days):</span> Trip enters its final pre-departure week → spawn pre-arrival checklist (re-confirm transfers, brief restaurants on dietary notes, send weather + packing notes).
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Day-of-departure send-off (T-4 hours):</span> Trip is hours from wheels-up → send "have a wonderful trip" message with confirmation links and the 24/7 emergency contact.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Day-of-departure send-off (T-4 hours):</span> Trip is hours from wheels-up → send "have a wonderful trip" message with confirmation links and the 24/7 emergency contact.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Day-1 check-in (T+24 hours after arrival):</span> First night complete → automated "How's the room? Anything we should fix?" — catches issues early before they fester.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Day-1 check-in (T+24 hours after arrival):</span> First night complete → automated "How's the room? Anything we should fix?" — catches issues early before they fester.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Post-trip review (T+2 days):</span> Trip flips to complete → personalised follow-up email, feedback request, and capture any new preferences observed during the trip.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Post-trip review (T+2 days):</span> Trip flips to complete → personalised follow-up email, feedback request, and capture any new preferences observed during the trip.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Pipeline stall detection:</span> Trip sits in <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">Booking</code> stage > 5 days with no component changes → flag to ops manager, "what's blocking?"
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Pipeline stall detection:</span> Trip sits in <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">Booking</code> stage > 5 days with no component changes → flag to ops manager, "what's blocking?"
             </div>
           </div>
-          <div class="text-xs text-slate-500 border-t border-slate-800 pt-3">
-            <span class="font-semibold text-slate-400">Typical owner:</span> ops for procedural work; AI for templated communications and scheduled checks.
+          <div class="text-xs text-mtext3 border-t border-mborder pt-3">
+            <span class="font-semibold text-mtext2">Typical owner:</span> ops for procedural work; AI for templated communications and scheduled checks.
           </div>
         </div>
 
         <!-- Relationship -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-2">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">3.4</span>
-            <h3 class="text-base font-semibold text-slate-100">Relationship</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">3.4</span>
+            <h3 class="text-base font-semibold text-mtext">Relationship</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4 leading-relaxed">Pure relationship-layer moments, sourced from the client profile or accumulated context, surfaced by date or pattern.</p>
+          <p class="text-sm text-mtext3 mb-4 leading-relaxed">Pure relationship-layer moments, sourced from the client profile or accumulated context, surfaced by date or pattern.</p>
           <div class="space-y-2.5 mb-4">
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Birthday outreach (T-7 days):</span> client's birthday in a week → TA hand-crafts a card or gift, ideally tied to a property or preference they love.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Birthday outreach (T-7 days):</span> client's birthday in a week → TA hand-crafts a card or gift, ideally tied to a property or preference they love.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Anniversary trip seed:</span> couple's wedding anniversary visible in the client profile → propose a destination drawn from their history (e.g. <em>"where they honeymooned 5 years ago"</em>) ahead of the next planning cycle.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Anniversary trip seed:</span> couple's wedding anniversary visible in the client profile → propose a destination drawn from their history (e.g. <em>"where they honeymooned 5 years ago"</em>) ahead of the next planning cycle.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Returning-client gesture (3rd trip):</span> client books their 3rd trip with us → trigger a personalised welcome amenity request at the destination property, charged to the relationship.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Returning-client gesture (3rd trip):</span> client books their 3rd trip with us → trigger a personalised welcome amenity request at the destination property, charged to the relationship.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Care-context check-in:</span> client mentioned a parent's chemo on a past trip → 6 weeks later, a gentle <em>"thinking of you"</em> message <em>before</em> any commercial outreach lands.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Care-context check-in:</span> client mentioned a parent's chemo on a past trip → 6 weeks later, a gentle <em>"thinking of you"</em> message <em>before</em> any commercial outreach lands.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Referral acknowledgement:</span> existing client's friend signs up via referral → thank-you message to the referrer, and a flag to mention the new client's first trip on the next monthly check-in.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Referral acknowledgement:</span> existing client's friend signs up via referral → thank-you message to the referrer, and a flag to mention the new client's first trip on the next monthly check-in.
             </div>
           </div>
-          <div class="text-xs text-slate-500 border-t border-slate-800 pt-3">
-            <span class="font-semibold text-slate-400">Typical owner:</span> TA — human voice irreplaceable here. Automation tolerance is near zero; this is the bucket where a wrong AI message destroys trust.
+          <div class="text-xs text-mtext3 border-t border-mborder pt-3">
+            <span class="font-semibold text-mtext2">Typical owner:</span> TA — human voice irreplaceable here. Automation tolerance is near zero; this is the bucket where a wrong AI message destroys trust.
           </div>
         </div>
 
         <!-- Internal operations -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <div class="bg-mcard border border-mborder rounded-lg p-6">
           <div class="flex items-center gap-3 mb-2">
-            <span class="font-mono text-xs uppercase tracking-wider text-orange-500">3.5</span>
-            <h3 class="text-base font-semibold text-slate-100">Internal operations</h3>
+            <span class="font-mono text-xs uppercase tracking-wider text-maccent">3.5</span>
+            <h3 class="text-base font-semibold text-mtext">Internal operations</h3>
           </div>
-          <p class="text-sm text-slate-400 mb-4 leading-relaxed">Our own workflow signals — surfaced by self-monitoring rather than external events.</p>
+          <p class="text-sm text-mtext3 mb-4 leading-relaxed">Our own workflow signals — surfaced by self-monitoring rather than external events.</p>
           <div class="space-y-2.5 mb-4">
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Coverage gap:</span> TA going on 2-week leave → reassign their 8 active trips, brief covering TAs, set OOO auto-replies on relevant channels.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Coverage gap:</span> TA going on 2-week leave → reassign their 8 active trips, brief covering TAs, set OOO auto-replies on relevant channels.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Shift handoff prep:</span> APAC shift end → generate end-of-shift summary with open issues + watch list for the EMEA shift starting in 2 hours.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Shift handoff prep:</span> APAC shift end → generate end-of-shift summary with open issues + watch list for the EMEA shift starting in 2 hours.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Client profile hygiene gap:</span> trip closed last week with a new preference observed in chat (<em>"hates spicy food"</em>) but never logged → reminder to update the client profile before the trip file is considered done.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Client profile hygiene gap:</span> trip closed last week with a new preference observed in chat (<em>"hates spicy food"</em>) but never logged → reminder to update the client profile before the trip file is considered done.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">SLA breach forming:</span> VVIP client's message unanswered > 90 min → escalate to ops manager and the assigned TA in parallel.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">SLA breach forming:</span> VVIP client's message unanswered > 90 min → escalate to ops manager and the assigned TA in parallel.
             </div>
-            <div class="text-xs text-slate-300">
-              <span class="font-semibold text-slate-200">Workload imbalance:</span> TA A has 12 active trips, TA B has 5 → recommend the next incoming request to TA B; flag if A is consistently above capacity week-over-week.
+            <div class="text-xs text-mtext2">
+              <span class="font-semibold text-mtext">Workload imbalance:</span> TA A has 12 active trips, TA B has 5 → recommend the next incoming request to TA B; flag if A is consistently above capacity week-over-week.
             </div>
           </div>
-          <div class="text-xs text-slate-500 border-t border-slate-800 pt-3">
-            <span class="font-semibold text-slate-400">Typical owner:</span> ops manager for escalations; high automation tolerance for the rest — this is self-driving territory.
+          <div class="text-xs text-mtext3 border-t border-mborder pt-3">
+            <span class="font-semibold text-mtext2">Typical owner:</span> ops manager for escalations; high automation tolerance for the rest — this is self-driving territory.
           </div>
         </div>
 

@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Example Records — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,442 +84,442 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Example Canonical Task Records</h2>
-        <p class="text-sm text-slate-500 mt-1">The schema in action</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Example Canonical Task Records</h2>
+        <p class="text-sm text-mtext3 mt-1">The schema in action</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Three example tasks pulled from §3 / Appendix B, with their canonical fields populated. Shows the schema in §7.2 in action — and how much is inferred vs explicit at creation time.</p>
+      <p class="text-sm text-mtext2 mb-6 leading-relaxed">Three example tasks pulled from §3 / Appendix B, with their canonical fields populated. Shows the schema in §7.2 in action — and how much is inferred vs explicit at creation time.</p>
 
       <div class="space-y-8">
 
         <!-- D.1 Client booking request (assist tier) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">D.1 Client booking request (assist tier)</h3>
-            <p class="text-xs text-slate-400 mt-1">A TA gets a message: <em>"We need a 4-night stay at the Aman Tokyo for our anniversary, last week of October — suite with city view."</em></p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">D.1 Client booking request (assist tier)</h3>
+            <p class="text-xs text-mtext2 mt-1">A TA gets a message: <em>"We need a 4-night stay at the Aman Tokyo for our anniversary, last week of October — suite with city view."</em></p>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="border-b border-slate-800">
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:20%">Field</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:45%">Value</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:35%">How populated</th>
+                <tr class="border-b border-mborder">
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:20%">Field</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:45%">Value</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:35%">How populated</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800">
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">id</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">tsk_01HXY...</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System-generated</td>
+              <tbody class="divide-y divide-mborder">
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">id</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">tsk_01HXY...</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System-generated</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">title</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Search: Aman Tokyo, suite, anniversary last week of Oct</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Auto-generated from message content</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">title</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Search: Aman Tokyo, suite, anniversary last week of Oct</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Auto-generated from message content</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">action</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Search hotels matching property + dates + suite type; return options to TA for review</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred from message intent</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">action</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Search hotels matching property + dates + suite type; return options to TA for review</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred from message intent</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">actor</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">TA (with AI search assistance)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured at creation</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">actor</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">TA (with AI search assistance)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured at creation</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">when</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">immediately</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Default for Client-driven Assist</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">when</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">immediately</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Default for Client-driven Assist</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">primary_owner</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">TA on the trip</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Routing-assigned from trip ownership</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">primary_owner</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">TA on the trip</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Routing-assigned from trip ownership</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">watchers</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">—</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">None</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">watchers</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">—</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">None</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">status</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">In progress</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Lifecycle</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">status</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">In progress</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Lifecycle</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">primary_context</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">trip:&lt;Anderson family Tokyo Oct 2026&gt;</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred from conversation thread</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">primary_context</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">trip:&lt;Anderson family Tokyo Oct 2026&gt;</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred from conversation thread</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">origin</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Client-driven (explicit)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">From §3.1</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">origin</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Client-driven (explicit)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">From §3.1</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">creator</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">AI message classifier</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured at creation</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">creator</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">AI message classifier</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured at creation</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">creation_surface</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Message bubble — inline suggestion</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured at creation</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">creation_surface</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Message bubble — inline suggestion</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured at creation</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">routing_tier</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Assist</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Default for Client-driven from §6.4</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">routing_tier</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Assist</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Default for Client-driven from §6.4</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">priority</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Normal</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Default; no urgency markers in message</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">priority</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Normal</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Default; no urgency markers in message</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">due_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">—</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">None set</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">due_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">—</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">None set</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">rationale</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Client message requested hotel booking with specific property + dates + room type.</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">AI</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">rationale</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Client message requested hotel booking with specific property + dates + room type.</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">AI</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">evidence_refs</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">[link to message]</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">AI</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">evidence_refs</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">[link to message]</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">AI</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">approval_state</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">human-approved</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">TA accepted the AI-proposed task</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">approval_state</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">human-approved</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">TA accepted the AI-proposed task</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">confidence_score</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">0.92</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">High — message specific, no ambiguity</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">confidence_score</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">0.92</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">High — message specific, no ambiguity</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">task_type</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">client_follow_up</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">task_type</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">client_follow_up</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">subtype</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">direct_booking_request</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">subtype</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">direct_booking_request</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">created_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-05-12T09:43Z</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">created_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-05-12T09:43Z</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">updated_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-05-12T09:44Z</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">updated_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-05-12T09:44Z</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">snooze_until</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None set</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">dismissal_reason</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None set</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">reopen_count</td><td class="px-5 py-3 text-xs text-slate-300">0</td><td class="px-5 py-3 text-xs text-slate-400">System default</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">last_reopened_at</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">parent_task_id</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">Top-level task (not a sub-task)</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">agent_run_id</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">Not from agent mode</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">snooze_until</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None set</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">dismissal_reason</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None set</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">reopen_count</td><td class="px-5 py-3 text-xs text-mtext">0</td><td class="px-5 py-3 text-xs text-mtext2">System default</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">last_reopened_at</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">parent_task_id</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">Top-level task (not a sub-task)</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">agent_run_id</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">Not from agent mode</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
         <!-- D.2 Weather-disruption alert (escalate tier) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">D.2 Weather-disruption alert (escalate tier)</h3>
-            <p class="text-xs text-slate-400 mt-1">Flight-tracking feed pushes an alert: typhoon warning for Seoul, client arriving in 48 hrs.</p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">D.2 Weather-disruption alert (escalate tier)</h3>
+            <p class="text-xs text-mtext2 mt-1">Flight-tracking feed pushes an alert: typhoon warning for Seoul, client arriving in 48 hrs.</p>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="border-b border-slate-800">
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:20%">Field</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:45%">Value</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:35%">How populated</th>
+                <tr class="border-b border-mborder">
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:20%">Field</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:45%">Value</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:35%">How populated</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800">
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">id</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">tsk_01HXZ...</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+              <tbody class="divide-y divide-mborder">
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">id</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">tsk_01HXZ...</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">title</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Typhoon warning Seoul — client arrival in 48hr</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Auto-generated from signal</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">title</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Typhoon warning Seoul — client arrival in 48hr</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Auto-generated from signal</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">action</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Alert client of typhoon warning + prepare reroute scenarios</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred from signal + active trip</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">action</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Alert client of typhoon warning + prepare reroute scenarios</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred from signal + active trip</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">actor</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">TA on the trip (with AI for reroute option generation)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Routing-assigned</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">actor</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">TA on the trip (with AI for reroute option generation)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Routing-assigned</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">when</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">immediately</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Time-sensitive disruption</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">when</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">immediately</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Time-sensitive disruption</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">primary_owner</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">TA on the trip</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Routing-assigned</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">primary_owner</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">TA on the trip</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Routing-assigned</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">watchers</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Ops manager</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Auto-added (escalate-tier policy)</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">watchers</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Ops manager</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Auto-added (escalate-tier policy)</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">status</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">In progress</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Lifecycle</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">status</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">In progress</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Lifecycle</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">primary_context</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">trip:&lt;Wei Seoul May 2026&gt;</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred from active-trip query</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">primary_context</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">trip:&lt;Wei Seoul May 2026&gt;</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred from active-trip query</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">origin</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">World-driven (disruption)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">From §3.2</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">origin</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">World-driven (disruption)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">From §3.2</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">creator</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">AI signal monitor</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured at creation</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">creator</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">AI signal monitor</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured at creation</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">creation_surface</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Weather feed monitor</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured at creation</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">creation_surface</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Weather feed monitor</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured at creation</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">routing_tier</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Escalate</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Default for World-driven (disruption) from §6.4</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">routing_tier</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Escalate</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Default for World-driven (disruption) from §6.4</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">priority</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">High</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Auto-bumped by time-to-departure proximity</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">priority</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">High</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Auto-bumped by time-to-departure proximity</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">due_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-05-14T06:00Z (T-24hr from arrival)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Derived from trip arrival timestamp</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">due_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-05-14T06:00Z (T-24hr from arrival)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Derived from trip arrival timestamp</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">rationale</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Typhoon warning issued for Seoul; client arriving 2026-05-14. Operator should alert client and prepare reroute scenarios.</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">AI</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">rationale</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Typhoon warning issued for Seoul; client arriving 2026-05-14. Operator should alert client and prepare reroute scenarios.</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">AI</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">evidence_refs</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">[weather feed alert], [trip itinerary]</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">AI</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">evidence_refs</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">[weather feed alert], [trip itinerary]</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">AI</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">approval_state</td>
-                  <td class="px-5 py-3 text-xs text-slate-300"><strong class="text-amber-400">v1:</strong> pending-review (every suggestion goes to human review). <strong class="text-amber-400">v2:</strong> auto-approved for high-confidence disruptions</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">See §7.1 Stage 3</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">approval_state</td>
+                  <td class="px-5 py-3 text-xs text-mtext2"><strong class="text-amber-400">v1:</strong> pending-review (every suggestion goes to human review). <strong class="text-amber-400">v2:</strong> auto-approved for high-confidence disruptions</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">See §7.1 Stage 3</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">confidence_score</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">0.97</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">High — reliable weather feed, real active trip, clear time pressure</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">confidence_score</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">0.97</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">High — reliable weather feed, real active trip, clear time pressure</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">task_type</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">disruption_response</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">task_type</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">disruption_response</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">subtype</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">weather_disruption</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">subtype</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">weather_disruption</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">created_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-05-12T11:02Z</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">created_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-05-12T11:02Z</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">updated_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-05-12T11:02Z</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">updated_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-05-12T11:02Z</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">snooze_until</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None set</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">dismissal_reason</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None set</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">reopen_count</td><td class="px-5 py-3 text-xs text-slate-300">0</td><td class="px-5 py-3 text-xs text-slate-400">System default</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">last_reopened_at</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">parent_task_id</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">Top-level task (not a sub-task)</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">agent_run_id</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">Not from agent mode</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">snooze_until</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None set</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">dismissal_reason</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None set</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">reopen_count</td><td class="px-5 py-3 text-xs text-mtext">0</td><td class="px-5 py-3 text-xs text-mtext2">System default</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">last_reopened_at</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">parent_task_id</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">Top-level task (not a sub-task)</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">agent_run_id</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">Not from agent mode</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
         <!-- D.3 Pre-arrival checklist (auto tier) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-          <div class="px-5 py-3 bg-slate-800/50 border-b border-slate-800">
-            <h3 class="text-sm font-semibold text-slate-100">D.3 Pre-arrival checklist (auto tier)</h3>
-            <p class="text-xs text-slate-400 mt-1">Daily scheduled query finds a trip departing in 10 days.</p>
+        <div class="bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="px-5 py-3 bg-msurface border-b border-mborder">
+            <h3 class="text-sm font-semibold text-mtext">D.3 Pre-arrival checklist (auto tier)</h3>
+            <p class="text-xs text-mtext2 mt-1">Daily scheduled query finds a trip departing in 10 days.</p>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead>
-                <tr class="border-b border-slate-800">
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:20%">Field</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:45%">Value</th>
-                  <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width:35%">How populated</th>
+                <tr class="border-b border-mborder">
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:20%">Field</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:45%">Value</th>
+                  <th class="text-left px-5 py-3 text-xs font-semibold text-mtext2 uppercase tracking-wider" style="width:35%">How populated</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800">
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">id</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">tsk_01HY0...</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+              <tbody class="divide-y divide-mborder">
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">id</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">tsk_01HY0...</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">title</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Pre-arrival prep: Anderson Tokyo trip T-10d</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Templated from trip name</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">title</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Pre-arrival prep: Anderson Tokyo trip T-10d</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Templated from trip name</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">action</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Re-confirm transfers; brief restaurants on dietary notes; send weather + packing notes to client</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Templated from pre-arrival policy</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">action</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Re-confirm transfers; brief restaurants on dietary notes; send weather + packing notes to client</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Templated from pre-arrival policy</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">actor</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Ops associate (with AI for templated communications)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Routing-assigned</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">actor</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Ops associate (with AI for templated communications)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Routing-assigned</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">when</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">scheduled:T-10d-from-departure</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Derived from trip-lifecycle rule</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">when</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">scheduled:T-10d-from-departure</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Derived from trip-lifecycle rule</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">primary_owner</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Ops associate on the trip</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Routing-assigned</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">primary_owner</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Ops associate on the trip</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Routing-assigned</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">watchers</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">TA on the trip</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Auto-added per pre-arrival policy</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">watchers</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">TA on the trip</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Auto-added per pre-arrival policy</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">status</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">In progress</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Lifecycle</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">status</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">In progress</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Lifecycle</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">primary_context</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">trip:&lt;Anderson family Tokyo Oct 2026&gt;</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred from scheduled query result</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">primary_context</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">trip:&lt;Anderson family Tokyo Oct 2026&gt;</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred from scheduled query result</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">origin</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Trip lifecycle (templated prep)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">From §3.3</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">origin</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Trip lifecycle (templated prep)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">From §3.3</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">creator</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">AI scheduled query</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">creator</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">AI scheduled query</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">creation_surface</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Scheduled query (daily, trips departing in N days)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Captured</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">creation_surface</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Scheduled query (daily, trips departing in N days)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Captured</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">routing_tier</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Auto</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Default for Trip lifecycle templated prep from §6.4</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">routing_tier</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Auto</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Default for Trip lifecycle templated prep from §6.4</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">priority</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Normal</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Default; will auto-bump as date approaches</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">priority</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Normal</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Default; will auto-bump as date approaches</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">due_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-10-15T00:00Z (T-3d from departure)</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Derived from trip departure</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">due_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-10-15T00:00Z (T-3d from departure)</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Derived from trip departure</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">rationale</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">Trip departing in 10 days — pre-arrival checklist auto-spawned.</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">AI (templated)</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">rationale</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">Trip departing in 10 days — pre-arrival checklist auto-spawned.</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">AI (templated)</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">evidence_refs</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">[scheduled query run id], [trip record]</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">AI</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">evidence_refs</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">[scheduled query run id], [trip record]</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">AI</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">approval_state</td>
-                  <td class="px-5 py-3 text-xs text-slate-300"><strong class="text-amber-400">v1:</strong> pending-review (templated trip-prep tasks still go to human review at launch). <strong class="text-amber-400">v2:</strong> auto-approved for high-confidence templates</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">See §7.1 Stage 3</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">approval_state</td>
+                  <td class="px-5 py-3 text-xs text-mtext2"><strong class="text-amber-400">v1:</strong> pending-review (templated trip-prep tasks still go to human review at launch). <strong class="text-amber-400">v2:</strong> auto-approved for high-confidence templates</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">See §7.1 Stage 3</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">confidence_score</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">0.99</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">High — pure templated query, clear active trip, well-known pattern</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">confidence_score</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">0.99</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">High — pure templated query, clear active trip, well-known pattern</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">task_type</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">trip_lifecycle_prep</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Inferred</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">task_type</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">trip_lifecycle_prep</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Inferred</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">subtype</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">pre_arrival_checklist_T-10</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">Templated</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">subtype</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">pre_arrival_checklist_T-10</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">Templated</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">created_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-10-05T00:01Z</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System (when the daily query ran)</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">created_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-10-05T00:01Z</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System (when the daily query ran)</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors">
-                  <td class="px-5 py-3 text-xs font-mono text-slate-300">updated_at</td>
-                  <td class="px-5 py-3 text-xs text-slate-300">2026-10-05T00:01Z</td>
-                  <td class="px-5 py-3 text-xs text-slate-400">System</td>
+                <tr class="hover:bg-mraised/50 transition-colors">
+                  <td class="px-5 py-3 text-xs font-mono text-mtext2">updated_at</td>
+                  <td class="px-5 py-3 text-xs text-mtext2">2026-10-05T00:01Z</td>
+                  <td class="px-5 py-3 text-xs text-mtext3">System</td>
                 </tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">snooze_until</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None set</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">dismissal_reason</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None set</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">reopen_count</td><td class="px-5 py-3 text-xs text-slate-300">0</td><td class="px-5 py-3 text-xs text-slate-400">System default</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">last_reopened_at</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">None</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">parent_task_id</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">Top-level task (not a sub-task)</td></tr>
-                <tr class="hover:bg-slate-800/20 transition-colors"><td class="px-5 py-3 text-xs font-mono text-slate-300">agent_run_id</td><td class="px-5 py-3 text-xs text-slate-300">—</td><td class="px-5 py-3 text-xs text-slate-400">Not from agent mode</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">snooze_until</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None set</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">dismissal_reason</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None set</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">reopen_count</td><td class="px-5 py-3 text-xs text-mtext">0</td><td class="px-5 py-3 text-xs text-mtext2">System default</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">last_reopened_at</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">None</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">parent_task_id</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">Top-level task (not a sub-task)</td></tr>
+                <tr class="hover:bg-mraised/50 transition-colors"><td class="px-5 py-3 text-xs font-mono text-mtext">agent_run_id</td><td class="px-5 py-3 text-xs text-mtext">—</td><td class="px-5 py-3 text-xs text-mtext2">Not from agent mode</td></tr>
               </tbody>
             </table>
           </div>
@@ -475,14 +527,14 @@
 
       </div>
 
-      <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5 mt-8">
-        <p class="text-sm font-semibold text-slate-200 mb-2">Reading the examples</p>
-        <ul class="space-y-2 text-xs text-slate-300">
+      <div class="bg-minfol border border-minfo/30 rounded-lg p-5 mt-8">
+        <p class="text-sm font-semibold text-mtext mb-2">Reading the examples</p>
+        <ul class="space-y-2 text-xs text-mtext2">
           <li><strong>D.1</strong> (Client-driven, Assist) — AI proposes, human approves; routing into the TA's task list. Most fields auto-filled from the message.</li>
           <li><strong>D.2</strong> (World-driven disruption, Escalate) — AI auto-creates the suggestion; the routing tier bumps watchers and priority. Human gate behaviour is phased — v1 always routes to human review for fast triage; v2 auto-approves above the confidence threshold.</li>
           <li><strong>D.3</strong> (Trip lifecycle prep, Auto) — Pure templated. The scheduled query knows it's a pre-arrival task and fills almost everything.</li>
         </ul>
-        <p class="text-xs text-slate-400 mt-3">In all three: the operator never types 23 fields. The system or upstream signal does almost all the work. Manual creation is the only case where humans see fields directly — and per the §7.2 constraint, even then it's just <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">title</code> + <code class="px-1 py-0.5 bg-slate-700 rounded text-slate-300 font-mono text-[10px]">owner</code>.</p>
+        <p class="text-xs text-mtext2 mt-3">In all three: the operator never types 23 fields. The system or upstream signal does almost all the work. Manual creation is the only case where humans see fields directly — and per the §7.2 constraint, even then it's just <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">title</code> + <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">owner</code>.</p>
       </div>
 
     </div>

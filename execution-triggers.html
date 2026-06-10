@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Triggers — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,60 +84,60 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
-      <div class="mb-6 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mb-6 px-4 py-3 rounded-lg bg-mambersoft border border-mamber/30 flex items-start gap-3">
+        <svg class="w-5 h-5 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-300">Execution layer addendum · v0.1 draft proposal</p>
-          <p class="text-xs text-amber-200/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
+          <p class="text-sm font-semibold text-mamber">Execution layer addendum · v0.1 draft proposal</p>
+          <p class="text-xs text-mamber/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
         </div>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Triggers</h2>
-        <p class="text-sm text-slate-500 mt-1">When approved tasks actually fire</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Triggers</h2>
+        <p class="text-sm text-mtext3 mt-1">When approved tasks actually fire</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">Every canonical task has exactly one trigger type, derived from the when field on the v1.0 schema. The field's four values map directly to four trigger types.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">Every canonical task has exactly one trigger type, derived from the when field on the v1.0 schema. The field's four values map directly to four trigger types.</p>
 
       <!-- 4 trigger types (4-card grid) -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Four trigger types</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Four trigger types</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Immediate</h4>
-            <p class="text-xs text-slate-400 mb-2">when value: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">immediately</code></p>
-            <p class="text-xs text-slate-300 mb-2">Fires the instant approval_state flips to approved. The approval gate dispatches the executor synchronously when execution time is bounded (under a few seconds), or asynchronously with a callback for executors that run longer.</p>
-            <p class="text-xs text-slate-400">Backed by: Synchronous executor invocation, or async with callback for long-running</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Immediate</h4>
+            <p class="text-xs text-mtext3 mb-2">when value: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">immediately</code></p>
+            <p class="text-xs text-mtext2 mb-2">Fires the instant approval_state flips to approved. The approval gate dispatches the executor synchronously when execution time is bounded (under a few seconds), or asynchronously with a callback for executors that run longer.</p>
+            <p class="text-xs text-mtext3">Backed by: Synchronous executor invocation, or async with callback for long-running</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Scheduled</h4>
-            <p class="text-xs text-slate-400 mb-2">when value: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">scheduled:&lt;ts&gt;</code></p>
-            <p class="text-xs text-slate-300 mb-2">Fires at the named timestamp. A scheduler worker polls the tasks_due_to_fire queue once per minute. Tasks whose scheduled_at has passed are dispatched to their bound executor.</p>
-            <p class="text-xs text-slate-400">Backed by: Worker polling a tasks_due_to_fire queue every minute</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Scheduled</h4>
+            <p class="text-xs text-mtext3 mb-2">when value: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">scheduled:&lt;ts&gt;</code></p>
+            <p class="text-xs text-mtext2 mb-2">Fires at the named timestamp. A scheduler worker polls the tasks_due_to_fire queue once per minute. Tasks whose scheduled_at has passed are dispatched to their bound executor.</p>
+            <p class="text-xs text-mtext3">Backed by: Worker polling a tasks_due_to_fire queue every minute</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">On-event</h4>
-            <p class="text-xs text-slate-400 mb-2">when value: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">on-event:&lt;event&gt;</code></p>
-            <p class="text-xs text-slate-300 mb-2">Fires when a named event matches. The named events for v1 are enumerated below; each maps to a stream in v1.0 §4. At task approval time, the system registers a listener with the event bus.</p>
-            <p class="text-xs text-slate-400">Backed by: Pub-sub event bus (recommendation: Postgres LISTEN/NOTIFY)</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">On-event</h4>
+            <p class="text-xs text-mtext3 mb-2">when value: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">on-event:&lt;event&gt;</code></p>
+            <p class="text-xs text-mtext2 mb-2">Fires when a named event matches. The named events for v1 are enumerated below; each maps to a stream in v1.0 §4. At task approval time, the system registers a listener with the event bus.</p>
+            <p class="text-xs text-mtext3">Backed by: Pub-sub event bus (recommendation: Postgres LISTEN/NOTIFY)</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Manual-fire (deferred)</h4>
-            <p class="text-xs text-slate-400 mb-2">when value: <code class="px-1 py-0.5 bg-slate-800 rounded text-slate-300 font-mono text-[10px]">deferred</code></p>
-            <p class="text-xs text-slate-300 mb-2">Fires when a human explicitly invokes the task. Used when a task is created and approved, but execution is gated on a manual fire. The executor binding is still resolved at approval time. The task sits in pending execution status until an operator clicks "fire now".</p>
-            <p class="text-xs text-slate-400">Backed by: Operator action from the task surface</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4 hover:border-mborderh transition-colors">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Manual-fire (deferred)</h4>
+            <p class="text-xs text-mtext3 mb-2">when value: <code class="px-1 py-0.5 bg-msurface rounded text-mtext2 font-mono text-[10px]">deferred</code></p>
+            <p class="text-xs text-mtext2 mb-2">Fires when a human explicitly invokes the task. Used when a task is created and approved, but execution is gated on a manual fire. The executor binding is still resolved at approval time. The task sits in pending execution status until an operator clicks "fire now".</p>
+            <p class="text-xs text-mtext3">Backed by: Operator action from the task surface</p>
           </div>
 
         </div>
@@ -93,104 +145,104 @@
 
       <!-- v1 on-event trigger registry (6 events) -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">v1 on-event trigger registry</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">v1 on-event trigger registry</h3>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Trigger event</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">What fires it</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Maps to v1.0 §4 stream</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Latency target</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Trigger event</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">What fires it</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Maps to v1.0 §4 stream</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Latency target</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">client-replied</td>
-                <td class="px-4 py-3 text-xs text-slate-300">New inbound client message in the bound conversation</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Inbound client messages</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Sub-second</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">client-replied</td>
+                <td class="px-4 py-3 text-xs text-mtext2">New inbound client message in the bound conversation</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Inbound client messages</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Sub-second</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">vendor-confirmed</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Supplier confirmation parsed from email or supplier API</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Booking confirmation events</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Minutes</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">vendor-confirmed</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Supplier confirmation parsed from email or supplier API</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Booking confirmation events</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Minutes</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">payment-cleared</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Payment processor success webhook for the bound trip</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Payment events</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Seconds</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">payment-cleared</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Payment processor success webhook for the bound trip</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Payment events</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Seconds</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">flight-status-changed</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Flight feed update affecting the bound trip</td>
-                <td class="px-4 py-3 text-xs text-slate-300">External signals captured</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Minutes</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">flight-status-changed</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Flight feed update affecting the bound trip</td>
+                <td class="px-4 py-3 text-xs text-mtext2">External signals captured</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Minutes</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">trip-state-changed</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Trip pipeline lane move or component edit</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Trip pipeline state changes</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Sub-second</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">trip-state-changed</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Trip pipeline lane move or component edit</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Trip pipeline state changes</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Sub-second</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">task-completed</td>
-                <td class="px-4 py-3 text-xs text-slate-300">A parent task closed (used for chained sub-tasks)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Activity / audit events (internal task-system event, not external stream)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Sub-second</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">task-completed</td>
+                <td class="px-4 py-3 text-xs text-mtext2">A parent task closed (used for chained sub-tasks)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Activity / audit events (internal task-system event, not external stream)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Sub-second</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p class="text-xs text-slate-400 mt-3 leading-relaxed">Each trigger has a payload schema, which the bound executor reads as part of its input. Payload schemas live in a separate engineering doc, they are not specified here.</p>
+        <p class="text-xs text-mtext3 mt-3 leading-relaxed">Each trigger has a payload schema, which the bound executor reads as part of its input. Payload schemas live in a separate engineering doc, they are not specified here.</p>
       </div>
 
       <!-- Immediate trigger details -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Immediate trigger</h3>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-          <p class="text-sm text-slate-300 mb-3">Used for the dominant flow: human approves a suggestion, executor fires immediately. Backing: the approval gate dispatches the executor synchronously when execution time is bounded (under a few seconds), or asynchronously with a callback for executors that run longer.</p>
-          <p class="text-xs text-slate-400"><strong>Example from v1.0 Appendix D:</strong> D.1 Aman Tokyo hotel search. when is immediately, executor is hotel_search_executor, fires the moment the TA clicks approve.</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Immediate trigger</h3>
+        <div class="bg-mcard border border-mborder rounded-lg p-5">
+          <p class="text-sm text-mtext2 mb-3">Used for the dominant flow: human approves a suggestion, executor fires immediately. Backing: the approval gate dispatches the executor synchronously when execution time is bounded (under a few seconds), or asynchronously with a callback for executors that run longer.</p>
+          <p class="text-xs text-mtext3"><strong>Example from v1.0 Appendix D:</strong> D.1 Aman Tokyo hotel search. when is immediately, executor is hotel_search_executor, fires the moment the TA clicks approve.</p>
         </div>
       </div>
 
       <!-- Scheduled trigger details -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Scheduled trigger</h3>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-          <p class="text-sm text-slate-300 mb-3">Used when a task should fire at a future time. Examples: "Send anniversary message July 1", "Pre-arrival checklist T minus 10 days", "Day-1 check-in T plus 24 hours after arrival".</p>
-          <p class="text-sm text-slate-300 mb-3">Backing: a scheduler worker polls the tasks_due_to_fire queue once per minute. Tasks whose scheduled_at has passed are dispatched to their bound executor. The queue is a thin index on the task_execution table, populated at task approval time.</p>
-          <p class="text-xs font-semibold text-slate-200 mb-2">Drift</p>
-          <p class="text-xs text-slate-300">If the worker stalls or the system is down, scheduled tasks may fire late. The reconciler sweep (§7) catches late firings and surfaces them to ops if the lag exceeds a threshold (proposed: 15 minutes for time-sensitive task types, 6 hours for ambient ones; thresholds product-tunable per task_type).</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Scheduled trigger</h3>
+        <div class="bg-mcard border border-mborder rounded-lg p-5">
+          <p class="text-sm text-mtext2 mb-3">Used when a task should fire at a future time. Examples: "Send anniversary message July 1", "Pre-arrival checklist T minus 10 days", "Day-1 check-in T plus 24 hours after arrival".</p>
+          <p class="text-sm text-mtext2 mb-3">Backing: a scheduler worker polls the tasks_due_to_fire queue once per minute. Tasks whose scheduled_at has passed are dispatched to their bound executor. The queue is a thin index on the task_execution table, populated at task approval time.</p>
+          <p class="text-xs font-semibold text-mtext mb-2">Drift</p>
+          <p class="text-xs text-mtext2">If the worker stalls or the system is down, scheduled tasks may fire late. The reconciler sweep (§7) catches late firings and surfaces them to ops if the lag exceeds a threshold (proposed: 15 minutes for time-sensitive task types, 6 hours for ambient ones; thresholds product-tunable per task_type).</p>
         </div>
       </div>
 
       <!-- On-event trigger details -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">On-event trigger</h3>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-          <p class="text-sm text-slate-300 mb-3">Used when a task should fire in response to a named event somewhere else in the system. The named events for v1 are enumerated in the table above; each maps to a stream in v1.0 §4.</p>
-          <p class="text-xs font-semibold text-slate-200 mb-2">What about §4 streams that aren't in the trigger registry yet?</p>
-          <p class="text-xs text-slate-300 mb-3">v1.0 §4 lists nine streams. Six map to v1 triggers above. Three are deferred to v2 or later: Outbound advisor messages (used for AI follow-up reminders, v2), AI agent runs (internal to the agent layer), Client profile mutations (slow-moving, low priority for triggered tasks). The deferred set can join the registry incrementally without re-architecting the bus.</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">On-event trigger</h3>
+        <div class="bg-mcard border border-mborder rounded-lg p-5">
+          <p class="text-sm text-mtext2 mb-3">Used when a task should fire in response to a named event somewhere else in the system. The named events for v1 are enumerated in the table above; each maps to a stream in v1.0 §4.</p>
+          <p class="text-xs font-semibold text-mtext mb-2">What about §4 streams that aren't in the trigger registry yet?</p>
+          <p class="text-xs text-mtext2 mb-3">v1.0 §4 lists nine streams. Six map to v1 triggers above. Three are deferred to v2 or later: Outbound advisor messages (used for AI follow-up reminders, v2), AI agent runs (internal to the agent layer), Client profile mutations (slow-moving, low priority for triggered tasks). The deferred set can join the registry incrementally without re-architecting the bus.</p>
         </div>
       </div>
 
       <!-- Engineering call callout -->
       <div class="mb-8">
-        <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5">
-          <p class="text-sm font-semibold text-slate-200 mb-2">Engineering call (open question, §12)</p>
-          <p class="text-xs text-slate-300 mb-2">Event bus tech choice. Recommendation for v1: Postgres LISTEN/NOTIFY. The squad already runs Postgres, infra cost is zero, throughput is sufficient at expected v1 volume (under 100 events per minute). Graduate to Redis Streams or Kafka in v3 if throughput or fan-out demands it.</p>
+        <div class="bg-minfol border border-minfo/30 rounded-lg p-5">
+          <p class="text-sm font-semibold text-mtext mb-2">Engineering call (open question, §12)</p>
+          <p class="text-xs text-mtext2 mb-2">Event bus tech choice. Recommendation for v1: Postgres LISTEN/NOTIFY. The squad already runs Postgres, infra cost is zero, throughput is sufficient at expected v1 volume (under 100 events per minute). Graduate to Redis Streams or Kafka in v3 if throughput or fan-out demands it.</p>
         </div>
       </div>
 
       <!-- Manual-fire trigger details -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Manual-fire trigger (deferred)</h3>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-          <p class="text-sm text-slate-300 mb-3">Used when a task is created and approved, but execution is gated on a manual fire. Examples: a TA pre-approves a series of vendor outreach messages but wants to send them only when a specific decision lands.</p>
-          <p class="text-xs text-slate-300">The executor binding is still resolved at approval time. The task sits in pending execution status until an operator clicks "fire now" on the task surface, at which point execution proceeds as if the trigger were immediate.</p>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Manual-fire trigger (deferred)</h3>
+        <div class="bg-mcard border border-mborder rounded-lg p-5">
+          <p class="text-sm text-mtext2 mb-3">Used when a task is created and approved, but execution is gated on a manual fire. Examples: a TA pre-approves a series of vendor outreach messages but wants to send them only when a specific decision lands.</p>
+          <p class="text-xs text-mtext2">The executor binding is still resolved at approval time. The task sits in pending execution status until an operator clicks "fire now" on the task surface, at which point execution proceeds as if the trigger were immediate.</p>
         </div>
       </div>
 

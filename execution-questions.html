@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Open Questions (Exec) — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,13 +69,13 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -32,175 +84,175 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
-      <div class="mb-6 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mb-6 px-4 py-3 rounded-lg bg-mambersoft border border-mamber/30 flex items-start gap-3">
+        <svg class="w-5 h-5 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-300">Execution layer addendum · v0.1 draft proposal</p>
-          <p class="text-xs text-amber-200/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
+          <p class="text-sm font-semibold text-mamber">Execution layer addendum · v0.1 draft proposal</p>
+          <p class="text-xs text-mtext2 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
         </div>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Open Questions (Execution Layer)</h2>
-        <p class="text-sm text-slate-500 mt-1">12 alignment-meeting questions for the execution layer</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Open Questions (Execution Layer)</h2>
+        <p class="text-sm text-mtext3 mt-1">12 alignment-meeting questions for the execution layer</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">These are the calls the PM, Conductor co-owners, and Platform PO need to make. The addendum does not pre-decide them.</p>
+      <p class="text-sm text-mtext2 mb-6 leading-relaxed">These are the calls the PM, Conductor co-owners, and Platform PO need to make. The addendum does not pre-decide them.</p>
 
       <!-- 2-col grid of 12 question cards -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">1</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">1</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Execution result storage: separate table (proposed) or denormalised on canonical record</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">§6 proposes separate. Trade-off: extra join cost vs. schema bloat on the canonical record. Eng + PO call.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Execution result storage: separate table (proposed) or denormalised on canonical record</h3>
+              <p class="text-xs text-mtext2 leading-relaxed">§6 proposes separate. Trade-off: extra join cost vs. schema bloat on the canonical record. Eng + PO call.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">2</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">2</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Retry policy per task_type: uniform or category-specific</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">v1 has no retry. v2 needs per-type policy. Relationship-tier (v1.0 §3.4) and messaging-tier arguably never auto-retry; ops-internal and templated trip-prep can. Default mapping to confirm.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Retry policy per task_type: uniform or category-specific</h3>
+              <p class="text-xs text-mtext2 leading-relaxed mb-2">v1 has no retry. v2 needs per-type policy. Relationship-tier (v1.0 §3.4) and messaging-tier arguably never auto-retry; ops-internal and templated trip-prep can. Default mapping to confirm.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">3</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">3</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Event bus tech for on-event triggers</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">Postgres LISTEN/NOTIFY (proposed for v2), Redis Streams, or Kafka. Eng call, but throughput projections from product needed to pick the right tier.</p>
-              <div class="bg-blue-500/10 border border-blue-500/30 rounded px-3 py-2">
-                <p class="text-xs text-slate-300"><strong>Starting proposal:</strong> Postgres LISTEN/NOTIFY for v1/v2. The squad already runs Postgres, infra cost is zero, throughput is sufficient at expected v1 volume (under 100 events per minute). Graduate to Redis Streams or Kafka in v3 if throughput or fan-out demands it.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Event bus tech for on-event triggers</h3>
+              <p class="text-xs text-mtext2 leading-relaxed mb-2">Postgres LISTEN/NOTIFY (proposed for v2), Redis Streams, or Kafka. Eng call, but throughput projections from product needed to pick the right tier.</p>
+              <div class="bg-minfol border border-minfo/30 rounded px-3 py-2">
+                <p class="text-xs text-mtext2"><strong>Starting proposal:</strong> Postgres LISTEN/NOTIFY for v1/v2. The squad already runs Postgres, infra cost is zero, throughput is sufficient at expected v1 volume (under 100 events per minute). Graduate to Redis Streams or Kafka in v3 if throughput or fan-out demands it.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">4</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">4</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Executor registry storage progression</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Hardcoded (v1), config table (v2), admin UI (v3). The progression is in §10; the calendar is product-paced. Does product want admin UI sooner?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Executor registry storage progression</h3>
+              <p class="text-xs text-mtext2 leading-relaxed">Hardcoded (v1), config table (v2), admin UI (v3). The progression is in §10; the calendar is product-paced. Does product want admin UI sooner?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">5</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">5</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Pause-resume model for long-running tasks (v3 scope)</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">In-memory state machine with periodic checkpointing, or explicit per-step persisted state. Affects which executors can run > 1 hour.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Pause-resume model for long-running tasks (v3 scope)</h3>
+              <p class="text-xs text-mtext2 leading-relaxed">In-memory state machine with periodic checkpointing, or explicit per-step persisted state. Affects which executors can run > 1 hour.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">6</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">6</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Cancellation cascading semantics</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">When a parent canonical task is cancelled, do all child executions stop, including in-flight API calls? §9 proposes yes for trip-state-changed = cancelled. Edge case: what about a partial-cancellation (one component of a trip is cancelled but the trip itself isn't)?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Cancellation cascading semantics</h3>
+              <p class="text-xs text-mtext2 leading-relaxed mb-2">When a parent canonical task is cancelled, do all child executions stop, including in-flight API calls? §9 proposes yes for trip-state-changed = cancelled. Edge case: what about a partial-cancellation (one component of a trip is cancelled but the trip itself isn't)?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">7</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">7</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">How execution failures route to humans</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">Three options: (a) same Review queue as suggestions (v1.0 §7.2), (b) a separate "blocked tasks" lane on the task board, (c) a per-owner inbox notification. §7 leans toward (b); confirm.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">How execution failures route to humans</h3>
+              <p class="text-xs text-mtext2 leading-relaxed mb-2">Three options: (a) same Review queue as suggestions (v1.0 §7.2), (b) a separate "blocked tasks" lane on the task board, (c) a per-owner inbox notification. §7 leans toward (b); confirm.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">8</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">8</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Sub-task spawn pattern</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">§8.3 (pre-arrival checklist) shows a composite executor spawning scheduled sub-tasks. The agent-subtask task_type from v1.0 Appendix F also produces sub-tasks. Should both use the same parent_task_id linkage (already on the v1.0 schema), or does composite-spawn need a distinct relationship type?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Sub-task spawn pattern</h3>
+              <p class="text-xs text-mtext2 leading-relaxed">§8.3 (pre-arrival checklist) shows a composite executor spawning scheduled sub-tasks. The agent-subtask task_type from v1.0 Appendix F also produces sub-tasks. Should both use the same parent_task_id linkage (already on the v1.0 schema), or does composite-spawn need a distinct relationship type?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">9</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">9</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Trigger event payload schemas</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Each on-event trigger needs a payload schema (what fields the executor reads from the event). v1 doesn't ship on-event so this is v2 prep work, but should the schemas live in this spec or in a separate event-bus spec?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Trigger event payload schemas</h3>
+              <p class="text-xs text-mtext2 leading-relaxed">Each on-event trigger needs a payload schema (what fields the executor reads from the event). v1 doesn't ship on-event so this is v2 prep work, but should the schemas live in this spec or in a separate event-bus spec?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">10</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">10</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Min acceptable result threshold per executor type</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">§9 mentions "v2 introduces a per-executor min acceptable result check". Is this a product concept (per task_type configurable) or an executor-internal concept (each executor implements its own bar)?</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Min acceptable result threshold per executor type</h3>
+              <p class="text-xs text-mtext2 leading-relaxed">§9 mentions "v2 introduces a per-executor min acceptable result check". Is this a product concept (per task_type configurable) or an executor-internal concept (each executor implements its own bar)?</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">11</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">11</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Operator-facing executor visibility</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">Does the operator see "running hotel_search_executor v1" on the task surface, or just "in progress"? Trade-off: transparency vs. UI noise. Recommendation: show on a debug panel, hide on the default task surface.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Operator-facing executor visibility</h3>
+              <p class="text-xs text-mtext2 leading-relaxed mb-2">Does the operator see "running hotel_search_executor v1" on the task surface, or just "in progress"? Trade-off: transparency vs. UI noise. Recommendation: show on a debug panel, hide on the default task surface.</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-colors">
+        <div class="bg-mcard border border-mborder rounded-lg p-5 hover:border-mborderh transition-colors">
           <div class="flex gap-3">
-            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <span class="font-mono text-sm font-bold text-orange-400">12</span>
+            <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-maccentl border border-maccent/30 flex items-center justify-center">
+              <span class="font-mono text-sm font-bold text-maccent">12</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-sm font-semibold text-slate-100 mb-1.5">Composite executor failure-mode visibility</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-2">When a composite (AI proposes, human approves, AI sends) fails at the AI-send step after the human approved, what does the human see? Default proposal: a "we couldn't send your approved message" notification with the error payload visible.</p>
+              <h3 class="text-sm font-semibold text-mtext mb-1.5">Composite executor failure-mode visibility</h3>
+              <p class="text-xs text-mtext2 leading-relaxed mb-2">When a composite (AI proposes, human approves, AI sends) fails at the AI-send step after the human approved, what does the human see? Default proposal: a "we couldn't send your approved message" notification with the error payload visible.</p>
             </div>
           </div>
         </div>

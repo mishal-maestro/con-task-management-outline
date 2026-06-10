@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Execution State Machine — Conductor Task Mgmt — Interactive Outline</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="theme.js"></script>
   <script src="data.js"></script>
@@ -17,9 +69,9 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
 
     .state-node {
       display: inline-block;
@@ -31,14 +83,14 @@
       min-width: 120px;
     }
 
-    .state-queued { background: #1e293b; border: 2px solid #475569; color: #94a3b8; }
-    .state-running { background: #1e3a8a; border: 2px solid #3b82f6; color: #93c5fd; }
-    .state-succeeded { background: #14532d; border: 2px solid #22c55e; color: #86efac; }
-    .state-failed { background: #7f1d1d; border: 2px solid #ef4444; color: #fca5a5; }
-    .state-cancelled { background: #44403c; border: 2px solid #78716c; color: #a8a29e; }
+    .state-queued { background: rgb(var(--maestro-surface)); border: 2px solid rgb(var(--maestro-border)); color: rgb(var(--maestro-text-secondary)); }
+    .state-running { background: rgb(var(--maestro-info-light)); border: 2px solid rgb(var(--maestro-info)); color: rgb(var(--maestro-info)); }
+    .state-succeeded { background: rgb(var(--maestro-success-light)); border: 2px solid rgb(var(--maestro-success)); color: rgb(var(--maestro-success)); }
+    .state-failed { background: rgb(var(--maestro-danger-light)); border: 2px solid rgb(var(--maestro-danger)); color: rgb(var(--maestro-danger)); }
+    .state-cancelled { background: rgb(var(--maestro-surface-raised)); border: 2px solid rgb(var(--maestro-border-hover)); color: rgb(var(--maestro-text-tertiary)); }
 
     .arrow {
-      stroke: #64748b;
+      stroke: rgb(var(--maestro-border-hover));
       stroke-width: 2;
       fill: none;
       marker-end: url(#arrowhead);
@@ -46,18 +98,13 @@
 
     .arrow-label {
       font-size: 10px;
-      fill: #94a3b8;
+      fill: rgb(var(--maestro-text-secondary));
       text-anchor: middle;
     }
   </style>
-
-  <script src="theme.js"></script>
-  <script src="data.js"></script>
-  <script>window.CURRENT_PAGE = 'execution-state';</script>
-  <script src="nav.js"></script>
 </head>
 
-<body class="bg-slate-950 text-slate-300 font-sans min-h-screen antialiased">
+<body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
   <div id="nav-root"></div>
 
@@ -66,125 +113,125 @@
 
       <div class="mb-6">
         <a href="https://www.notion.so/35fd1ecb2189816fbd68fbce0cac241a" target="_blank"
-           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors">
+           class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-mcard border border-mborder text-xs text-mtext3 hover:text-mtext hover:border-mborderh transition-colors">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Notion outline (source of truth)
         </a>
       </div>
 
-      <div class="mb-6 px-4 py-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
-        <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="mb-6 px-4 py-3 rounded-lg bg-mambersoft border border-mamber/30 flex items-start gap-3">
+        <svg class="w-5 h-5 text-mamber flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="flex-1">
-          <p class="text-sm font-semibold text-amber-300">Execution layer addendum · v0.1 draft proposal</p>
-          <p class="text-xs text-amber-200/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
+          <p class="text-sm font-semibold text-mamber">Execution layer addendum · v0.1 draft proposal</p>
+          <p class="text-xs text-mamber/70 mt-0.5">Not signed off. Companion to v1.0 (which is the alignment-ready outline). Read v1.0 first; this addendum closes the post-approval execution gap.</p>
         </div>
       </div>
 
       <div class="mb-8">
-        <h2 class="text-2xl font-semibold text-slate-100 tracking-tight">Execution State Machine</h2>
-        <p class="text-sm text-slate-500 mt-1">Schema additions, status transitions, edge cases</p>
+        <h2 class="text-2xl font-serif font-semibold text-mtext tracking-tight">Execution State Machine</h2>
+        <p class="text-sm text-mtext3 mt-1">Schema additions, status transitions, edge cases</p>
       </div>
 
-      <p class="text-sm text-slate-400 mb-6 leading-relaxed">The v1.0 canonical task carries 29 fields covering identity, ownership, lifecycle, context, and audit. It does not carry execution result fields (output payload, success or failure indicator, attempt counter, error trace). This addendum proposes a separate task_execution table joined to the canonical task by foreign key.</p>
+      <p class="text-sm text-mtext3 mb-6 leading-relaxed">The v1.0 canonical task carries 29 fields covering identity, ownership, lifecycle, context, and audit. It does not carry execution result fields (output payload, success or failure indicator, attempt counter, error trace). This addendum proposes a separate task_execution table joined to the canonical task by foreign key.</p>
 
       <!-- Why a separate table -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Why a separate task_execution table</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Why a separate task_execution table</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Multi-attempt support</h4>
-            <p class="text-xs text-slate-300">Retries are expected (transient API failures, scheduled fires that miss their window, manual reruns). One canonical task can have many execution attempts. Denormalising the latest attempt onto the canonical record loses the history.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Multi-attempt support</h4>
+            <p class="text-xs text-mtext2">Retries are expected (transient API failures, scheduled fires that miss their window, manual reruns). One canonical task can have many execution attempts. Denormalising the latest attempt onto the canonical record loses the history.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Schema discipline</h4>
-            <p class="text-xs text-slate-300">v1.0 §7.2 deliberately constrained the canonical record at 29 fields with UI implications. Bolting execution_status, result_payload, error_payload, attempt_count, and three timestamps onto the same row pushes the schema past 35 fields and complicates v1.0's rendering rules.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Schema discipline</h4>
+            <p class="text-xs text-mtext2">v1.0 §7.2 deliberately constrained the canonical record at 29 fields with UI implications. Bolting execution_status, result_payload, error_payload, attempt_count, and three timestamps onto the same row pushes the schema past 35 fields and complicates v1.0's rendering rules.</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
-            <h4 class="text-sm font-semibold text-slate-100 mb-2">Audit and query patterns</h4>
-            <p class="text-xs text-slate-300">Ops queries often look like "show me every failed payment-chase execution last week", which is a join-then-filter on the execution table, not a scan over the canonical record.</p>
+          <div class="bg-mcard border border-mborder rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-mtext mb-2">Audit and query patterns</h4>
+            <p class="text-xs text-mtext2">Ops queries often look like "show me every failed payment-chase execution last week", which is a join-then-filter on the execution table, not a scan over the canonical record.</p>
           </div>
 
         </div>
-        <p class="text-xs text-slate-400 mt-3">The cost is one join for surfaces that need the latest execution alongside the canonical record. Acceptable given the surface model in v1.0 §7.2 (the task board can defer execution detail to a detail-view panel).</p>
+        <p class="text-xs text-mtext3 mt-3">The cost is one join for surfaces that need the latest execution alongside the canonical record. Acceptable given the surface model in v1.0 §7.2 (the task board can defer execution detail to a detail-view panel).</p>
       </div>
 
       <!-- task_execution table schema -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">task_execution table schema</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">task_execution table schema</h3>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Column</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Type</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Notes</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Column</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Type</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Notes</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">execution_id</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (primary key)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Per-attempt unique id.</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">execution_id</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (primary key)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Per-attempt unique id.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">task_id</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (FK to canonical task)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The task this attempt belongs to.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">task_id</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (FK to canonical task)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The task this attempt belongs to.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">executor_id</td>
-                <td class="px-4 py-3 text-xs text-slate-300">string (FK to executor registry)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Locked at approval time, copied here for audit.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">executor_id</td>
+                <td class="px-4 py-3 text-xs text-mtext2">string (FK to executor registry)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Locked at approval time, copied here for audit.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">executor_version</td>
-                <td class="px-4 py-3 text-xs text-slate-300">integer</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Locked at approval time.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">executor_version</td>
+                <td class="px-4 py-3 text-xs text-mtext2">integer</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Locked at approval time.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">attempt_number</td>
-                <td class="px-4 py-3 text-xs text-slate-300">integer, default 1</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Increments on retry.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">attempt_number</td>
+                <td class="px-4 py-3 text-xs text-mtext2">integer, default 1</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Increments on retry.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">execution_status</td>
-                <td class="px-4 py-3 text-xs text-slate-300">enum</td>
-                <td class="px-4 py-3 text-xs text-slate-300">queued / running / succeeded / failed / cancelled.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">execution_status</td>
+                <td class="px-4 py-3 text-xs text-mtext2">enum</td>
+                <td class="px-4 py-3 text-xs text-mtext2">queued / running / succeeded / failed / cancelled.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">triggered_by</td>
-                <td class="px-4 py-3 text-xs text-slate-300">enum + payload</td>
-                <td class="px-4 py-3 text-xs text-slate-300">immediate / scheduled-fire / event:&lt;name&gt; / manual-fire. For event: rows, includes the event payload reference.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">triggered_by</td>
+                <td class="px-4 py-3 text-xs text-mtext2">enum + payload</td>
+                <td class="px-4 py-3 text-xs text-mtext2">immediate / scheduled-fire / event:&lt;name&gt; / manual-fire. For event: rows, includes the event payload reference.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">started_at</td>
-                <td class="px-4 py-3 text-xs text-slate-300">timestamp</td>
-                <td class="px-4 py-3 text-xs text-slate-300">When the executor began.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">started_at</td>
+                <td class="px-4 py-3 text-xs text-mtext2">timestamp</td>
+                <td class="px-4 py-3 text-xs text-mtext2">When the executor began.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">completed_at</td>
-                <td class="px-4 py-3 text-xs text-slate-300">timestamp, nullable</td>
-                <td class="px-4 py-3 text-xs text-slate-300">When the executor returned (success or failure). Null while queued or running.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">completed_at</td>
+                <td class="px-4 py-3 text-xs text-mtext2">timestamp, nullable</td>
+                <td class="px-4 py-3 text-xs text-mtext2">When the executor returned (success or failure). Null while queued or running.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">result_payload</td>
-                <td class="px-4 py-3 text-xs text-slate-300">JSON, nullable</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Output on success. Examples: ranked hotel list, message receipt id, schedule confirmation id.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">result_payload</td>
+                <td class="px-4 py-3 text-xs text-mtext2">JSON, nullable</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Output on success. Examples: ranked hotel list, message receipt id, schedule confirmation id.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">error_payload</td>
-                <td class="px-4 py-3 text-xs text-slate-300">JSON, nullable</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Error code, error message, executor-specific diagnostic info on failure.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">error_payload</td>
+                <td class="px-4 py-3 text-xs text-mtext2">JSON, nullable</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Error code, error message, executor-specific diagnostic info on failure.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs font-mono text-slate-300">next_retry_at</td>
-                <td class="px-4 py-3 text-xs text-slate-300">timestamp, nullable</td>
-                <td class="px-4 py-3 text-xs text-slate-300">For retry-eligible failures. Null for succeeded, cancelled, and failed-and-final.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs font-mono text-mtext2">next_retry_at</td>
+                <td class="px-4 py-3 text-xs text-mtext2">timestamp, nullable</td>
+                <td class="px-4 py-3 text-xs text-mtext2">For retry-eligible failures. Null for succeeded, cancelled, and failed-and-final.</td>
               </tr>
             </tbody>
           </table>
@@ -193,19 +240,19 @@
 
       <!-- State machine diagram -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Execution state machine</h3>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 overflow-x-auto">
+        <h3 class="text-sm font-semibold text-mtext mb-3">Execution state machine</h3>
+        <div class="bg-mcard border border-mborder rounded-lg p-6 overflow-x-auto">
           <svg width="100%" height="400" viewBox="0 0 1000 400" style="min-width: 900px;">
             <defs>
               <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                <polygon points="0 0, 10 3, 0 6" fill="#64748b" />
+                <polygon points="0 0, 10 3, 0 6" fill="rgb(var(--maestro-border-hover))" />
               </marker>
             </defs>
 
             <!-- Approval node -->
             <g transform="translate(50, 200)">
-              <rect width="100" height="50" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2"/>
-              <text x="50" y="30" font-size="13" font-weight="600" fill="#94a3b8" text-anchor="middle">Approval</text>
+              <rect width="100" height="50" rx="8" fill="rgb(var(--maestro-surface))" stroke="rgb(var(--maestro-border))" stroke-width="2"/>
+              <text x="50" y="30" font-size="13" font-weight="600" fill="rgb(var(--maestro-text-secondary))" text-anchor="middle">Approval</text>
             </g>
 
             <!-- Arrow: Approval → Queued -->
@@ -235,7 +282,7 @@
             <!-- Succeeded node -->
             <g transform="translate(710, 95)">
               <rect width="120" height="50" rx="8" class="state-succeeded"/>
-              <text x="60" y="30" font-size="13" font-weight="600" fill="#86efac" text-anchor="middle">Succeeded</text>
+              <text x="60" y="30" font-size="13" font-weight="600" fill="rgb(var(--maestro-success))" text-anchor="middle">Succeeded</text>
             </g>
 
             <!-- Arrow: Running → Failed -->
@@ -245,7 +292,7 @@
             <!-- Failed node -->
             <g transform="translate(710, 280)">
               <rect width="120" height="50" rx="8" class="state-failed"/>
-              <text x="60" y="30" font-size="13" font-weight="600" fill="#fca5a5" text-anchor="middle">Failed</text>
+              <text x="60" y="30" font-size="13" font-weight="600" fill="rgb(var(--maestro-danger))" text-anchor="middle">Failed</text>
             </g>
 
             <!-- Arrow: Running → Cancelled -->
@@ -255,82 +302,82 @@
             <!-- Cancelled node -->
             <g transform="translate(710, 325)">
               <rect width="120" height="50" rx="8" class="state-cancelled"/>
-              <text x="60" y="30" font-size="13" font-weight="600" fill="#a8a29e" text-anchor="middle">Cancelled</text>
+              <text x="60" y="30" font-size="13" font-weight="600" fill="rgb(var(--maestro-text-tertiary))" text-anchor="middle">Cancelled</text>
             </g>
 
             <!-- Canonical status annotations -->
             <g transform="translate(850, 95)">
-              <text x="10" y="30" font-size="11" fill="#64748b">→ canonical status: done</text>
+              <text x="10" y="30" font-size="11" fill="rgb(var(--maestro-text-tertiary))">→ canonical status: done</text>
             </g>
             <g transform="translate(850, 280)">
-              <text x="10" y="30" font-size="11" fill="#64748b">→ canonical status: blocked</text>
+              <text x="10" y="30" font-size="11" fill="rgb(var(--maestro-text-tertiary))">→ canonical status: blocked</text>
             </g>
             <g transform="translate(850, 325)">
-              <text x="10" y="30" font-size="11" fill="#64748b">→ canonical status: dismissed</text>
+              <text x="10" y="30" font-size="11" fill="rgb(var(--maestro-text-tertiary))">→ canonical status: dismissed</text>
             </g>
 
           </svg>
-          <p class="text-xs text-slate-400 mt-4">The canonical task's status field (v1.0 §7.2) reflects the highest-level state. The task_execution row reflects the per-attempt detail. The v1.0 activity log records the high-level transitions; the execution table records the per-attempt details.</p>
+          <p class="text-xs text-mtext3 mt-4">The canonical task's status field (v1.0 §7.2) reflects the highest-level state. The task_execution row reflects the per-attempt detail. The v1.0 activity log records the high-level transitions; the execution table records the per-attempt details.</p>
         </div>
       </div>
 
       <!-- Status transitions table -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Status transitions</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Status transitions</h3>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Execution event</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Canonical task status after</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Notes</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Execution event</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Canonical task status after</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Notes</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Task approved, executor queued</td>
-                <td class="px-4 py-3 text-xs text-slate-300">pending → in_progress (or stays pending for deferred trigger)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The instant a non-deferred trigger registers the executor.</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Task approved, executor queued</td>
+                <td class="px-4 py-3 text-xs text-mtext2">pending → in_progress (or stays pending for deferred trigger)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The instant a non-deferred trigger registers the executor.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor starts running</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress (no change if already in_progress)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The execution row moves from queued to running.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor starts running</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress (no change if already in_progress)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The execution row moves from queued to running.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor returns success, closure rule is auto-close</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress → done</td>
-                <td class="px-4 py-3 text-xs text-slate-300">For auto-tier templated tasks per v1.0 §7.3 (e.g. pre-arrival checklist on confirmation arrival).</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor returns success, closure rule is auto-close</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress → done</td>
+                <td class="px-4 py-3 text-xs text-mtext2">For auto-tier templated tasks per v1.0 §7.3 (e.g. pre-arrival checklist on confirmation arrival).</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor returns success, closure rule is AI-proposed-close</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress (stays); banner on the task surface offers "close this?"</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Human ACKs to flip to done. v1.0 §7.3.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor returns success, closure rule is AI-proposed-close</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress (stays); banner on the task surface offers "close this?"</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Human ACKs to flip to done. v1.0 §7.3.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor returns success, closure rule is human ACK only</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress (stays)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Relationship-tier and other human-voice critical work. v1.0 §7.3.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor returns success, closure rule is human ACK only</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress (stays)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Relationship-tier and other human-voice critical work. v1.0 §7.3.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor returns failure, retries available</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress (stays); execution row marks failed, queues next_retry_at</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The reconciler picks it up.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor returns failure, retries available</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress (stays); execution row marks failed, queues next_retry_at</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The reconciler picks it up.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor returns failure, retries exhausted</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress → blocked; watchers notified</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Operator decides whether to re-scope (dismiss with reason re-scope) or manually retry.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor returns failure, retries exhausted</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress → blocked; watchers notified</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Operator decides whether to re-scope (dismiss with reason re-scope) or manually retry.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor cancelled (upstream cancellation, e.g. trip cancelled)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress → dismissed; dismissal_reason = cancelled-upstream</td>
-                <td class="px-4 py-3 text-xs text-slate-300">v1.0 §7.2 requires a dismissal reason.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor cancelled (upstream cancellation, e.g. trip cancelled)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress → dismissed; dismissal_reason = cancelled-upstream</td>
+                <td class="px-4 py-3 text-xs text-mtext2">v1.0 §7.2 requires a dismissal reason.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Operator manually closes during execution</td>
-                <td class="px-4 py-3 text-xs text-slate-300">in_progress → done or dismissed per operator action</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Standard v1.0 §7.3 paths still apply. The execution row is marked cancelled with triggered_by = manual-close.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Operator manually closes during execution</td>
+                <td class="px-4 py-3 text-xs text-mtext2">in_progress → done or dismissed per operator action</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Standard v1.0 §7.3 paths still apply. The execution row is marked cancelled with triggered_by = manual-close.</td>
               </tr>
             </tbody>
           </table>
@@ -339,81 +386,81 @@
 
       <!-- Retry policy in v1 -->
       <div class="mb-8">
-        <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-5">
-          <p class="text-sm font-semibold text-amber-300 mb-2">Retry policy in v1</p>
-          <p class="text-xs text-slate-300 mb-2"><strong>v1 is conservative.</strong> No automatic retry for any executor. Failure surfaces as a blocked task. The reconciler sweep notifies watchers. The operator decides whether to retry manually or re-scope.</p>
-          <p class="text-xs text-slate-300">Rationale: retrying without thinking burns API budget, can double-send messages, and can produce silent duplicates on the booking side. The squad does not have the metrics in v1 to know which executors retry safely. v2 introduces exponential backoff per executor type once the failure data tells us which retries are safe.</p>
+        <div class="bg-mambersoft border border-mamber/30 rounded-lg p-5">
+          <p class="text-sm font-semibold text-mamber mb-2">Retry policy in v1</p>
+          <p class="text-xs text-mtext2 mb-2"><strong>v1 is conservative.</strong> No automatic retry for any executor. Failure surfaces as a blocked task. The reconciler sweep notifies watchers. The operator decides whether to retry manually or re-scope.</p>
+          <p class="text-xs text-mtext2">Rationale: retrying without thinking burns API budget, can double-send messages, and can produce silent duplicates on the booking side. The squad does not have the metrics in v1 to know which executors retry safely. v2 introduces exponential backoff per executor type once the failure data tells us which retries are safe.</p>
         </div>
       </div>
 
       <!-- Reconciler sweep -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Reconciler sweep</h3>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-5">
-          <p class="text-sm text-slate-300 mb-3">A periodic job, every 24 hours in v1, scans for two problem cases:</p>
-          <ul class="space-y-2 text-xs text-slate-300">
+        <h3 class="text-sm font-semibold text-mtext mb-3">Reconciler sweep</h3>
+        <div class="bg-mcard border border-mborder rounded-lg p-5">
+          <p class="text-sm text-mtext2 mb-3">A periodic job, every 24 hours in v1, scans for two problem cases:</p>
+          <ul class="space-y-2 text-xs text-mtext2">
             <li><strong>1.</strong> Tasks in in_progress with no task_execution row updated in over 24 hours. Likely orphans (executor fired but never reported back). Flag for ops review.</li>
             <li><strong>2.</strong> Tasks in pending with a scheduled trigger whose scheduled_at is more than 15 minutes past due. Likely scheduler-worker lag. Flag for engineering review.</li>
           </ul>
-          <p class="text-xs text-slate-400 mt-3">Both surface on a dedicated reconciler view, accessible from the ops dashboard. The view is not the task board; it is a separate audit surface for cases the normal flow should be catching but isn't.</p>
+          <p class="text-xs text-mtext3 mt-3">Both surface on a dedicated reconciler view, accessible from the ops dashboard. The view is not the task board; it is a separate audit surface for cases the normal flow should be catching but isn't.</p>
         </div>
       </div>
 
       <!-- Edge cases and failure modes -->
       <div class="mb-8">
-        <h3 class="text-sm font-semibold text-slate-100 mb-3">Edge cases and failure modes</h3>
+        <h3 class="text-sm font-semibold text-mtext mb-3">Edge cases and failure modes</h3>
         <div class="overflow-x-auto">
-          <table class="w-full bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+          <table class="w-full bg-mcard border border-mborder rounded-lg overflow-hidden">
             <thead>
-              <tr class="border-b border-slate-800">
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider" style="width: 35%;">Case</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Handling in v1</th>
+              <tr class="border-b border-mborder">
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider" style="width: 35%;">Case</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-mtext3 uppercase tracking-wider">Handling in v1</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800">
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Trigger fires but executor is unavailable (service down)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Mark execution failed with a SERVICE_UNAVAILABLE code. Canonical task moves to blocked. Reconciler picks up. v2 introduces retry-with-backoff.</td>
+            <tbody class="divide-y divide-mborder">
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Trigger fires but executor is unavailable (service down)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Mark execution failed with a SERVICE_UNAVAILABLE code. Canonical task moves to blocked. Reconciler picks up. v2 introduces retry-with-backoff.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor succeeds but acknowledgement never returns</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Long-running executor stalls. The reconciler sweep flags after 24 hours (long-running task ceiling in v1). Ops escalates to engineering.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor succeeds but acknowledgement never returns</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Long-running executor stalls. The reconciler sweep flags after 24 hours (long-running task ceiling in v1). Ops escalates to engineering.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor fires twice (duplicate event)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Trigger fingerprint on the event row prevents duplicate dispatch. Implementation: a content-hash on the trigger payload; if the same hash fires twice within a dedup window, only the first reaches the executor.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor fires twice (duplicate event)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Trigger fingerprint on the event row prevents duplicate dispatch. Implementation: a content-hash on the trigger payload; if the same hash fires twice within a dedup window, only the first reaches the executor.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Two vendors confirm at once (correlated triggers)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Per v1.0 §3.2 and Appendix E.3, the suggestion stage already correlates multi-signal cases into one suggestion. By the time the canonical task fires, the correlation has happened upstream. No special handling needed at the execution layer.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Two vendors confirm at once (correlated triggers)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Per v1.0 §3.2 and Appendix E.3, the suggestion stage already correlates multi-signal cases into one suggestion. By the time the canonical task fires, the correlation has happened upstream. No special handling needed at the execution layer.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Client cancels the trip mid-execution</td>
-                <td class="px-4 py-3 text-xs text-slate-300">A trip-state-changed event fires with new_state = cancelled. The execution layer listens for this on every active task bound to the cancelled trip and dispatches a cancellation to each running executor. The execution row moves to cancelled with triggered_by = manual-cancel-from-trip-cancellation. Canonical task moves to dismissed with dismissal_reason = cancelled-upstream.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Client cancels the trip mid-execution</td>
+                <td class="px-4 py-3 text-xs text-mtext2">A trip-state-changed event fires with new_state = cancelled. The execution layer listens for this on every active task bound to the cancelled trip and dispatches a cancellation to each running executor. The execution row moves to cancelled with triggered_by = manual-cancel-from-trip-cancellation. Canonical task moves to dismissed with dismissal_reason = cancelled-upstream.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Operator dismisses the task during execution</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Same as cancellation, but triggered_by = operator-dismiss. The executor receives a cancellation signal and returns gracefully if it can. If it can't (e.g. a message has already been sent), the dismissal still happens but the execution row records cancellation_came_too_late with the sent-message receipt id, preserving audit.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Operator dismisses the task during execution</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Same as cancellation, but triggered_by = operator-dismiss. The executor receives a cancellation signal and returns gracefully if it can. If it can't (e.g. a message has already been sent), the dismissal still happens but the execution row records cancellation_came_too_late with the sent-message receipt id, preserving audit.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Scheduled fire is missed (worker down for an hour)</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The reconciler sweep flags scheduled fires more than 15 minutes past due. The operator decides whether to fire late or skip. v1 does not auto-fire late.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Scheduled fire is missed (worker down for an hour)</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The reconciler sweep flags scheduled fires more than 15 minutes past due. The operator decides whether to fire late or skip. v1 does not auto-fire late.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Executor returns a partial result</td>
-                <td class="px-4 py-3 text-xs text-slate-300">E.g. hotel search returns 1 of 3 expected options. v1 treats this as succeeded with the partial payload. The TA sees the partial result and decides whether to re-search. v2 introduces a per-executor "min acceptable result" check; below the bar, the row is marked succeeded-degraded and surfaces a soft alert.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Executor returns a partial result</td>
+                <td class="px-4 py-3 text-xs text-mtext2">E.g. hotel search returns 1 of 3 expected options. v1 treats this as succeeded with the partial payload. The TA sees the partial result and decides whether to re-search. v2 introduces a per-executor "min acceptable result" check; below the bar, the row is marked succeeded-degraded and surfaces a soft alert.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Long-running task crosses 24 hours</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Currently flagged by reconciler. v1 has no executor-side checkpointing. True pause-resume is v3 scope.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Long-running task crosses 24 hours</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Currently flagged by reconciler. v1 has no executor-side checkpointing. True pause-resume is v3 scope.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Task is approved with a future-scheduled trigger; then the operator wants to edit the action</td>
-                <td class="px-4 py-3 text-xs text-slate-300">Per §3, the execution contract is immutable post-approval. The operator dismisses the current task with reason re-scope and creates a new suggestion. The activity log preserves the lineage.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Task is approved with a future-scheduled trigger; then the operator wants to edit the action</td>
+                <td class="px-4 py-3 text-xs text-mtext2">Per §3, the execution contract is immutable post-approval. The operator dismisses the current task with reason re-scope and creates a new suggestion. The activity log preserves the lineage.</td>
               </tr>
-              <tr class="hover:bg-slate-800/20">
-                <td class="px-4 py-3 text-xs text-slate-300">Sub-task fails inside a composite executor's run</td>
-                <td class="px-4 py-3 text-xs text-slate-300">The composite's parent task moves to blocked with the failing sub-task referenced in the error_payload. Sibling sub-tasks may have already succeeded; their execution rows remain on the record. v1 does not auto-rollback siblings.</td>
+              <tr class="hover:bg-mraised/20">
+                <td class="px-4 py-3 text-xs text-mtext2">Sub-task fails inside a composite executor's run</td>
+                <td class="px-4 py-3 text-xs text-mtext2">The composite's parent task moves to blocked with the failing sub-task referenced in the error_payload. Sibling sub-tasks may have already succeeded; their execution rows remain on the record. v1 does not auto-rollback siblings.</td>
               </tr>
             </tbody>
           </table>

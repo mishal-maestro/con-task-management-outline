@@ -6,13 +6,13 @@
   const arrowDefs = `
     <defs>
       <marker id="arrow-seq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10 z" fill="#9ca3af"/>
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#8c8780"/>
       </marker>
       <marker id="arrow-msg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+        <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#50a0dc" stroke-width="1.5"/>
       </marker>
       <marker id="arrow-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/>
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
       </marker>
     </defs>
   `;
@@ -142,19 +142,19 @@
 
     if (connType === 'message') {
       path.setAttribute('d', buildPath(start, end));
-      path.setAttribute('stroke', '#60a5fa');
+      path.setAttribute('stroke', '#50a0dc');
       path.setAttribute('stroke-dasharray', '6,4');
       path.setAttribute('marker-end', 'url(#arrow-msg)');
     } else if (connType === 'loop') {
       // Loop: drop down below both, route across, come back up.
       const bottomY = Math.max(start.y, end.y) + 60;
       path.setAttribute('d', `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${end.x} ${bottomY} L ${end.x} ${end.y}`);
-      path.setAttribute('stroke', '#f59e0b');
+      path.setAttribute('stroke', '#fbbf24');
       path.setAttribute('marker-end', 'url(#arrow-loop)');
     } else {
       // sequence flow (default)
       path.setAttribute('d', buildPath(start, end));
-      path.setAttribute('stroke', '#9ca3af');
+      path.setAttribute('stroke', '#8c8780');
       path.setAttribute('marker-end', 'url(#arrow-seq)');
     }
 
@@ -203,7 +203,7 @@
       bg.setAttribute('y', labelY - bbox.height + padding / 2);
       bg.setAttribute('width', bbox.width + padding * 2);
       bg.setAttribute('height', bbox.height + padding);
-      bg.setAttribute('fill', '#0f172a');
+      bg.setAttribute('fill', '#26262a');
       bg.setAttribute('rx', '3');
       svg.appendChild(bg);
 
@@ -213,7 +213,7 @@
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('font-size', '10');
       text.setAttribute('font-weight', '600');
-      text.setAttribute('fill', connType === 'message' ? '#60a5fa' : '#d1d5db');
+      text.setAttribute('fill', connType === 'message' ? '#50a0dc' : '#b4afa8');
       text.textContent = label;
       svg.appendChild(text);
     }

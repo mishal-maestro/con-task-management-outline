@@ -5,10 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat — Conductor Task Mgmt Prototype</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../maestro-theme.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mbg: 'rgb(var(--maestro-bg))',
+            mcard: 'rgb(var(--maestro-card))',
+            msurface: 'rgb(var(--maestro-surface))',
+            mraised: 'rgb(var(--maestro-surface-raised))',
+            mborder: 'rgb(var(--maestro-border))',
+            mborderh: 'rgb(var(--maestro-border-hover))',
+            mtext: 'rgb(var(--maestro-text-primary))',
+            mtext2: 'rgb(var(--maestro-text-secondary))',
+            mtext3: 'rgb(var(--maestro-text-tertiary))',
+            maccent: 'rgb(var(--maestro-accent))',
+            maccenth: 'rgb(var(--maestro-accent-hover))',
+            maccentl: 'rgb(var(--maestro-accent-light))',
+            msuccess: 'rgb(var(--maestro-success))',
+            msuccessl: 'rgb(var(--maestro-success-light))',
+            mdanger: 'rgb(var(--maestro-danger))',
+            mdangerl: 'rgb(var(--maestro-danger-light))',
+            mwarning: 'rgb(var(--maestro-warning))',
+            mwarningl: 'rgb(var(--maestro-warning-light))',
+            mamber: 'rgb(var(--maestro-amber))',
+            mambersoft: 'rgb(var(--maestro-amber-soft))',
+            minfo: 'rgb(var(--maestro-info))',
+            minfol: 'rgb(var(--maestro-info-light))',
+            'chip-green': 'rgb(var(--maestro-chip-green))',
+            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
+            'chip-orange': 'rgb(var(--maestro-chip-orange))',
+            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
+            'chip-blue': 'rgb(var(--maestro-chip-blue))',
+            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
+            'chip-teal': 'rgb(var(--maestro-chip-teal))',
+            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
+            'chip-purple': 'rgb(var(--maestro-chip-purple))',
+            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
+            'chip-pink': 'rgb(var(--maestro-chip-pink))',
+            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
+          },
+          fontFamily: {
+            sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['DM Serif Display', 'ui-serif', 'Georgia', 'serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
 
   <script src="../theme.js"></script>
   <script src="task-data.js"></script>
@@ -18,18 +70,18 @@
 
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    ::-webkit-scrollbar-track { background: rgb(var(--maestro-bg)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--maestro-border)); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--maestro-border-hover)); }
 
-    body { background: #020617; }
+    body { background: rgb(var(--maestro-bg)); }
 
     /* Modal */
     .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .15s ease-out; }
     .modal-backdrop.open { opacity: 1; pointer-events: auto; }
     .toast { animation: toast-in .2s ease-out; }
     @keyframes toast-in { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .kbd { display: inline-block; padding: 0.0625rem 0.3125rem; background: rgb(30 41 59); border: 1px solid rgb(51 65 85); border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; color: rgb(252 211 77); }
+    .kbd { display: inline-block; padding: 0.0625rem 0.3125rem; background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); border-radius: 0.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.625rem; color: rgb(var(--maestro-amber)); }
 
     /* Hover affordance on message bubbles */
     .msg-actions { opacity: 0; transition: opacity .15s; pointer-events: none; }
@@ -38,54 +90,54 @@
     /* AI suggestion pulse */
     .ai-suggestion { animation: pulse-border 2s ease-in-out infinite; }
     @keyframes pulse-border {
-      0%, 100% { border-color: rgba(255, 94, 50, 0.5); }
-      50%      { border-color: rgba(255, 94, 50, 0.2); }
+      0%, 100% { border-color: rgba(var(--maestro-accent), 0.5); }
+      50%      { border-color: rgba(var(--maestro-accent), 0.2); }
     }
 
     /* Conversation item */
     .conv-item {
       cursor: pointer;
       padding: 0.875rem 1rem;
-      border-bottom: 1px solid rgb(15 23 42);
+      border-bottom: 1px solid rgb(var(--maestro-border));
       border-left: 2px solid transparent;
       transition: all .12s;
     }
-    .conv-item:hover { background: rgba(30, 41, 59, 0.4); }
-    .conv-item.active { background: rgba(30, 41, 59, 0.6); border-left-color: rgb(255 94 50); }
+    .conv-item:hover { background: rgba(var(--maestro-surface), 0.6); }
+    .conv-item.active { background: rgba(var(--maestro-surface), 0.9); border-left-color: rgb(var(--maestro-accent)); }
 
     .priority-chip, .due-chip {
       display: inline-flex; align-items: center;
       padding: 0.25rem 0.625rem;
       font-size: 0.6875rem;
-      color: rgb(203 213 225);
-      background: rgb(2 6 23);
-      border: 1px solid rgb(30 41 59);
+      color: rgb(var(--maestro-text-secondary));
+      background: rgb(var(--maestro-bg));
+      border: 1px solid rgb(var(--maestro-border));
       border-radius: 0.375rem;
       cursor: pointer;
       transition: all .12s ease-out;
     }
-    .priority-chip:hover, .due-chip:hover { color: rgb(241 245 249); border-color: rgb(51 65 85); background: rgb(30 41 59); }
-    .priority-chip.active, .due-chip.active { color: rgb(255 247 237); background: rgba(255, 94, 50, 0.15); border-color: rgba(255, 94, 50, 0.5); }
+    .priority-chip:hover, .due-chip:hover { color: rgb(var(--maestro-text-primary)); border-color: rgb(var(--maestro-border-hover)); background: rgb(var(--maestro-surface)); }
+    .priority-chip.active, .due-chip.active { color: rgb(var(--maestro-on-accent)); background: rgb(var(--maestro-accent-light)); border-color: rgba(var(--maestro-accent), 0.5); }
     #more-chevron.expanded { transform: rotate(90deg); }
 
     /* Tab strip */
     .top-tab {
       padding: 0.625rem 0.875rem;
       font-size: 0.8125rem;
-      color: rgb(148 163 184);
+      color: rgb(var(--maestro-text-secondary));
       cursor: pointer;
       transition: color .12s;
       border-bottom: 2px solid transparent;
       display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    .top-tab:hover { color: rgb(241 245 249); }
-    .top-tab.active { color: rgb(241 245 249); border-bottom-color: rgb(255 94 50); }
+    .top-tab:hover { color: rgb(var(--maestro-text-primary)); }
+    .top-tab.active { color: rgb(var(--maestro-text-primary)); border-bottom-color: rgb(var(--maestro-accent)); }
 
     /* Toggle */
-    .toggle { position: relative; width: 28px; height: 16px; background: rgb(30 41 59); border-radius: 9999px; cursor: pointer; transition: background .12s; flex-shrink: 0; }
-    .toggle.on { background: rgba(255, 94, 50, 0.5); }
-    .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 9999px; background: rgb(203 213 225); transition: transform .12s; }
-    .toggle.on::after { transform: translateX(12px); background: rgb(255 247 237); }
+    .toggle { position: relative; width: 28px; height: 16px; background: rgb(var(--maestro-surface)); border-radius: 9999px; cursor: pointer; transition: background .12s; flex-shrink: 0; }
+    .toggle.on { background: rgba(var(--maestro-accent), 0.5); }
+    .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 9999px; background: rgb(var(--maestro-text-secondary)); transition: transform .12s; }
+    .toggle.on::after { transform: translateX(12px); background: rgb(var(--maestro-on-accent)); }
 
     /* AI is drafting indicator */
     @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
@@ -93,31 +145,31 @@
   </style>
 </head>
 
-<body class="text-slate-300 font-sans min-h-screen antialiased">
+<body class="text-mtext2 font-sans min-h-screen antialiased">
 
   <!-- Top nav (shared via topnav.js) -->
   <div id="topnav-root"></div>
 
   <!-- Prototype helper strip -->
-  <div class="bg-amber-500/10 border-b border-amber-500/30 px-4 py-1.5 text-[11px] text-slate-400 flex items-center gap-2">
-    <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-    <span>Prototype mock of Conductor chat surface · <a href="../index.html" class="text-orange-400 hover:text-orange-300 underline">PRD outline</a> · <a href="index.html" class="text-orange-400 hover:text-orange-300 underline">prototype index</a></span>
+  <div class="bg-mambersoft border-b border-mamber/30 px-4 py-1.5 text-[11px] text-mtext3 flex items-center gap-2">
+    <svg class="w-3 h-3 text-mamber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span>Prototype mock of Conductor chat surface · <a href="../index.html" class="text-maccent hover:text-maccenth underline">PRD outline</a> · <a href="index.html" class="text-maccent hover:text-maccenth underline">prototype index</a></span>
   </div>
 
   <!-- ─── 3-column chat layout ─── -->
   <div class="flex" style="height: calc(100vh - 12px - 48px - 30px);">
 
     <!-- ── LEFT: Conversation list ── -->
-    <aside class="w-[300px] border-r border-slate-800 bg-slate-950 flex flex-col flex-shrink-0">
+    <aside class="w-[300px] border-r border-mborder bg-mbg flex flex-col flex-shrink-0">
       <!-- Search + filters -->
-      <div class="p-3 border-b border-slate-800">
+      <div class="p-3 border-b border-mborder">
         <div class="relative mb-2">
-          <input type="text" placeholder="Search conversations…" class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-orange-500" />
-          <svg class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" placeholder="Search conversations…" class="w-full bg-msurface border border-mborder rounded-lg pl-8 pr-3 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent" />
+          <svg class="w-3.5 h-3.5 text-mtext3 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         </div>
         <div class="flex items-center gap-1.5">
-          <button class="px-2 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-slate-300 hover:border-slate-700">All status ▾</button>
-          <button class="px-2 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-slate-300 hover:border-slate-700">All cat ▾</button>
+          <button class="px-2 py-1 rounded-md bg-msurface border border-mborder text-[11px] text-mtext2 hover:border-mborderh">All status ▾</button>
+          <button class="px-2 py-1 rounded-md bg-msurface border border-mborder text-[11px] text-mtext2 hover:border-mborderh">All cat ▾</button>
         </div>
       </div>
       <!-- List -->
@@ -127,30 +179,30 @@
     </aside>
 
     <!-- ── MIDDLE: Chat thread ── -->
-    <main class="flex-1 flex flex-col min-w-0 bg-slate-950">
+    <main class="flex-1 flex flex-col min-w-0 bg-mbg">
       <!-- Thread header -->
-      <div class="h-14 px-4 border-b border-slate-800 flex items-center gap-3 flex-shrink-0">
+      <div class="h-14 px-4 border-b border-mborder flex items-center gap-3 flex-shrink-0">
         <div class="flex items-baseline gap-2 min-w-0">
-          <h2 id="chat-title" class="text-base font-semibold text-slate-100 truncate">—</h2>
-          <span id="chat-status" class="text-[11px] px-1.5 py-0.5 rounded text-slate-400 border border-slate-800">New ▾</span>
+          <h2 id="chat-title" class="text-base font-semibold text-mtext truncate">—</h2>
+          <span id="chat-status" class="text-[11px] px-1.5 py-0.5 rounded text-mtext3 border border-mborder">New ▾</span>
         </div>
         <div class="flex-1"></div>
         <div class="flex items-center gap-2">
           <div class="flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-            <span class="text-[11px] text-slate-400">Auto-reply</span>
+            <svg class="w-3.5 h-3.5 text-mtext3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            <span class="text-[11px] text-mtext3">Auto-reply</span>
             <div id="auto-reply-toggle" class="toggle on"></div>
           </div>
-          <div class="w-px h-5 bg-slate-800 mx-1"></div>
-          <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Search in thread"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
+          <div class="w-px h-5 bg-mborder mx-1"></div>
+          <button class="p-1.5 text-mtext3 hover:text-mtext2 transition-colors" title="Search in thread"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
         </div>
       </div>
 
       <!-- Assigned + chip placeholder (matches live conductor) -->
-      <div class="px-4 py-2 border-b border-slate-800 flex items-center gap-2 text-[11px] text-slate-500 flex-shrink-0">
+      <div class="px-4 py-2 border-b border-mborder flex items-center gap-2 text-[11px] text-mtext3 flex-shrink-0">
         <span class="font-semibold uppercase tracking-wider">Assigned:</span>
-        <span id="chat-assignee" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">—</span>
-        <button class="text-orange-400 hover:text-orange-300">+ watcher</button>
+        <span id="chat-assignee" class="px-2 py-0.5 rounded-full bg-msurface text-mtext2">—</span>
+        <button class="text-maccent hover:text-maccenth">+ watcher</button>
       </div>
 
       <!-- Messages -->
@@ -159,65 +211,65 @@
       </div>
 
       <!-- AI draft card (appears via from-task deep link OR AI Draft button click) -->
-      <div id="ai-draft-card" class="hidden border-t border-slate-800 px-3 py-3 bg-slate-950 flex-shrink-0">
-        <div class="bg-orange-500/5 border border-orange-500/40 rounded-lg p-3">
+      <div id="ai-draft-card" class="hidden border-t border-mborder px-3 py-3 bg-mbg flex-shrink-0">
+        <div class="bg-maccentl border border-maccent/40 rounded-lg p-3">
           <div class="flex items-center gap-2 mb-2 flex-wrap">
-            <div class="w-5 h-5 rounded-full bg-orange-500/25 text-orange-300 flex items-center justify-center text-[10px] font-bold flex-shrink-0">AI</div>
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-orange-300">AI draft</span>
-            <span class="text-[10px] text-slate-500">·</span>
-            <span id="ai-draft-source" class="text-[10px] text-slate-400">—</span>
+            <div class="w-5 h-5 rounded-full bg-maccent/25 text-maccent flex items-center justify-center text-[10px] font-bold flex-shrink-0">AI</div>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-maccent">AI draft</span>
+            <span class="text-[10px] text-mtext3">·</span>
+            <span id="ai-draft-source" class="text-[10px] text-mtext3">—</span>
             <div class="flex-1"></div>
-            <a id="ai-draft-view-task" href="#" class="task-id-link hidden text-[11px] text-slate-400 hover:text-orange-300 inline-flex items-center gap-1 transition-colors" title="Open the task drawer to see rationale, evidence, activity history">
+            <a id="ai-draft-view-task" href="#" class="task-id-link hidden text-[11px] text-mtext3 hover:text-maccent inline-flex items-center gap-1 transition-colors" title="Open the task drawer to see rationale, evidence, activity history">
               View task
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
             </a>
           </div>
-          <div id="ai-draft-text" class="bg-slate-950 border border-slate-800 rounded p-2.5 text-sm text-slate-200 leading-relaxed mb-2.5 whitespace-pre-line">—</div>
+          <div id="ai-draft-text" class="bg-mbg border border-mborder rounded p-2.5 text-sm text-mtext leading-relaxed mb-2.5 whitespace-pre-line">—</div>
           <div class="flex items-center gap-2 flex-wrap">
-            <button id="ai-draft-send-as-is" class="px-2.5 py-1 rounded-md bg-green-500/15 text-green-300 border border-green-500/40 hover:bg-green-500/25 text-[11px] font-medium" title="PRD §7.1: one-click fires the message and closes the task">
+            <button id="ai-draft-send-as-is" class="px-2.5 py-1 rounded-md bg-msuccessl text-msuccess border border-msuccess/40 hover:bg-msuccess/25 text-[11px] font-medium" title="PRD §7.1: one-click fires the message and closes the task">
               ✓ Send as-is
             </button>
-            <button id="ai-draft-insert" class="px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-slate-700" title="Push into composer for edits">
+            <button id="ai-draft-insert" class="px-2.5 py-1 rounded-md bg-msurface border border-mborder text-[11px] text-mtext2 hover:bg-mraised" title="Push into composer for edits">
               Insert &amp; edit
             </button>
-            <button id="ai-draft-dismiss" class="px-2.5 py-1 rounded-md text-[11px] text-slate-500 hover:text-red-400">Dismiss</button>
+            <button id="ai-draft-dismiss" class="px-2.5 py-1 rounded-md text-[11px] text-mtext3 hover:text-mdanger">Dismiss</button>
             <div class="flex-1"></div>
-            <span class="text-[10px] text-slate-600 hidden md:inline">Type below to write your own</span>
+            <span class="text-[10px] text-mtext3 hidden md:inline">Type below to write your own</span>
           </div>
         </div>
       </div>
 
       <!-- AI drafting indicator (shows while AI Draft button is generating) -->
-      <div id="ai-drafting" class="hidden border-t border-slate-800 px-4 py-2 bg-orange-500/5 flex items-center gap-2 flex-shrink-0">
+      <div id="ai-drafting" class="hidden border-t border-mborder px-4 py-2 bg-maccentl flex items-center gap-2 flex-shrink-0">
         <div class="flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-orange-400 ai-thinking-dot"></span>
-          <span class="w-1.5 h-1.5 rounded-full bg-orange-400 ai-thinking-dot" style="animation-delay: 0.2s"></span>
-          <span class="w-1.5 h-1.5 rounded-full bg-orange-400 ai-thinking-dot" style="animation-delay: 0.4s"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-maccent ai-thinking-dot"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-maccent ai-thinking-dot" style="animation-delay: 0.2s"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-maccent ai-thinking-dot" style="animation-delay: 0.4s"></span>
         </div>
-        <span class="text-[11px] text-orange-300">AI is drafting a reply…</span>
+        <span class="text-[11px] text-maccent">AI is drafting a reply…</span>
       </div>
 
       <!-- Composer -->
-      <div class="border-t border-slate-800 p-3 bg-slate-950 flex-shrink-0">
-        <div class="flex flex-col gap-2 px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg">
-          <textarea id="composer-input" rows="2" placeholder="Reply to…" class="bg-transparent text-sm text-slate-200 placeholder-slate-500 focus:outline-none resize-none leading-relaxed"></textarea>
+      <div class="border-t border-mborder p-3 bg-mbg flex-shrink-0">
+        <div class="flex flex-col gap-2 px-3 py-2 bg-msurface border border-mborder rounded-lg">
+          <textarea id="composer-input" rows="2" placeholder="Reply to…" class="bg-transparent text-sm text-mtext placeholder-mtext3 focus:outline-none resize-none leading-relaxed"></textarea>
           <div class="flex items-center gap-1 -mt-1">
-            <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Attach"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg></button>
-            <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Emoji"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
-            <button id="ai-draft-btn" class="px-2 py-1 rounded-md bg-orange-500/15 border border-orange-500/40 text-orange-300 hover:bg-orange-500/25 text-[11px] font-medium inline-flex items-center gap-1.5" title="Generate AI draft reply (on-demand AI auto-reply)">
+            <button class="p-1.5 text-mtext3 hover:text-mtext2 transition-colors" title="Attach"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg></button>
+            <button class="p-1.5 text-mtext3 hover:text-mtext2 transition-colors" title="Emoji"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
+            <button id="ai-draft-btn" class="px-2 py-1 rounded-md bg-maccentl border border-maccent/40 text-maccent hover:bg-maccent/20 text-[11px] font-medium inline-flex items-center gap-1.5" title="Generate AI draft reply (on-demand AI auto-reply)">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
               AI Draft
             </button>
-            <button class="p-1.5 text-slate-500 hover:text-slate-300 transition-colors" title="Schedule send"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
+            <button class="p-1.5 text-mtext3 hover:text-mtext2 transition-colors" title="Schedule send"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></button>
             <div class="flex-1"></div>
-            <button id="composer-send" class="p-1.5 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors" title="Send"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+            <button id="composer-send" class="p-1.5 rounded-md bg-maccent text-white hover:bg-maccenth transition-colors" title="Send"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
           </div>
         </div>
       </div>
     </main>
 
     <!-- ── RIGHT: Client details panel ── -->
-    <aside class="w-[300px] border-l border-slate-800 bg-slate-950 flex flex-col flex-shrink-0 overflow-y-auto">
+    <aside class="w-[300px] border-l border-mborder bg-mbg flex flex-col flex-shrink-0 overflow-y-auto">
       <div id="client-panel" class="p-4 space-y-4">
         <!-- rendered by JS -->
       </div>
@@ -227,24 +279,24 @@
 
   <!-- Manual create modal (same shape as task-board) -->
   <div id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-md shadow-2xl">
-      <div class="p-5 border-b border-slate-800">
-        <h3 class="text-base font-semibold text-slate-100">Create task</h3>
-        <p class="text-xs text-slate-500 mt-0.5" id="modal-subtitle">Title is required. Owner defaults to you. Everything else is filled silently.</p>
+    <div class="bg-mcard border border-mborder rounded-xl w-full max-w-md shadow-2xl">
+      <div class="p-5 border-b border-mborder">
+        <h3 class="text-base font-semibold text-mtext">Create task</h3>
+        <p class="text-xs text-mtext3 mt-0.5" id="modal-subtitle">Title is required. Owner defaults to you. Everything else is filled silently.</p>
       </div>
       <div class="p-5 space-y-4">
-        <div id="context-chip" class="hidden bg-slate-800/50 border border-slate-700 rounded-lg p-2.5 flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-          <span class="text-[11px] text-slate-400">From: <span id="context-label" class="text-slate-200">—</span></span>
+        <div id="context-chip" class="hidden bg-msurface/50 border border-mborder rounded-lg p-2.5 flex items-center gap-2">
+          <svg class="w-3.5 h-3.5 text-mtext3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          <span class="text-[11px] text-mtext3">From: <span id="context-label" class="text-mtext">—</span></span>
         </div>
         <div>
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Title</label>
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-mtext3 mb-1.5">Title</label>
           <input id="modal-title" type="text" placeholder="e.g. Follow up with Greer about JAL upgrade"
-            class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-orange-500 transition-colors" />
+            class="w-full bg-mbg border border-mborder rounded-lg px-3 py-2 text-sm text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent transition-colors" />
         </div>
         <div>
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Owner <span class="text-slate-600 normal-case">(optional)</span></label>
-          <select id="modal-owner" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-orange-500 transition-colors">
+          <label class="block text-[11px] font-semibold uppercase tracking-wider text-mtext3 mb-1.5">Owner <span class="text-mtext3 normal-case">(optional)</span></label>
+          <select id="modal-owner" class="w-full bg-mbg border border-mborder rounded-lg px-3 py-2 text-sm text-mtext focus:outline-none focus:border-maccent transition-colors">
             <option value="mc" selected>Maya Chen (you)</option>
             <option value="js">Jordan Singh</option>
             <option value="rp">Rae Park</option>
@@ -252,35 +304,35 @@
           </select>
         </div>
 
-        <button type="button" id="more-toggle" class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300 transition-colors">
+        <button type="button" id="more-toggle" class="flex items-center gap-1.5 text-[11px] text-mtext3 hover:text-mtext2 transition-colors">
           <svg id="more-chevron" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          More options <span class="text-slate-600">(priority, due, type)</span>
+          More options <span class="text-mtext3">(priority, due, type)</span>
         </button>
 
-        <div id="more-fields" class="hidden space-y-4 pt-1 border-t border-slate-800/60">
+        <div id="more-fields" class="hidden space-y-4 pt-1 border-t border-mborder/60">
           <div>
-            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Priority</label>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-mtext3 mb-1.5">Priority</label>
             <div class="flex items-center gap-1.5">
-              <button type="button" class="priority-chip" data-priority="urgent"><span class="w-1.5 h-1.5 rounded-full bg-red-500 inline-block mr-1.5"></span>Urgent</button>
-              <button type="button" class="priority-chip" data-priority="high"><span class="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block mr-1.5"></span>High</button>
-              <button type="button" class="priority-chip active" data-priority="medium"><span class="w-1.5 h-1.5 rounded-full bg-sky-500 inline-block mr-1.5"></span>Medium</button>
-              <button type="button" class="priority-chip" data-priority="low"><span class="w-1.5 h-1.5 rounded-full bg-slate-500 inline-block mr-1.5"></span>Low</button>
+              <button type="button" class="priority-chip" data-priority="urgent"><span class="w-1.5 h-1.5 rounded-full bg-mdanger inline-block mr-1.5"></span>Urgent</button>
+              <button type="button" class="priority-chip" data-priority="high"><span class="w-1.5 h-1.5 rounded-full bg-maccent inline-block mr-1.5"></span>High</button>
+              <button type="button" class="priority-chip active" data-priority="medium"><span class="w-1.5 h-1.5 rounded-full bg-minfo inline-block mr-1.5"></span>Medium</button>
+              <button type="button" class="priority-chip" data-priority="low"><span class="w-1.5 h-1.5 rounded-full bg-mtext3 inline-block mr-1.5"></span>Low</button>
             </div>
           </div>
           <div>
-            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Due</label>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-mtext3 mb-1.5">Due</label>
             <div class="flex items-center gap-1.5 flex-wrap">
               <button type="button" class="due-chip active" data-due="">No due</button>
               <button type="button" class="due-chip" data-due="today">Today</button>
               <button type="button" class="due-chip" data-due="tomorrow">Tomorrow</button>
               <button type="button" class="due-chip" data-due="in 3d">In 3d</button>
               <button type="button" class="due-chip" data-due="in 1w">In 1w</button>
-              <input type="date" id="modal-due-custom" class="bg-slate-950 border border-slate-800 rounded-md px-2 py-1 text-[11px] text-slate-300 focus:outline-none focus:border-orange-500 ml-1" />
+              <input type="date" id="modal-due-custom" class="bg-mbg border border-mborder rounded-md px-2 py-1 text-[11px] text-mtext2 focus:outline-none focus:border-maccent ml-1" />
             </div>
           </div>
           <div>
-            <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Task type <span class="text-slate-600 normal-case">(otherwise inferred from title)</span></label>
-            <select id="modal-type" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-orange-500 transition-colors">
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-mtext3 mb-1.5">Task type <span class="text-mtext3 normal-case">(otherwise inferred from title)</span></label>
+            <select id="modal-type" class="w-full bg-mbg border border-mborder rounded-lg px-3 py-2 text-sm text-mtext focus:outline-none focus:border-maccent transition-colors">
               <option value="" selected>Infer from title</option>
               <option value="messaging">Messaging</option>
               <option value="booking-action">Booking action</option>
@@ -290,11 +342,11 @@
           </div>
         </div>
       </div>
-      <div class="p-4 border-t border-slate-800 flex items-center justify-between">
-        <span class="text-[11px] text-slate-500">Press <kbd class="kbd">Enter</kbd> to create · <kbd class="kbd">Esc</kbd> to cancel</span>
+      <div class="p-4 border-t border-mborder flex items-center justify-between">
+        <span class="text-[11px] text-mtext3">Press <kbd class="kbd">Enter</kbd> to create · <kbd class="kbd">Esc</kbd> to cancel</span>
         <div class="flex items-center gap-2">
-          <button id="modal-cancel" class="px-3 py-1.5 rounded-lg text-sm text-slate-400 hover:text-slate-200 transition-colors">Cancel</button>
-          <button id="modal-create" class="px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 text-sm font-medium transition-colors">Create</button>
+          <button id="modal-cancel" class="px-3 py-1.5 rounded-lg text-sm text-mtext3 hover:text-mtext transition-colors">Cancel</button>
+          <button id="modal-create" class="px-3 py-1.5 rounded-lg bg-maccent text-white hover:bg-maccenth text-sm font-medium transition-colors">Create</button>
         </div>
       </div>
     </div>
@@ -508,14 +560,14 @@
             <div class="w-8 h-8 rounded-full ${c.avatarColor} flex items-center justify-center text-[10px] font-semibold flex-shrink-0">${c.avatar}</div>
             <div class="flex-1 min-w-0">
               <div class="flex items-baseline justify-between gap-2 mb-0.5">
-                <div class="text-sm font-medium text-slate-100 truncate">${c.title}</div>
-                <div class="text-[10px] text-slate-500 flex-shrink-0 font-mono">${c.lastTime}</div>
+                <div class="text-sm font-medium text-mtext truncate">${c.title}</div>
+                <div class="text-[10px] text-mtext3 flex-shrink-0 font-mono">${c.lastTime}</div>
               </div>
-              <div class="text-[11px] text-slate-500 truncate mb-1">${c.lastMsg}</div>
+              <div class="text-[11px] text-mtext3 truncate mb-1">${c.lastMsg}</div>
               <div class="flex items-center gap-1.5">
-                <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-800">${c.category}</span>
-                ${c.status === 'Urgent' ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-red-500/15 text-red-400 border border-red-500/30">' + c.status + '</span>' : c.status === 'New' ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-orange-500/15 text-orange-300 border border-orange-500/30">' + c.status + '</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] text-slate-500 border border-slate-800">' + c.status + '</span>'}
-                ${c.unread ? `<div class="flex-1 text-right"><span class="inline-block w-4 h-4 leading-4 text-center rounded-full bg-orange-500 text-white text-[10px] font-bold">${c.unread}</span></div>` : ''}
+                <span class="px-1.5 py-0.5 rounded text-[10px] bg-msurface text-mtext3 border border-mborder">${c.category}</span>
+                ${c.status === 'Urgent' ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-mdangerl text-mdanger border border-mdanger/30">' + c.status + '</span>' : c.status === 'New' ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-maccentl text-maccent border border-maccent/30">' + c.status + '</span>' : '<span class="px-1.5 py-0.5 rounded text-[10px] text-mtext3 border border-mborder">' + c.status + '</span>'}
+                ${c.unread ? `<div class="flex-1 text-right"><span class="inline-block w-4 h-4 leading-4 text-center rounded-full bg-maccent text-white text-[10px] font-bold">${c.unread}</span></div>` : ''}
               </div>
             </div>
           </div>
@@ -587,42 +639,42 @@
       if (m.sender === 'ai-suggestion') {
         const draftAttr = m.draft.replace(/"/g, '&quot;');
         const taskLink = m.taskId ? `
-          <a href="task-board.html#task=${m.taskId}" class="task-id-link text-[11px] text-slate-400 hover:text-orange-300 inline-flex items-center gap-1">${m.taskId} <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
+          <a href="task-board.html#task=${m.taskId}" class="task-id-link text-[11px] text-mtext3 hover:text-maccent inline-flex items-center gap-1">${m.taskId} <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
         ` : `
-          <span class="text-[10px] text-slate-600 italic">Task created on Approve</span>
+          <span class="text-[10px] text-mtext3 italic">Task created on Approve</span>
         `;
         return `
-          <div class="ai-suggestion bg-orange-500/5 border border-orange-500/50 rounded-lg p-3 ml-9">
+          <div class="ai-suggestion bg-maccentl border border-maccent/50 rounded-lg p-3 ml-9">
             <div class="flex items-start gap-2.5">
-              <div class="w-6 h-6 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[10px] font-bold flex-shrink-0">AI</div>
+              <div class="w-6 h-6 rounded-full bg-maccent/20 text-maccent flex items-center justify-center text-[10px] font-bold flex-shrink-0">AI</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span class="text-xs font-medium text-orange-300">AI auto-suggested reply</span>
-                  <span class="text-[10px] text-slate-500">·</span>
-                  <span class="text-[10px] text-amber-400 font-mono">${m.confidence}% confidence</span>
-                  <span class="text-[10px] text-slate-500">·</span>
-                  <span class="text-[10px] text-slate-500">${m.confidence >= 90 ? 'Auto tier' : 'Assist tier'}</span>
+                  <span class="text-xs font-medium text-maccent">AI auto-suggested reply</span>
+                  <span class="text-[10px] text-mtext3">·</span>
+                  <span class="text-[10px] text-mamber font-mono">${m.confidence}% confidence</span>
+                  <span class="text-[10px] text-mtext3">·</span>
+                  <span class="text-[10px] text-mtext3">${m.confidence >= 90 ? 'Auto tier' : 'Assist tier'}</span>
                   <div class="flex-1"></div>
                   ${taskLink}
                 </div>
-                <div class="bg-slate-950 border border-slate-800 rounded p-2.5 text-sm text-slate-200 leading-relaxed mb-2 italic">
+                <div class="bg-mbg border border-mborder rounded p-2.5 text-sm text-mtext leading-relaxed mb-2 italic">
                   "${m.draft}"
                 </div>
-                <div class="text-[10px] text-slate-500 mb-3 leading-relaxed border-l-2 border-slate-800 pl-2">
-                  <span class="uppercase tracking-wider text-slate-600">AI reasoning:</span> ${m.reasoning}
+                <div class="text-[10px] text-mtext3 mb-3 leading-relaxed border-l-2 border-mborder pl-2">
+                  <span class="uppercase tracking-wider text-mtext3">AI reasoning:</span> ${m.reasoning}
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
-                  <button class="ai-approve px-2.5 py-1 rounded-md bg-green-500/15 text-green-300 border border-green-500/30 text-[11px] font-medium hover:bg-green-500/25 transition-colors" title="PRD §7.1: one-click fires the message and auto-closes the task in the same step">
+                  <button class="ai-approve px-2.5 py-1 rounded-md bg-msuccessl text-msuccess border border-msuccess/30 text-[11px] font-medium hover:bg-msuccess/25 transition-colors" title="PRD §7.1: one-click fires the message and auto-closes the task in the same step">
                     ✓ Approve &amp; send
                   </button>
-                  <button class="ai-edit-suggestion px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-slate-700 transition-colors" data-task-id="${m.taskId || ''}" data-draft="${draftAttr}">
+                  <button class="ai-edit-suggestion px-2.5 py-1 rounded-md bg-msurface border border-mborder text-[11px] text-mtext2 hover:bg-mraised transition-colors" data-task-id="${m.taskId || ''}" data-draft="${draftAttr}">
                     Edit + send
                   </button>
-                  <button class="ai-dismiss-suggestion px-2.5 py-1 rounded-md text-[11px] text-slate-500 hover:text-red-400 transition-colors">
+                  <button class="ai-dismiss-suggestion px-2.5 py-1 rounded-md text-[11px] text-mtext3 hover:text-mdanger transition-colors">
                     Dismiss
                   </button>
                   <div class="flex-1"></div>
-                  <span class="text-[10px] text-slate-600">Or it lands in Tasks → Needs Review</span>
+                  <span class="text-[10px] text-mtext3">Or it lands in Tasks → Needs Review</span>
                 </div>
               </div>
             </div>
@@ -631,7 +683,7 @@
       }
       if (m.sender === 'system') {
         return `
-          <div class="flex items-center gap-2 text-[11px] text-slate-500 italic justify-center py-2">
+          <div class="flex items-center gap-2 text-[11px] text-mtext3 italic justify-center py-2">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             ${m.text}
           </div>
@@ -639,8 +691,8 @@
       }
       if (m.sender === 'ai-system') {
         return `
-          <div class="bg-slate-900 border-l-2 border-orange-500/40 px-3 py-2 text-[11px] text-slate-400 italic flex items-center gap-2 ml-9">
-            <div class="w-4 h-4 rounded-full bg-orange-500/20 text-orange-300 flex items-center justify-center text-[9px] font-bold flex-shrink-0">AI</div>
+          <div class="bg-msurface border-l-2 border-maccent/40 px-3 py-2 text-[11px] text-mtext3 italic flex items-center gap-2 ml-9">
+            <div class="w-4 h-4 rounded-full bg-maccent/20 text-maccent flex items-center justify-center text-[9px] font-bold flex-shrink-0">AI</div>
             ${m.text}
           </div>
         `;
@@ -651,19 +703,19 @@
             <div class="w-7 h-7 rounded-full ${c.avatarColor} flex items-center justify-center font-semibold text-[10px] flex-shrink-0">${c.avatar}</div>
             <div class="flex-1 min-w-0 max-w-[80%]">
               <div class="flex items-baseline gap-2 mb-1">
-                <span class="text-xs font-medium text-slate-200">${m.name}</span>
-                <span class="text-[10px] text-slate-500">${m.time}</span>
+                <span class="text-xs font-medium text-mtext">${m.name}</span>
+                <span class="text-[10px] text-mtext3">${m.time}</span>
               </div>
-              <div class="bg-slate-800 rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm text-slate-200 leading-relaxed">
+              <div class="bg-msurface rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-sm text-mtext leading-relaxed">
                 ${m.text}
               </div>
               ${m.actions ? `
                 <div class="msg-actions mt-1.5 flex items-center gap-1.5">
-                  <button class="msg-action-btn inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-orange-500/20 hover:border-orange-500/40 hover:text-orange-300 transition-colors" data-action="create-task" data-context="${m.ctx || m.name}">
+                  <button class="msg-action-btn inline-flex items-center gap-1 px-2 py-1 rounded-md bg-msurface border border-mborder text-[11px] text-mtext2 hover:bg-maccentl hover:border-maccent/40 hover:text-maccent transition-colors" data-action="create-task" data-context="${m.ctx || m.name}">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     Create task
                   </button>
-                  <button class="msg-action-btn inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-[11px] text-slate-300 hover:bg-slate-700 transition-colors">Reply</button>
+                  <button class="msg-action-btn inline-flex items-center gap-1 px-2 py-1 rounded-md bg-msurface border border-mborder text-[11px] text-mtext2 hover:bg-mraised transition-colors">Reply</button>
                 </div>
               ` : ''}
             </div>
@@ -673,13 +725,13 @@
       // ops (outbound)
       return `
         <div class="msg-row group flex items-start gap-2 flex-row-reverse">
-          <div class="w-7 h-7 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center font-semibold text-[10px] flex-shrink-0">${(m.name||'OP').slice(0,2).toUpperCase()}</div>
+          <div class="w-7 h-7 rounded-full bg-chip-blue-soft text-chip-blue flex items-center justify-center font-semibold text-[10px] flex-shrink-0">${(m.name||'OP').slice(0,2).toUpperCase()}</div>
           <div class="flex-1 min-w-0 max-w-[80%] flex flex-col items-end">
             <div class="flex items-baseline gap-2 mb-1">
-              <span class="text-[10px] text-slate-500">${m.time}</span>
-              <span class="text-xs font-medium text-slate-200">${m.name}</span>
+              <span class="text-[10px] text-mtext3">${m.time}</span>
+              <span class="text-xs font-medium text-mtext">${m.name}</span>
             </div>
-            <div class="bg-orange-500/15 border border-orange-500/25 rounded-2xl rounded-tr-sm px-3.5 py-2.5 text-sm text-slate-200 leading-relaxed">
+            <div class="bg-maccentl border border-maccent/25 rounded-2xl rounded-tr-sm px-3.5 py-2.5 text-sm text-mtext leading-relaxed">
               ${m.text}
             </div>
           </div>
@@ -695,66 +747,66 @@
       const cl = c.client;
       const root = document.getElementById('client-panel');
       const tierBadge = cl.tier === 'VVIP'
-        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-orange-500/15 text-orange-300 border border-orange-500/30">VVIP</span>'
-        : '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-800 text-slate-400 border border-slate-700">Standard</span>';
+        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-maccentl text-maccent border border-maccent/30">VVIP</span>'
+        : '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-msurface text-mtext3 border border-mborder">Standard</span>';
       root.innerHTML = `
         <!-- Avatar block -->
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 rounded-full ${c.avatarColor} flex items-center justify-center text-base font-semibold flex-shrink-0">${c.avatar}</div>
           <div class="min-w-0">
-            <div class="text-sm font-semibold text-slate-100 truncate">${cl.name}</div>
-            <div class="text-[11px] text-slate-500 truncate">${cl.email}</div>
+            <div class="text-sm font-semibold text-mtext truncate">${cl.name}</div>
+            <div class="text-[11px] text-mtext3 truncate">${cl.email}</div>
             <div class="mt-1">${tierBadge}</div>
           </div>
         </div>
 
         <!-- Quick stats -->
-        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800">
-          <div class="bg-slate-900 border border-slate-800 rounded p-2">
-            <div class="text-[10px] uppercase tracking-wider text-slate-500">Past trips</div>
-            <div class="text-sm text-slate-200 font-mono mt-0.5">${cl.pastTrips}</div>
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-mborder">
+          <div class="bg-msurface border border-mborder rounded p-2">
+            <div class="text-[10px] uppercase tracking-wider text-mtext3">Past trips</div>
+            <div class="text-sm text-mtext font-mono mt-0.5">${cl.pastTrips}</div>
           </div>
-          <div class="bg-slate-900 border border-slate-800 rounded p-2">
-            <div class="text-[10px] uppercase tracking-wider text-slate-500">Client since</div>
-            <div class="text-sm text-slate-200 font-mono mt-0.5">${cl.since}</div>
+          <div class="bg-msurface border border-mborder rounded p-2">
+            <div class="text-[10px] uppercase tracking-wider text-mtext3">Client since</div>
+            <div class="text-sm text-mtext font-mono mt-0.5">${cl.since}</div>
           </div>
         </div>
 
         <!-- Preferences -->
-        <div class="space-y-2.5 pt-2 border-t border-slate-800">
-          <div class="text-[10px] uppercase tracking-wider text-slate-500">Preferences</div>
+        <div class="space-y-2.5 pt-2 border-t border-mborder">
+          <div class="text-[10px] uppercase tracking-wider text-mtext3">Preferences</div>
           <div>
-            <div class="text-[10px] text-slate-500 mb-0.5">Cabin</div>
-            <div class="text-xs text-slate-300 leading-relaxed">${cl.cabinPref}</div>
+            <div class="text-[10px] text-mtext3 mb-0.5">Cabin</div>
+            <div class="text-xs text-mtext2 leading-relaxed">${cl.cabinPref}</div>
           </div>
           <div>
-            <div class="text-[10px] text-slate-500 mb-0.5">Hotels</div>
-            <div class="text-xs text-slate-300 leading-relaxed">${cl.hotels}</div>
+            <div class="text-[10px] text-mtext3 mb-0.5">Hotels</div>
+            <div class="text-xs text-mtext2 leading-relaxed">${cl.hotels}</div>
           </div>
           <div>
-            <div class="text-[10px] text-slate-500 mb-0.5">Party</div>
-            <div class="text-xs text-slate-300 leading-relaxed">${cl.family}</div>
+            <div class="text-[10px] text-mtext3 mb-0.5">Party</div>
+            <div class="text-xs text-mtext2 leading-relaxed">${cl.family}</div>
           </div>
-          ${cl.birthday !== '—' ? `<div><div class="text-[10px] text-slate-500 mb-0.5">Birthday</div><div class="text-xs text-slate-300">${cl.birthday}</div></div>` : ''}
+          ${cl.birthday !== '—' ? `<div><div class="text-[10px] text-mtext3 mb-0.5">Birthday</div><div class="text-xs text-mtext2">${cl.birthday}</div></div>` : ''}
         </div>
 
         <!-- Linked tasks -->
-        <div class="space-y-2 pt-2 border-t border-slate-800">
+        <div class="space-y-2 pt-2 border-t border-mborder">
           <div class="flex items-center justify-between">
-            <div class="text-[10px] uppercase tracking-wider text-slate-500">Linked tasks</div>
-            <a href="task-board.html" class="text-[10px] text-orange-400 hover:text-orange-300">View all →</a>
+            <div class="text-[10px] uppercase tracking-wider text-mtext3">Linked tasks</div>
+            <a href="task-board.html" class="text-[10px] text-maccent hover:text-maccenth">View all →</a>
           </div>
           ${cl.linkedTasks.map(tid => {
             const t = TaskFilters.byId(tid);
             if (!t) return '';
             const tierStyle = TIER_STYLES[t.routing_tier];
             return `
-              <a href="task-board.html#task=${tid}" class="task-id-link block bg-slate-900 border border-slate-800 rounded p-2 hover:border-orange-500/40 transition-colors group">
+              <a href="task-board.html#task=${tid}" class="task-id-link block bg-msurface border border-mborder rounded p-2 hover:border-maccent/40 transition-colors group">
                 <div class="flex items-start justify-between gap-2 mb-1">
-                  <span class="text-[10px] font-mono text-slate-500 group-hover:text-orange-400">${tid}</span>
+                  <span class="text-[10px] font-mono text-mtext3 group-hover:text-maccent">${tid}</span>
                   <span class="px-1.5 py-0.5 rounded text-[9px] font-mono ${tierStyle.bg} ${tierStyle.text} border ${tierStyle.border}">${tierStyle.label}</span>
                 </div>
-                <div class="text-[11px] text-slate-200 leading-snug">${t.title}</div>
+                <div class="text-[11px] text-mtext leading-snug">${t.title}</div>
               </a>
             `;
           }).join('')}
@@ -867,8 +919,8 @@
     function showToast(msg) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      toast.className = 'toast bg-slate-800 border border-slate-700 rounded-lg shadow-xl px-4 py-2.5 min-w-[280px] max-w-[420px] flex items-center gap-3';
-      toast.innerHTML = `<div class="flex-1 text-sm text-slate-200">${msg}</div>`;
+      toast.className = 'toast bg-msurface border border-mborder rounded-lg shadow-xl px-4 py-2.5 min-w-[280px] max-w-[420px] flex items-center gap-3';
+      toast.innerHTML = `<div class="flex-1 text-sm text-mtext">${msg}</div>`;
       container.appendChild(toast);
       setTimeout(() => { toast.style.transition = 'opacity .25s'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 280); }, 3500);
     }

@@ -1,27 +1,5 @@
-// theme.js -- Theme switching and font loader for Conductor Task Management prototype
-
-tailwind.config = {
-  darkMode: 'class',
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-      },
-      colors: {
-        surface: {
-          950: '#020617',
-          900: '#0f172a',
-          800: '#1e293b',
-          700: '#334155',
-        },
-        brand: {
-          orange: '#ff5e32',
-        }
-      }
-    }
-  }
-};
+// theme.js -- Theme config and utilities for Conductor Task Management prototype
+// Color config removed — now loaded via maestro-theme.css
 
 const Theme = {
   // Format date
