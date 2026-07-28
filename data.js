@@ -62,6 +62,7 @@ const NAV_CONFIG = [
       { id: 'proto-overview',      section: '', label: 'App · Overview',      href: 'prototype/overview.html' },
       { id: 'proto-trips',         section: '', label: 'App · Trips',         href: 'prototype/trips.html' },
       { id: 'proto-task-board',    section: '', label: 'App · Tasks',         href: 'prototype/task-board.html' },
+      { id: 'proto-follow-ups',    section: 'new', label: 'App · Follow-ups (proposed)', href: 'prototype/follow-ups.html' },
       { id: 'proto-inline-create', section: '', label: 'App · Chat',          href: 'prototype/inline-create.html' },
       { id: 'proto-agent',         section: '', label: 'App · Agent',         href: 'prototype/agent.html' },
       { id: 'proto-admin-panel',    section: '',  label: 'App · Admin',                href: 'prototype/admin-panel.html' },
