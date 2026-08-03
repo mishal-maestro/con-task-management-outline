@@ -170,7 +170,16 @@
     /* Source chips (coverage + drawer provenance) */
     .src-chip { display: inline-flex; align-items: center; gap: .25rem; padding: .1875rem .5625rem; font-size: .625rem; font-weight: 600; border-radius: 9999px; background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); color: rgb(var(--maestro-text-secondary)); }
     .src-chip.live::before { content: ''; width: .3125rem; height: .3125rem; border-radius: 9999px; background: rgb(var(--maestro-success)); }
+    .src-chip.later::before { content: ''; width: .3125rem; height: .3125rem; border-radius: 9999px; background: rgb(var(--maestro-amber)); }
     .src-chip.off { opacity: .55; border-style: dashed; }
+
+    /* Drawer: quoted context snippet + message composer */
+    .snippet { border-left: 3px solid rgb(var(--maestro-accent)); background: rgb(var(--maestro-surface)); border-radius: .5rem; padding: .5625rem .75rem; }
+    .composer-card { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+    .composer-card:focus-within { border-color: rgb(var(--maestro-accent)); }
+    .composer-input { width: 100%; border: 0; background: transparent; padding: .375rem .75rem .5rem; font-size: .8125rem; line-height: 1.55; color: rgb(var(--maestro-text-primary)); resize: vertical; outline: none; font-family: inherit; }
+    .composer-toolbar { display: flex; align-items: center; gap: .5rem; padding: .625rem .75rem; border-top: 1px solid rgb(var(--maestro-border)); }
+    .check-item { display: flex; align-items: flex-start; gap: .5rem; font-size: .6875rem; color: rgb(var(--maestro-text-secondary)); cursor: pointer; }
   </style>
 </head>
 
@@ -352,59 +361,44 @@
   <!-- Drawer backdrop -->
   <div id="drawer-backdrop" class="modal-backdrop fixed inset-0 bg-black/30 z-40"></div>
 
-  <!-- Reply drawer -->
-  <div id="reply-drawer" class="drawer fixed right-0 top-0 h-full w-[480px] max-w-full bg-mcard border-l border-mborder z-50 flex flex-col shadow-2xl">
-    <div class="flex items-start justify-between p-5 border-b border-mborder">
+  <!-- Reply drawer (snippet + composer) -->
+  <div id="reply-drawer" class="drawer fixed right-0 top-0 h-full w-[480px] max-w-full bg-mbg border-l border-mborder z-50 flex flex-col shadow-2xl">
+    <div class="flex items-start justify-between gap-3 p-5 pb-4 bg-mcard border-b border-mborder">
       <div class="min-w-0">
         <p class="text-[11px] text-mtext3 mb-0.5" id="drawer-context"></p>
-        <h3 class="text-base font-semibold text-mtext leading-snug" id="drawer-headline"></h3>
+        <h3 class="text-[15px] font-semibold text-mtext leading-snug" id="drawer-headline"></h3>
       </div>
-      <button id="drawer-close" class="p-1.5 text-mtext3 hover:text-mtext transition-colors flex-shrink-0 ml-3">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button id="drawer-done" class="text-xs text-msuccess hover:opacity-80 transition-opacity font-medium whitespace-nowrap">Mark handled</button>
+        <button id="drawer-close" class="p-1.5 text-mtext3 hover:text-mtext transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-5 space-y-5">
-      <!-- Why surfaced -->
-      <div>
-        <p class="text-[11px] font-semibold text-mtext3 uppercase tracking-wide mb-1.5">Why this surfaced</p>
-        <div class="mb-2" id="drawer-reason"></div>
-        <p class="text-sm text-mtext2" id="drawer-detail"></p>
-        <p class="text-[11px] text-mtext3 mt-2" id="drawer-provenance"></p>
-        <div id="drawer-sources" class="flex flex-wrap items-center gap-1.5 mt-2"></div>
-      </div>
+    <div class="flex-1 overflow-y-auto p-5">
+      <!-- Context: chips + quoted trigger message + one meta line -->
+      <div class="flex flex-wrap items-center gap-1.5 mb-2.5" id="drawer-chips"></div>
+      <div id="drawer-snippet"></div>
+      <p class="text-xs text-mtext3 mt-2.5 leading-relaxed" id="drawer-detail"></p>
+      <div id="drawer-meta" class="flex flex-wrap items-center gap-x-1.5 gap-y-1 mt-2 text-[10px] text-mtext3"></div>
 
-      <!-- Verify checklist -->
-      <div id="drawer-verify-wrap">
-        <p class="text-[11px] font-semibold text-mtext3 uppercase tracking-wide mb-1.5">Before sending</p>
-        <div id="drawer-verify" class="space-y-1.5"></div>
-      </div>
-
-      <!-- Suggested reply -->
-      <div>
-        <div class="flex items-center justify-between mb-1.5">
-          <p class="text-[11px] font-semibold text-mtext3 uppercase tracking-wide">Suggested reply</p>
-          <span class="text-[11px] text-mtext3">edit freely, sends as you</span>
+      <!-- Composer -->
+      <div class="composer-card mt-4">
+        <div class="flex items-center justify-between px-3 pt-2.5 pb-1">
+          <span class="text-[10px] font-semibold uppercase tracking-wide text-mtext3">Suggested reply</span>
+          <span class="text-[10px] text-mtext3">sends as you · edit freely</span>
         </div>
-        <textarea id="drawer-draft" rows="8"
-          class="w-full bg-msurface border border-mborder rounded-lg px-3 py-2.5 text-sm text-mtext leading-relaxed focus:outline-none focus:border-maccent focus:bg-mcard resize-none"></textarea>
+        <textarea id="drawer-draft" rows="7" class="composer-input"></textarea>
+        <div id="drawer-verify" class="px-3 pb-2 space-y-1.5"></div>
+        <div class="composer-toolbar">
+          <button id="drawer-copy" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-maccent text-white hover:bg-maccenth text-xs font-medium transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Copy reply
+          </button>
+          <button id="drawer-open-thread" class="filter-chip !text-xs">Open conversation</button>
+        </div>
       </div>
-
-      <!-- Evidence -->
-      <div>
-        <p class="text-[11px] font-semibold text-mtext3 uppercase tracking-wide mb-1.5">Evidence</p>
-        <div id="drawer-evidence" class="flex flex-wrap gap-1.5"></div>
-      </div>
-    </div>
-
-    <div class="p-4 border-t border-mborder flex items-center gap-2">
-      <button id="drawer-copy" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-maccent text-white hover:bg-maccenth text-sm font-medium transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-        Copy reply
-      </button>
-      <button id="drawer-open-thread" class="filter-chip">Open conversation</button>
-      <div class="flex-1"></div>
-      <button id="drawer-done" class="text-sm text-msuccess hover:opacity-80 transition-opacity font-medium">Mark handled</button>
     </div>
   </div>
 
@@ -651,29 +645,23 @@
       }
 
       function coverageCard() {
-        const live = ['Conversations', 'Task plane · 17 signal sources', 'SLA timers'];
-        const off = [
-          { label: 'Slack', why: 'cluster comms move INTO Conductor (Aug 4 cutover), so ingestion becomes unnecessary' },
-          { label: 'Meeting notes', why: 'enter when logged as tasks and handoffs (CON-1533 path)' },
-          { label: 'Phone context', why: 'arrives via ops-report digitization (CON-1534 path)' },
+        const sources = [
+          { label: 'Conversations', cls: 'live', why: 'live' },
+          { label: 'Task plane · 17 signal sources', cls: 'live', why: 'live' },
+          { label: 'SLA timers', cls: 'live', why: 'live' },
+          { label: 'Meeting notes', cls: 'later', why: 'CON-2161 · transcript ingestion · M4' },
+          { label: 'Call outcomes', cls: 'later', why: 'CON-2162 · quick-log on threads and tasks · M4' },
         ];
         return `
           <div class="bg-mcard border border-mborder rounded-xl p-4">
             <div class="flex items-center gap-2 mb-3">
               <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Source coverage</h3>
-              <span class="text-xs text-mtext3">what feeds this view, and what deliberately does not (yet)</span>
+              <span class="text-xs text-mtext3">one program, sequenced: projection first, ingestion follows</span>
             </div>
-            <div class="flex flex-col md:flex-row gap-5">
-              <div class="flex-shrink-0">
-                <p class="text-[10px] font-semibold text-msuccess uppercase tracking-wide mb-1.5">Live in v1</p>
-                <div class="flex flex-wrap gap-1.5">${live.map(s => `<span class="src-chip live">${s}</span>`).join('')}</div>
-              </div>
-              <div class="flex-1">
-                <p class="text-[10px] font-semibold text-mtext3 uppercase tracking-wide mb-1.5">Not ingested in v1 · by design</p>
-                <div class="space-y-1.5">${off.map(s => `<div class="flex items-center gap-2"><span class="src-chip off flex-shrink-0">${s.label}</span><span class="text-[11px] text-mtext3">${s.why}</span></div>`).join('')}</div>
-              </div>
+            <div class="flex flex-wrap gap-1.5">
+              ${sources.map(s => `<span class="src-chip ${s.cls}" title="${s.why}">${s.label}${s.cls === 'later' ? ' · M4' : ''}</span>`).join('')}
             </div>
-            <p class="text-[11px] text-mtext3 mt-3 pt-3 border-t border-mborder">External tools (Read AI, Granola, Fireflies) are an explicit v2 decision. Flag: <span class="font-mono text-maccenth">follow-ups-view</span>.</p>
+            <p class="text-[11px] text-mtext3 mt-3 pt-3 border-t border-mborder">No Slack ingestion, deliberately: cluster comms move INTO Conductor at the Aug 4 cutover, so the need dissolves. HEADS-UP announcements stay in Slack. Flag: <span class="font-mono text-maccenth">follow-ups-view</span>.</p>
           </div>`;
       }
 
@@ -706,32 +694,43 @@
         setTimeout(() => el.remove(), 4000);
       }
 
-      // ── Drawer ──
+      // ── Drawer (snippet + composer) ──
       function openDrawer(id) {
         const item = items.find(i => i.id === id);
         if (!item) return;
         openItemId = id;
-        const meta = REASON_META[item.reason];
         $('#drawer-context').textContent = item.context + ' · owner ' + memberById(item.owner).name;
         $('#drawer-headline').textContent = item.headline;
-        $('#drawer-reason').innerHTML = meta
-          ? `${slaChip(item)} ${reasonChip(item)}<span class="text-[11px] text-mtext3 ml-2">${esc(meta.desc)}</span>` : '';
+
+        // Chips: SLA stage + reason + why-now, one row
+        $('#drawer-chips').innerHTML = `${slaChip(item)}${reasonChip(item)}${whyChip(item)}`;
+
+        // Quoted snippet: the message this follow-up cites, from the thread
+        const trig = (THREADS[id] || []).find(m => m.trigger);
+        $('#drawer-snippet').innerHTML = trig
+          ? `<div class="snippet">
+               <p class="text-[10px] text-mtext3 mb-0.5">${esc(trig.name || (trig.sender === 'client' ? item.member : 'Us'))} · ${esc(trig.time)}</p>
+               <p class="text-xs text-mtext leading-relaxed">${esc(trig.text)}</p>
+               <button class="open-thread text-[10px] font-semibold text-maccenth hover:underline mt-1" data-id="${item.id}">View thread</button>
+             </div>`
+          : '';
         $('#drawer-detail').textContent = item.detail;
-        $('#drawer-provenance').textContent = `Source: ${item.signal} · task ${item.source_task} · confidence ${item.confidence}%`;
-        $('#drawer-sources').innerHTML = '<span class="text-[10px] text-mtext3 uppercase tracking-wide font-semibold mr-0.5">Fed by</span>' +
-          (ITEM_SOURCES[item.id] || []).map(s => `<span class="src-chip live">${SOURCE_LABELS[s] || s}</span>`).join('');
+
+        // One meta line: provenance + fed-by chips + evidence links
+        $('#drawer-meta').innerHTML =
+          `<span>${esc(item.signal)} · ${esc(item.source_task)} · ${item.confidence}%</span>` +
+          (ITEM_SOURCES[item.id] || []).map(s => `<span class="src-chip live">${SOURCE_LABELS[s] || s}</span>`).join('') +
+          item.evidence.map(e => `<a href="${e.url}" class="text-minfo hover:underline">${esc(e.label)} ↗</a>`).join('');
+
         $('#drawer-draft').value = item.draft;
         $('#drawer-verify').innerHTML = item.verify.length
           ? item.verify.map((v, i) => `
-              <label class="flex items-start gap-2 text-xs text-mtext2 cursor-pointer">
+              <label class="check-item">
                 <input type="checkbox" ${v.done ? 'checked' : ''} data-vi="${i}"
                   class="mt-0.5 accent-[rgb(var(--maestro-accent))]" />
                 <span>${esc(v.text)}</span>
               </label>`).join('')
-          : `<p class="text-xs text-mtext3">No checks required.</p>`;
-        $('#drawer-verify-wrap').style.display = '';
-        $('#drawer-evidence').innerHTML = item.evidence.map(e =>
-          `<a href="${e.url}" class="quiet-chip hover:text-mtext transition-colors">${esc(e.label)}</a>`).join('');
+          : '';
         $('#reply-drawer').classList.add('open');
         $('#drawer-backdrop').classList.add('open');
       }
@@ -807,7 +806,7 @@
         if (openBtn) { openDrawer(openBtn.dataset.id); return; }
 
         const threadBtn = e.target.closest('.open-thread');
-        if (threadBtn) { openThread(threadBtn.dataset.id, false); return; }
+        if (threadBtn) { openThread(threadBtn.dataset.id, $('#reply-drawer').classList.contains('open')); return; }
 
         const crackBtn = e.target.closest('.crack-action');
         if (crackBtn) { toast('Would jump to the record to fix this (out of prototype scope)'); return; }

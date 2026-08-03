@@ -47,6 +47,23 @@ const FOLLOWUPS = [
     source_task: 'tsk-005', signal: 'AI · Conversation watcher', confidence: 84,
   },
 
+  {
+    id: 'fu-003', bucket: 'act-now',
+    reason: 'open-promise', reason_label: 'Promise from call · due today',
+    member: 'Okafor', context: 'Okafor · Lisbon Sep · Onboarding call',
+    owner: 'rp', support: [],
+    headline: 'Points-strategy one-pager promised on yesterday\'s onboarding call',
+    detail: 'Commitment extracted from the onboarding-call transcript: we promised a points-strategy one-pager "by tomorrow" at 3:38 PM yesterday. Nothing sent yet; the member has no thread message to remind us.',
+    why_now: { label: 'Promised on a call · due today', tone: 'warning' },
+    due: 'Today',
+    verify: [
+      { text: 'One-pager drafted? If not, send a time-boxed update instead', done: false },
+    ],
+    draft: 'Great speaking yesterday. Your points-strategy one-pager is on its way today as promised: transfer partners for your Lisbon dates, plus the two cards worth considering before booking. Anything specific you want covered, reply here and it goes in.',
+    evidence: [ { label: 'Onboarding call transcript · yesterday 3:38 PM', url: '#' } ],
+    source_task: 'tsk-009', signal: 'AI · Meeting-note watcher', confidence: 88,
+  },
+
   // ── WAITING ON MEMBER: we sent, they are quiet, nudge window applies ──
   {
     id: 'fu-101', bucket: 'waiting',
@@ -181,8 +198,13 @@ const THREADS = {
     { sender: 'ops', name: 'Jordan', time: '7:11 AM', trigger: true, text: 'Perfect, locking that in. We will be back shortly with the best villa options.' },
     { sender: 'system', time: '12:11 PM', text: 'Promise open · "back shortly" · 5h with no follow-through' },
   ],
+  'fu-003': [
+    { sender: 'system', time: 'yesterday 3:40 PM', trigger: false, text: 'Commitment captured from onboarding-call transcript (meeting notes) · "points-strategy one-pager by tomorrow"' },
+    { sender: 'ops', name: 'Rae', time: 'yesterday 3:38 PM', trigger: true, text: '(Said on the onboarding call) I will put together a points-strategy one-pager for your Lisbon dates and get it to you by tomorrow.' },
+  ],
   'fu-101': [
     { sender: 'ops', name: 'Maya', time: 'yesterday 4:48 PM', trigger: true, text: 'Rob, business award space just opened on your Patagonia dates. These windows usually hold about 24h. Dates in hand, we book. Want it?' },
+    { sender: 'system', time: 'today 11:05 AM', text: 'Call outcome logged by Maya · left voicemail, callback agreed' },
     { sender: 'system', time: 'today 12:40 PM', text: 'No member reply · quiet 20h · window expiring' },
   ],
   'fu-102': [
@@ -203,9 +225,10 @@ const THREADS = {
 const ITEM_SOURCES = {
   'fu-001': ['conversation', 'sla', 'task'],
   'fu-002': ['conversation', 'task'],
-  'fu-101': ['conversation', 'task'],
+  'fu-003': ['meeting', 'task'],
+  'fu-101': ['conversation', 'task', 'phone'],
   'fu-102': ['conversation', 'task'],
   'fu-103': ['conversation', 'task'],
   'fu-104': ['conversation'],
 };
-const SOURCE_LABELS = { conversation: 'Conversation', sla: 'SLA timer', task: 'Task plane' };
+const SOURCE_LABELS = { conversation: 'Conversation', sla: 'SLA timer', task: 'Task plane', meeting: 'Meeting note', phone: 'Call outcome' };
