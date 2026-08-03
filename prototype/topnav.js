@@ -58,45 +58,29 @@
     return `<span class="badge ml-1.5 px-1.5 py-0.5 rounded-full bg-maccent text-white text-[10px] font-mono font-semibold">${count}</span>`;
   }
 
-  // Self-contained styles: layout + badge + states, so every consumer page
-  // renders the header identically without needing local .top-tab CSS.
-  // Injected at DOMContentLoaded (after page <style> blocks), so these win
-  // cascade ties against stale page-local rules with equal specificity.
-  function injectTopNavStyles() {
-    if (document.getElementById('topnav-styles')) return;
-    const st = document.createElement('style');
-    st.id = 'topnav-styles';
-    st.textContent = `
-      .top-tab { display: inline-flex; align-items: center; gap: .5rem; padding: .625rem .875rem; font-size: .8125rem; font-weight: 500; color: rgb(var(--maestro-text-secondary)); cursor: pointer; border-bottom: 2px solid transparent; transition: color .12s; text-decoration: none; white-space: nowrap; }
-      .top-tab svg { width: 1rem; height: 1rem; flex: 0 0 auto; }
-      .top-tab:hover { color: rgb(var(--maestro-text-primary)); }
-      .top-tab.active { color: rgb(var(--maestro-text-primary)); border-bottom-color: rgb(var(--maestro-accent)); }
-      .top-tab .badge { display: inline-flex; align-items: center; justify-content: center; margin-left: .375rem; padding: 1px 6px; border-radius: 9999px; background: rgb(var(--maestro-accent)); color: #fff; font-size: 10px; font-weight: 600; line-height: 1.4; }
-    `;
-    document.head.appendChild(st);
-  }
+  // Chrome styles live in light-theme.css (.app-nav-pill family); nothing injected.
+  function injectTopNavStyles() { /* superseded by light-theme.css */ }
 
   function initTopNav() {
     const root = document.getElementById('topnav-root');
     if (!root) return;
     const active = window.CURRENT_APP_TAB || 'overview';
     const html = `
-      <header class="h-12 border-b border-mborder bg-mcard flex items-center px-4 flex-shrink-0 sticky top-0 z-50">
-        <div class="flex items-center gap-1.5 mr-6">
-          <a href="overview.html" class="text-mtext font-semibold text-base tracking-tight hover:text-maccenth transition-colors">maestro</a>
-        </div>
-        <nav class="flex items-center flex-1 justify-center">
-          ${TAB_DEFS.map(t => {
-            const cnt = t.getCount();
-            const isActive = t.id === active;
-            return `
-              <a href="${t.href}" class="top-tab ${isActive ? 'active' : ''}" data-tab="${t.id}">
-                ${t.icon}
-                <span>${t.label}</span>
-                ${renderBadge(cnt)}
-              </a>
-            `;
-          }).join('')}
+      <header class="h-16 flex items-center px-6 gap-4 flex-shrink-0 sticky top-0 z-50 bg-mbg">
+        <a href="overview.html" class="font-serif text-2xl text-mtext lowercase tracking-tight mr-2">maestro</a>
+        <nav class="flex-1 flex items-center justify-center">
+          <div class="inline-flex items-center gap-1 bg-mraised/70 rounded-full p-1">
+            ${TAB_DEFS.map(t => {
+              const cnt = t.getCount();
+              const isActive = t.id === active;
+              return `
+                <a href="${t.href}" class="app-nav-pill ${isActive ? 'active' : ''}" data-tab="${t.id}">
+                  <span>${t.label}</span>
+                  ${renderBadge(cnt)}
+                </a>
+              `;
+            }).join('')}
+          </div>
         </nav>
         <div class="flex items-center gap-2 text-mtext3">
           <a href="../index.html" class="text-[11px] text-mtext3 hover:text-maccenth transition-colors px-2 py-1 rounded hover:bg-msurface" title="Back to the PRD outline">↗ Outline</a>

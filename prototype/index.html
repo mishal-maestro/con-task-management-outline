@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,41 +8,41 @@
   <style>
     /* Maestro design tokens MUST be defined before Tailwind CDN loads */
     :root {
-      --maestro-bg: 24 24 27;
-      --maestro-card: 38 38 42;
-      --maestro-surface: 32 32 36;
-      --maestro-surface-raised: 40 40 45;
-      --maestro-border: 50 50 56;
-      --maestro-border-hover: 70 70 78;
-      --maestro-text-primary: 240 238 235;
-      --maestro-text-secondary: 180 175 168;
-      --maestro-text-tertiary: 140 135 128;
-      --maestro-accent: 255 110 70;
-      --maestro-accent-hover: 255 130 95;
-      --maestro-accent-light: 50 30 25;
+      --maestro-bg: 246 244 240;
+      --maestro-card: 255 255 255;
+      --maestro-surface: 246 246 246;
+      --maestro-surface-raised: 238 233 224;
+      --maestro-border: 231 231 231;
+      --maestro-border-hover: 176 176 176;
+      --maestro-text-primary: 34 34 34;
+      --maestro-text-secondary: 93 93 93;
+      --maestro-text-tertiary: 136 136 136;
+      --maestro-accent: 255 94 50;
+      --maestro-accent-hover: 219 82 27;
+      --maestro-accent-light: 255 244 237;
       --maestro-on-accent: 255 255 255;
-      --maestro-success: 60 180 100;
-      --maestro-success-light: 25 45 35;
-      --maestro-danger: 230 90 70;
-      --maestro-danger-light: 50 30 25;
-      --maestro-warning: 210 160 60;
-      --maestro-warning-light: 50 40 25;
-      --maestro-amber: 251 191 36;
-      --maestro-amber-soft: 50 38 18;
-      --maestro-info: 80 160 220;
-      --maestro-info-light: 25 35 45;
-      --maestro-chip-green: 60 180 100;
-      --maestro-chip-green-soft: 25 45 35;
-      --maestro-chip-orange: 255 140 80;
-      --maestro-chip-orange-soft: 50 35 25;
-      --maestro-chip-blue: 80 160 220;
-      --maestro-chip-blue-soft: 25 35 45;
-      --maestro-chip-teal: 70 190 180;
-      --maestro-chip-teal-soft: 25 45 45;
-      --maestro-chip-purple: 160 120 230;
-      --maestro-chip-purple-soft: 40 35 55;
-      --maestro-chip-pink: 240 120 180;
-      --maestro-chip-pink-soft: 50 30 45;
+      --maestro-success: 21 128 61;
+      --maestro-success-light: 220 252 231;
+      --maestro-danger: 220 38 38;
+      --maestro-danger-light: 254 226 226;
+      --maestro-warning: 231 120 40;
+      --maestro-warning-light: 255 244 237;
+      --maestro-amber: 215 108 31;
+      --maestro-amber-soft: 255 244 237;
+      --maestro-info: 37 99 235;
+      --maestro-info-light: 239 246 255;
+      --maestro-chip-green: 21 128 61;
+      --maestro-chip-green-soft: 220 252 231;
+      --maestro-chip-orange: 219 82 27;
+      --maestro-chip-orange-soft: 255 237 213;
+      --maestro-chip-blue: 37 99 235;
+      --maestro-chip-blue-soft: 219 234 254;
+      --maestro-chip-teal: 13 148 136;
+      --maestro-chip-teal-soft: 204 251 241;
+      --maestro-chip-purple: 124 58 237;
+      --maestro-chip-purple-soft: 237 233 254;
+      --maestro-chip-pink: 190 24 93;
+      --maestro-chip-pink-soft: 252 231 243;
       --maestro-control-knob: 255 255 255;
       --maestro-overlay: 0 0 0;
     }
@@ -114,9 +114,8 @@
 
 <body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
-  <div id="nav-root"></div>
 
-  <main class="ml-0 lg:ml-[260px] min-h-screen">
+  <main class="ml-0 min-h-screen">
     <div class="max-w-[1280px] mx-auto px-6 py-8 pt-14 lg:pt-8">
 
       <!-- Source link chip -->

@@ -52,160 +52,18 @@
     };
   </script>
 
+  <link rel="stylesheet" href="light-theme.css">
+
+  <script>window.CURRENT_PAGE = 'proto-follow-ups'; window.CURRENT_APP_TAB = 'tasks';</script>
   <script src="task-data.js"></script>
   <script src="follow-ups-data.js"></script>
+  <script src="topnav.js"></script>
 
-  <style>
-    /* ── New Conductor design language (Figma Tasks section, Jul 2026) ──
-       Token sources: Background/Canvas #f6f4f0, Surface/Default #fff,
-       Surface/Subtle #eee9e0, Border #e7e7e7, Text #222/#5d5d5d/#888,
-       Primary #ff5e32, error/600 #dc2626 + error/50 #fee2e2,
-       Feedback/Warning #e77828 + warning/50 #fff4ed. */
-    :root {
-      --maestro-bg: 246 244 240;             /* Background/Canvas */
-      --maestro-card: 255 255 255;           /* Surface/Default */
-      --maestro-surface: 246 246 246;        /* Background/Subtle */
-      --maestro-surface-raised: 238 233 224; /* Surface/Subtle (sand) */
-      --maestro-border: 231 231 231;         /* Border/Default */
-      --maestro-border-hover: 176 176 176;   /* outline/300 */
-      --maestro-text-primary: 34 34 34;      /* Text/Primary */
-      --maestro-text-secondary: 93 93 93;    /* Text/Secondary */
-      --maestro-text-tertiary: 136 136 136;  /* Text/Placeholder */
-      --maestro-accent: 255 94 50;           /* Button/Primary #ff5e32 */
-      --maestro-accent-hover: 219 82 27;     /* Bamboo/600 */
-      --maestro-accent-light: 255 244 237;   /* warning/50 */
-      --maestro-success: 21 128 61;
-      --maestro-success-light: 220 252 231;
-      --maestro-danger: 220 38 38;           /* error/600 */
-      --maestro-danger-light: 254 226 226;   /* error/50 */
-      --maestro-amber: 215 108 31;           /* warning/600 */
-      --maestro-amber-soft: 255 244 237;     /* warning/50 */
-      --maestro-info: 37 99 235;
-      --maestro-info-light: 239 246 255;
-      --maestro-chip-green: 21 128 61;
-      --maestro-chip-orange: 219 82 27;
-      --maestro-chip-blue: 37 99 235;
-      --maestro-chip-teal: 13 148 136;
-      --maestro-chip-purple: 124 58 237;
-      --maestro-chip-pink: 190 24 93;
-    }
-
-    /* App top nav (Figma: canvas bg, serif wordmark, center pill nav) */
-    .app-nav-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem 1rem; font-size: .8125rem; font-weight: 500; color: rgb(var(--maestro-text-primary)); border-radius: 9999px; text-decoration: none; transition: background .12s; }
-    .app-nav-pill:hover { background: rgba(255,255,255,.7); }
-    .app-nav-pill.active { background: #222222; color: #ffffff; }
-
-    /* Figma-style tab pills (My Tasks | Urgent | ...) */
-    .tab-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .4375rem .875rem; font-size: .8125rem; font-weight: 500; color: rgb(var(--maestro-text-secondary)); border-radius: 9999px; border: 1px solid transparent; cursor: pointer; transition: all .12s; background: transparent; }
-    .tab-pill:hover { color: rgb(var(--maestro-text-primary)); }
-    .tab-pill.active { background: #ffffff; color: rgb(var(--maestro-text-primary)); border-color: rgb(var(--maestro-border)); box-shadow: 0 1px 2px rgba(0,0,0,.04); }
-    .tab-pill .tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 1.125rem; height: 1.125rem; padding: 0 .3125rem; border-radius: 9999px; background: #222222; color: #ffffff; font-size: .625rem; font-weight: 600; }
-
-    /* Filter / owner chips: white pills, black when active */
-    .filter-chip {
-      display: inline-flex; align-items: center;
-      padding: .4375rem .875rem;
-      font-size: .75rem; font-weight: 500;
-      color: rgb(var(--maestro-text-secondary));
-      background: rgb(var(--maestro-card));
-      border: 1px solid rgb(var(--maestro-border));
-      border-radius: 9999px;
-      cursor: pointer;
-      transition: all .12s ease-out;
-    }
-    .filter-chip:hover { color: rgb(var(--maestro-text-primary)); border-color: rgb(var(--maestro-border-hover)); }
-    .filter-chip.active { color: #ffffff; background: #222222; border-color: #222222; }
-    .filter-count { margin-left: .375rem; font-size: .625rem; color: rgb(var(--maestro-text-tertiary)); }
-    .filter-chip.active .filter-count { color: rgba(255,255,255,.7); }
-
-    /* Reason + why-now chips (Figma priority-chip style: tinted bg, colored text) */
-    .why-chip { display: inline-flex; align-items: center; gap: .375rem; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 600; border-radius: .375rem; }
-    .why-chip.danger  { color: rgb(var(--maestro-danger));  background: rgb(var(--maestro-danger-light)); }
-    .why-chip.warning { color: rgb(var(--maestro-amber));   background: rgb(var(--maestro-amber-soft)); }
-    .why-chip.info    { color: rgb(var(--maestro-info));    background: rgb(var(--maestro-info-light)); }
-    .quiet-chip { display: inline-flex; align-items: center; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 500; color: rgb(var(--maestro-text-secondary)); background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); border-radius: .375rem; font-variant-numeric: tabular-nums; }
-
-    /* SLA stage chips (CON-1712 stages: green 0-15m, yellow 15-30m, red 30m+) */
-    .sla-chip { display: inline-flex; align-items: center; gap: .3125rem; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 600; border-radius: 9999px; font-variant-numeric: tabular-nums; }
-    .sla-chip::before { content: ''; width: .375rem; height: .375rem; border-radius: 9999px; background: currentColor; }
-    .sla-chip.red    { color: rgb(var(--maestro-danger)); background: rgb(var(--maestro-danger-light)); }
-    .sla-chip.yellow { color: rgb(var(--maestro-amber));  background: rgb(var(--maestro-amber-soft)); }
-    .sla-chip.green  { color: rgb(var(--maestro-success)); background: rgb(var(--maestro-success-light)); }
-
-    /* Manager stat cards */
-    .stat-card { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: .75rem; padding: .875rem 1rem; }
-    .stat-value { font-size: 1.375rem; font-weight: 600; color: rgb(var(--maestro-text-primary)); font-variant-numeric: tabular-nums; line-height: 1.2; }
-    .stat-label { font-size: .6875rem; color: rgb(var(--maestro-text-tertiary)); margin-top: .125rem; }
-    .stat-value.danger { color: rgb(var(--maestro-danger)); }
-    .stat-value.amber { color: rgb(var(--maestro-amber)); }
-    .stat-value.success { color: rgb(var(--maestro-success)); }
-
-    .owner-row { cursor: pointer; transition: background .12s ease-out; }
-    .owner-row:hover { background: rgb(var(--maestro-surface)); }
-    .owner-row.selected { background: rgb(var(--maestro-accent-light)); }
-
-    /* Drawer slide */
-    .drawer { transform: translateX(100%); transition: transform .25s ease-out; }
-    .drawer.open { transform: translateX(0); }
-    .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .15s ease-out; }
-    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
-
-    .toast { animation: toast-in .2s ease-out; }
-    @keyframes toast-in {
-      from { transform: translateY(8px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .fu-card { transition: border-color .12s ease-out, box-shadow .12s ease-out; }
-    .fu-card:hover { border-color: rgb(var(--maestro-border-hover)); box-shadow: 0 2px 8px rgba(0,0,0,.05); }
-
-    /* Chat thread bubbles (chat-module conventions, light theme) */
-    .bubble { max-width: 78%; border-radius: .75rem; padding: .5625rem .75rem; font-size: .8125rem; line-height: 1.45; color: rgb(var(--maestro-text-primary)); }
-    .bubble.client { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-bottom-left-radius: .25rem; }
-    .bubble.ops { background: rgb(var(--maestro-surface-raised)); border-bottom-right-radius: .25rem; }
-    .bubble.trigger { box-shadow: 0 0 0 2px rgb(var(--maestro-accent)); }
-    .trigger-tag { display: inline-flex; align-items: center; gap: .25rem; font-size: .625rem; font-weight: 600; color: rgb(var(--maestro-accent-hover)); margin-top: .3125rem; }
-    .sys-entry { display: inline-flex; align-items: center; padding: .1875rem .625rem; font-size: .6875rem; color: rgb(var(--maestro-text-tertiary)); background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); border-radius: 9999px; }
-
-    /* Source chips (coverage + drawer provenance) */
-    .src-chip { display: inline-flex; align-items: center; gap: .25rem; padding: .1875rem .5625rem; font-size: .625rem; font-weight: 600; border-radius: 9999px; background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); color: rgb(var(--maestro-text-secondary)); }
-    .src-chip.live::before { content: ''; width: .3125rem; height: .3125rem; border-radius: 9999px; background: rgb(var(--maestro-success)); }
-    .src-chip.later::before { content: ''; width: .3125rem; height: .3125rem; border-radius: 9999px; background: rgb(var(--maestro-amber)); }
-    .src-chip.off { opacity: .55; border-style: dashed; }
-
-    /* Neutral initial avatars (Figma table style: dark sandal circle, light initials) */
-    .avatar { background: #503a33; color: #f6f4f0; letter-spacing: .02em; }
-
-    /* Drawer: quoted context snippet + message composer */
-    .snippet { border-left: 3px solid rgb(var(--maestro-accent)); background: rgb(var(--maestro-surface)); border-radius: .5rem; padding: .5625rem .75rem; }
-    .composer-card { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
-    .composer-card:focus-within { border-color: rgb(var(--maestro-accent)); }
-    .composer-input { width: 100%; border: 0; background: transparent; padding: .375rem .75rem .5rem; font-size: .8125rem; line-height: 1.55; color: rgb(var(--maestro-text-primary)); resize: vertical; outline: none; font-family: inherit; }
-    .composer-toolbar { display: flex; align-items: center; gap: .5rem; padding: .625rem .75rem; border-top: 1px solid rgb(var(--maestro-border)); }
-    .check-item { display: flex; align-items: flex-start; gap: .5rem; font-size: .6875rem; color: rgb(var(--maestro-text-secondary)); cursor: pointer; }
-  </style>
 </head>
 
 <body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
-  <!-- App top nav (new Conductor chrome) -->
-  <header class="h-16 flex items-center px-6 gap-4">
-    <a href="overview.html" class="font-serif text-2xl text-mtext lowercase tracking-tight mr-2">maestro</a>
-    <nav class="flex-1 flex items-center justify-center">
-      <div class="inline-flex items-center gap-1 bg-mraised/70 rounded-full p-1">
-        <a href="overview.html" class="app-nav-pill">Overview</a>
-        <a href="trips.html" class="app-nav-pill">Trips</a>
-        <a href="inline-create.html" class="app-nav-pill">Chat</a>
-        <a href="agent.html" class="app-nav-pill">Agent</a>
-        <a href="task-board.html" class="app-nav-pill active">Tasks</a>
-      </div>
-    </nav>
-    <div class="flex items-center gap-1 text-mtext2">
-      <a href="../index.html" class="text-[11px] text-mtext3 hover:text-mtext transition-colors px-2 py-1" title="Back to the PRD outline">↗ Outline</a>
-      <button class="p-2 hover:text-mtext transition-colors" title="Notifications"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
-      <button class="p-2 hover:text-mtext transition-colors" title="Settings"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
-    </div>
-  </header>
+  <div id="topnav-root"></div>
 
   <main class="min-h-screen">
     <div class="max-w-[1400px] mx-auto px-6 py-6">
@@ -721,7 +579,7 @@
             <div class="flex flex-wrap gap-1.5">
               ${sources.map(s => `<span class="src-chip ${s.cls}" title="${s.why}">${s.label}${s.cls === 'later' ? ' · M4' : ''}</span>`).join('')}
             </div>
-            <p class="text-[11px] text-mtext3 mt-3 pt-3 border-t border-mborder">No Slack ingestion, deliberately: cluster comms move INTO Conductor at the Aug 4 cutover, so the need dissolves. HEADS-UP announcements stay in Slack. Flag: <span class="font-mono text-maccenth">follow-ups-view</span>.</p>
+            <p class="text-[11px] text-mtext3 mt-3 pt-3 border-t border-mborder">No Slack ingestion: member threads are native in Conductor after the Aug 4 cutover, and handoffs move in per CON-1533. Whether cluster coordination chat also moves in is an open PO decision; until then it stays in Slack, unread. HEADS-UP announcements stay in Slack. Flag: <span class="font-mono text-maccenth">follow-ups-view</span>.</p>
           </div>`;
       }
 
