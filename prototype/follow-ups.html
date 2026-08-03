@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="../maestro-theme.css">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -33,24 +31,16 @@
             msuccessl: 'rgb(var(--maestro-success-light))',
             mdanger: 'rgb(var(--maestro-danger))',
             mdangerl: 'rgb(var(--maestro-danger-light))',
-            mwarning: 'rgb(var(--maestro-warning))',
-            mwarningl: 'rgb(var(--maestro-warning-light))',
             mamber: 'rgb(var(--maestro-amber))',
             mambersoft: 'rgb(var(--maestro-amber-soft))',
             minfo: 'rgb(var(--maestro-info))',
             minfol: 'rgb(var(--maestro-info-light))',
             'chip-green': 'rgb(var(--maestro-chip-green))',
-            'chip-green-soft': 'rgb(var(--maestro-chip-green-soft))',
             'chip-orange': 'rgb(var(--maestro-chip-orange))',
-            'chip-orange-soft': 'rgb(var(--maestro-chip-orange-soft))',
             'chip-blue': 'rgb(var(--maestro-chip-blue))',
-            'chip-blue-soft': 'rgb(var(--maestro-chip-blue-soft))',
             'chip-teal': 'rgb(var(--maestro-chip-teal))',
-            'chip-teal-soft': 'rgb(var(--maestro-chip-teal-soft))',
             'chip-purple': 'rgb(var(--maestro-chip-purple))',
-            'chip-purple-soft': 'rgb(var(--maestro-chip-purple-soft))',
             'chip-pink': 'rgb(var(--maestro-chip-pink))',
-            'chip-pink-soft': 'rgb(var(--maestro-chip-pink-soft))',
           },
           fontFamily: {
             sans: ['Commissioner', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
@@ -62,60 +52,88 @@
     };
   </script>
 
-  <script src="../theme.js"></script>
-  <script src="../data.js"></script>
-  <script>window.CURRENT_PAGE = 'proto-follow-ups'; window.CURRENT_APP_TAB = 'tasks';</script>
-  <script src="../nav.js"></script>
-  <script src="topnav.js"></script>
   <script src="task-data.js"></script>
   <script src="follow-ups-data.js"></script>
 
   <style>
+    /* ── New Conductor design language (Figma Tasks section, Jul 2026) ──
+       Token sources: Background/Canvas #f6f4f0, Surface/Default #fff,
+       Surface/Subtle #eee9e0, Border #e7e7e7, Text #222/#5d5d5d/#888,
+       Primary #ff5e32, error/600 #dc2626 + error/50 #fee2e2,
+       Feedback/Warning #e77828 + warning/50 #fff4ed. */
+    :root {
+      --maestro-bg: 246 244 240;             /* Background/Canvas */
+      --maestro-card: 255 255 255;           /* Surface/Default */
+      --maestro-surface: 246 246 246;        /* Background/Subtle */
+      --maestro-surface-raised: 238 233 224; /* Surface/Subtle (sand) */
+      --maestro-border: 231 231 231;         /* Border/Default */
+      --maestro-border-hover: 176 176 176;   /* outline/300 */
+      --maestro-text-primary: 34 34 34;      /* Text/Primary */
+      --maestro-text-secondary: 93 93 93;    /* Text/Secondary */
+      --maestro-text-tertiary: 136 136 136;  /* Text/Placeholder */
+      --maestro-accent: 255 94 50;           /* Button/Primary #ff5e32 */
+      --maestro-accent-hover: 219 82 27;     /* Bamboo/600 */
+      --maestro-accent-light: 255 244 237;   /* warning/50 */
+      --maestro-success: 21 128 61;
+      --maestro-success-light: 220 252 231;
+      --maestro-danger: 220 38 38;           /* error/600 */
+      --maestro-danger-light: 254 226 226;   /* error/50 */
+      --maestro-amber: 215 108 31;           /* warning/600 */
+      --maestro-amber-soft: 255 244 237;     /* warning/50 */
+      --maestro-info: 37 99 235;
+      --maestro-info-light: 239 246 255;
+      --maestro-chip-green: 21 128 61;
+      --maestro-chip-orange: 219 82 27;
+      --maestro-chip-blue: 37 99 235;
+      --maestro-chip-teal: 13 148 136;
+      --maestro-chip-purple: 124 58 237;
+      --maestro-chip-pink: 190 24 93;
+    }
+
+    /* App top nav (Figma: canvas bg, serif wordmark, center pill nav) */
+    .app-nav-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .5rem 1rem; font-size: .8125rem; font-weight: 500; color: rgb(var(--maestro-text-primary)); border-radius: 9999px; text-decoration: none; transition: background .12s; }
+    .app-nav-pill:hover { background: rgba(255,255,255,.7); }
+    .app-nav-pill.active { background: #222222; color: #ffffff; }
+
+    /* Figma-style tab pills (My Tasks | Urgent | ...) */
+    .tab-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .4375rem .875rem; font-size: .8125rem; font-weight: 500; color: rgb(var(--maestro-text-secondary)); border-radius: 9999px; border: 1px solid transparent; cursor: pointer; transition: all .12s; background: transparent; }
+    .tab-pill:hover { color: rgb(var(--maestro-text-primary)); }
+    .tab-pill.active { background: #ffffff; color: rgb(var(--maestro-text-primary)); border-color: rgb(var(--maestro-border)); box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .tab-pill .tab-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 1.125rem; height: 1.125rem; padding: 0 .3125rem; border-radius: 9999px; background: #222222; color: #ffffff; font-size: .625rem; font-weight: 600; }
+
+    /* Filter / owner chips: white pills, black when active */
     .filter-chip {
       display: inline-flex; align-items: center;
-      padding: 0.375rem 0.75rem;
-      font-size: 0.75rem;
+      padding: .4375rem .875rem;
+      font-size: .75rem; font-weight: 500;
       color: rgb(var(--maestro-text-secondary));
-      background: rgb(var(--maestro-surface));
+      background: rgb(var(--maestro-card));
       border: 1px solid rgb(var(--maestro-border));
-      border-radius: 0.5rem;
+      border-radius: 9999px;
       cursor: pointer;
       transition: all .12s ease-out;
     }
-    .filter-chip:hover {
-      color: rgb(var(--maestro-text-primary));
-      border-color: rgb(var(--maestro-border-hover));
-      background: rgb(var(--maestro-surface-raised));
-    }
-    .filter-chip.active {
-      color: rgb(var(--maestro-text-primary));
-      background: rgb(var(--maestro-accent-light));
-      border-color: rgba(255, 110, 70, 0.5);
-    }
-    .filter-count { margin-left: 0.375rem; font-size: 0.625rem; color: rgb(var(--maestro-text-tertiary)); }
-    .filter-chip.active .filter-count { color: rgba(255, 110, 70, 0.8); }
+    .filter-chip:hover { color: rgb(var(--maestro-text-primary)); border-color: rgb(var(--maestro-border-hover)); }
+    .filter-chip.active { color: #ffffff; background: #222222; border-color: #222222; }
+    .filter-count { margin-left: .375rem; font-size: .625rem; color: rgb(var(--maestro-text-tertiary)); }
+    .filter-chip.active .filter-count { color: rgba(255,255,255,.7); }
 
-    /* Reason + why-now chips */
-    .why-chip { display: inline-flex; align-items: center; gap: .375rem; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 500; border-radius: .375rem; border: 1px solid transparent; }
-    .why-chip.danger  { color: rgb(var(--maestro-danger));  background: rgb(var(--maestro-danger-light));  border-color: rgba(239,68,68,.35); }
-    .why-chip.warning { color: rgb(var(--maestro-amber));   background: rgb(var(--maestro-amber-soft));    border-color: rgba(245,158,11,.35); }
-    .why-chip.info    { color: rgb(var(--maestro-info));    background: rgb(var(--maestro-info-light));    border-color: rgba(59,130,246,.30); }
-    .quiet-chip { display: inline-flex; align-items: center; padding: .1875rem .5rem; font-size: .6875rem; color: rgb(var(--maestro-text-tertiary)); background: rgb(var(--maestro-bg)); border: 1px solid rgb(var(--maestro-border)); border-radius: .375rem; font-variant-numeric: tabular-nums; }
+    /* Reason + why-now chips (Figma priority-chip style: tinted bg, colored text) */
+    .why-chip { display: inline-flex; align-items: center; gap: .375rem; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 600; border-radius: .375rem; }
+    .why-chip.danger  { color: rgb(var(--maestro-danger));  background: rgb(var(--maestro-danger-light)); }
+    .why-chip.warning { color: rgb(var(--maestro-amber));   background: rgb(var(--maestro-amber-soft)); }
+    .why-chip.info    { color: rgb(var(--maestro-info));    background: rgb(var(--maestro-info-light)); }
+    .quiet-chip { display: inline-flex; align-items: center; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 500; color: rgb(var(--maestro-text-secondary)); background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); border-radius: .375rem; font-variant-numeric: tabular-nums; }
 
-    /* View toggle (My follow-ups | Manager), same pattern as task-board Table|Kanban */
-    .view-toggle {
-      color: rgb(var(--maestro-text-secondary));
-      cursor: pointer;
-      transition: all .12s ease-out;
-    }
-    .view-toggle:hover { color: rgb(var(--maestro-text-primary)); }
-    .view-toggle.active {
-      color: rgb(var(--maestro-text-primary));
-      background: rgb(var(--maestro-accent-light));
-    }
+    /* SLA stage chips (CON-1712 stages: green 0-15m, yellow 15-30m, red 30m+) */
+    .sla-chip { display: inline-flex; align-items: center; gap: .3125rem; padding: .1875rem .5625rem; font-size: .6875rem; font-weight: 600; border-radius: 9999px; font-variant-numeric: tabular-nums; }
+    .sla-chip::before { content: ''; width: .375rem; height: .375rem; border-radius: 9999px; background: currentColor; }
+    .sla-chip.red    { color: rgb(var(--maestro-danger)); background: rgb(var(--maestro-danger-light)); }
+    .sla-chip.yellow { color: rgb(var(--maestro-amber));  background: rgb(var(--maestro-amber-soft)); }
+    .sla-chip.green  { color: rgb(var(--maestro-success)); background: rgb(var(--maestro-success-light)); }
 
     /* Manager stat cards */
-    .stat-card { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: .5rem; padding: .875rem 1rem; }
+    .stat-card { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: .75rem; padding: .875rem 1rem; }
     .stat-value { font-size: 1.375rem; font-weight: 600; color: rgb(var(--maestro-text-primary)); font-variant-numeric: tabular-nums; line-height: 1.2; }
     .stat-label { font-size: .6875rem; color: rgb(var(--maestro-text-tertiary)); margin-top: .125rem; }
     .stat-value.danger { color: rgb(var(--maestro-danger)); }
@@ -123,10 +141,10 @@
     .stat-value.success { color: rgb(var(--maestro-success)); }
 
     .owner-row { cursor: pointer; transition: background .12s ease-out; }
-    .owner-row:hover { background: rgb(var(--maestro-surface-raised)); }
+    .owner-row:hover { background: rgb(var(--maestro-surface)); }
     .owner-row.selected { background: rgb(var(--maestro-accent-light)); }
 
-    /* Drawer slide (same as task-board) */
+    /* Drawer slide */
     .drawer { transform: translateX(100%); transition: transform .25s ease-out; }
     .drawer.open { transform: translateX(0); }
     .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .15s ease-out; }
@@ -138,50 +156,65 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    .fu-card { transition: border-color .12s ease-out, background .12s ease-out; }
-    .fu-card:hover { border-color: rgb(var(--maestro-border-hover)); background: rgb(var(--maestro-surface-raised)); }
+    .fu-card { transition: border-color .12s ease-out, box-shadow .12s ease-out; }
+    .fu-card:hover { border-color: rgb(var(--maestro-border-hover)); box-shadow: 0 2px 8px rgba(0,0,0,.05); }
   </style>
 </head>
 
 <body class="bg-mbg text-mtext2 font-sans min-h-screen antialiased">
 
-  <div id="nav-root"></div>
+  <!-- App top nav (new Conductor chrome) -->
+  <header class="h-16 flex items-center px-6 gap-4">
+    <a href="overview.html" class="font-serif text-2xl text-mtext lowercase tracking-tight mr-2">maestro</a>
+    <nav class="flex-1 flex items-center justify-center">
+      <div class="inline-flex items-center gap-1 bg-mraised/70 rounded-full p-1">
+        <a href="overview.html" class="app-nav-pill">Overview</a>
+        <a href="trips.html" class="app-nav-pill">Trips</a>
+        <a href="inline-create.html" class="app-nav-pill">Chat</a>
+        <a href="agent.html" class="app-nav-pill">Agent</a>
+        <a href="task-board.html" class="app-nav-pill active">Tasks</a>
+      </div>
+    </nav>
+    <div class="flex items-center gap-1 text-mtext2">
+      <a href="../index.html" class="text-[11px] text-mtext3 hover:text-mtext transition-colors px-2 py-1" title="Back to the PRD outline">↗ Outline</a>
+      <button class="p-2 hover:text-mtext transition-colors" title="Notifications"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></button>
+      <button class="p-2 hover:text-mtext transition-colors" title="Settings"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
+    </div>
+  </header>
 
-  <main class="ml-0 lg:ml-[260px] min-h-screen">
-    <div id="topnav-root"></div>
-    <div class="max-w-[1400px] mx-auto px-6 py-8 pt-14 lg:pt-8">
+  <main class="min-h-screen">
+    <div class="max-w-[1400px] mx-auto px-6 py-6">
 
       <!-- Header -->
-      <div class="flex items-start justify-between gap-4 mb-2">
+      <div class="flex items-start justify-between gap-4 mb-4">
         <div>
-          <h2 class="text-2xl font-semibold text-mtext tracking-tight">Follow-ups</h2>
-          <p class="text-sm text-mtext3 mt-1" id="page-subtitle">Which members are waiting on you right now, and what to say. Projected live from tasks + conversations.</p>
+          <h2 class="text-[22px] font-semibold text-mtext tracking-tight">Follow-ups</h2>
+          <p class="text-sm text-mtext3 mt-0.5" id="page-subtitle">Which members are waiting on you right now, and what to say. Projected live from tasks + conversations.</p>
         </div>
         <div class="flex items-center gap-2 pt-1">
           <span class="quiet-chip">Mon, May 18 · updates live</span>
-          <!-- View toggle: TA vs Manager -->
-          <div class="flex items-center bg-mbg border border-mborder rounded-md overflow-hidden">
-            <button id="view-ta" class="view-toggle px-2.5 py-1.5 text-[11px] inline-flex items-center gap-1.5 active" data-view="ta" title="Your live follow-up queue">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-              My follow-ups
-            </button>
-            <button id="view-mgr" class="view-toggle px-2.5 py-1.5 text-[11px] inline-flex items-center gap-1.5" data-view="mgr" title="Cluster health: load, cracks, throughput">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-              Manager
-            </button>
-          </div>
           <a href="task-board.html" class="filter-chip">
-            <svg class="w-3.5 h-3.5 mr-1.5 text-mtext3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             All tasks
           </a>
         </div>
+      </div>
+
+      <!-- View tabs (Figma tab-pill style) -->
+      <div class="flex items-center gap-1 mb-5">
+        <button id="view-ta" class="tab-pill active" data-view="ta" title="Your live follow-up queue">
+          My follow-ups <span class="tab-badge" id="ta-tab-count">0</span>
+        </button>
+        <button id="view-mgr" class="tab-pill" data-view="mgr" title="Cluster health: load, cracks, throughput">
+          Manager
+        </button>
       </div>
 
       <!-- ══════════════════ TA VIEW ══════════════════ -->
       <div id="ta-view">
 
         <!-- Owner filter -->
-        <div class="flex flex-wrap items-center gap-1.5 mb-6 mt-4" id="owner-filter">
+        <div class="flex flex-wrap items-center gap-1.5 mb-6" id="owner-filter">
           <button class="filter-chip owner-chip active" data-owner="all">Everyone <span class="filter-count" data-count="all">0</span></button>
           <!-- per-owner chips injected -->
         </div>
@@ -195,7 +228,7 @@
             <section class="mb-8">
               <div class="flex items-center gap-2.5 mb-3">
                 <span class="w-2 h-2 rounded-full bg-mdanger"></span>
-                <h3 class="text-sm font-semibold text-mtext tracking-wide uppercase">Act now</h3>
+                <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Act now</h3>
                 <span class="text-xs text-mtext3" id="act-now-count"></span>
                 <div class="flex-1 h-px bg-mborder"></div>
               </div>
@@ -207,7 +240,7 @@
             <section class="mb-8">
               <div class="flex items-center gap-2.5 mb-3">
                 <span class="w-2 h-2 rounded-full bg-mamber"></span>
-                <h3 class="text-sm font-semibold text-mtext tracking-wide uppercase">Waiting on member</h3>
+                <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Waiting on member</h3>
                 <span class="text-xs text-mtext3" id="waiting-count"></span>
                 <div class="flex-1 h-px bg-mborder"></div>
               </div>
@@ -217,16 +250,16 @@
 
             <p class="text-[11px] text-mtext3 border-t border-mborder pt-3">
               v1 scope: projection over <span class="font-mono">conductor_tasks</span> + conversations only. No Slack or meeting-notes ingestion.
-              Flag: <span class="font-mono text-mamber">follow-ups-view</span>. Ops announcements (HEADS-UP) stay in Slack for v1.
+              Flag: <span class="font-mono text-maccenth">follow-ups-view</span>. Ops announcements (HEADS-UP) stay in Slack for v1.
             </p>
           </div>
 
           <!-- Right: VERIFIED TODAY -->
           <aside class="w-[320px] flex-shrink-0 hidden xl:block">
-            <div class="bg-mcard border border-mborder rounded-lg p-4 sticky top-16">
+            <div class="bg-mcard border border-mborder rounded-xl p-4 sticky top-4">
               <div class="flex items-center gap-2 mb-1">
                 <span class="w-2 h-2 rounded-full bg-msuccess"></span>
-                <h3 class="text-sm font-semibold text-mtext tracking-wide uppercase">Verified today</h3>
+                <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Verified today</h3>
               </div>
               <p class="text-xs text-mtext3 mb-3">Facts checked today. Reuse freely, sources attached. Captured when a task resolves.</p>
               <div id="facts-list" class="space-y-3"></div>
@@ -236,12 +269,12 @@
               </button>
               <div id="capture-form" class="hidden mt-3 space-y-2">
                 <input id="capture-title" type="text" placeholder="Fact title"
-                  class="w-full bg-mbg border border-mborder rounded-md px-2.5 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent" />
+                  class="w-full bg-mcard border border-mborder rounded-lg px-2.5 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent" />
                 <textarea id="capture-body" rows="3" placeholder="What was verified, and where"
-                  class="w-full bg-mbg border border-mborder rounded-md px-2.5 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent resize-none"></textarea>
+                  class="w-full bg-mcard border border-mborder rounded-lg px-2.5 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent resize-none"></textarea>
                 <div class="flex gap-2">
-                  <button id="capture-save" class="px-3 py-1.5 rounded-md bg-maccent text-white text-xs font-medium hover:bg-maccenth transition-colors">Save</button>
-                  <button id="capture-cancel" class="px-3 py-1.5 rounded-md text-xs text-mtext3 hover:text-mtext transition-colors">Cancel</button>
+                  <button id="capture-save" class="px-3 py-1.5 rounded-lg bg-maccent text-white text-xs font-medium hover:bg-maccenth transition-colors">Save</button>
+                  <button id="capture-cancel" class="px-3 py-1.5 rounded-lg text-xs text-mtext3 hover:text-mtext transition-colors">Cancel</button>
                 </div>
               </div>
             </div>
@@ -253,19 +286,19 @@
       <div id="mgr-view" class="hidden">
 
         <!-- Summary strip -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-4 mb-6" id="mgr-stats"></div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6" id="mgr-stats"></div>
 
         <div class="flex flex-col xl:flex-row gap-6 items-start mb-6">
 
           <!-- Per-owner load table -->
-          <div class="flex-1 min-w-0 bg-mcard border border-mborder rounded-lg overflow-hidden">
+          <div class="flex-1 min-w-0 bg-mcard border border-mborder rounded-xl overflow-hidden">
             <div class="px-4 py-3 border-b border-mborder flex items-center gap-2">
               <h3 class="text-sm font-semibold text-mtext">Load by owner</h3>
               <span class="text-[11px] text-mtext3">click a row to filter the queue below</span>
             </div>
             <table class="w-full">
               <thead>
-                <tr class="border-b border-mborder bg-mraised/30 text-[11px] text-mtext3 uppercase tracking-wide">
+                <tr class="border-b border-mborder bg-msurface/60 text-[11px] text-mtext3 uppercase tracking-wide">
                   <th class="text-left px-4 py-2 font-medium">Owner</th>
                   <th class="text-right px-3 py-2 font-medium">Act now</th>
                   <th class="text-right px-3 py-2 font-medium">Waiting</th>
@@ -278,10 +311,10 @@
           </div>
 
           <!-- Falling through the cracks -->
-          <div class="w-full xl:w-[420px] flex-shrink-0 bg-mcard border border-mborder rounded-lg p-4">
+          <div class="w-full xl:w-[420px] flex-shrink-0 bg-mcard border border-mborder rounded-xl p-4">
             <div class="flex items-center gap-2 mb-1">
               <span class="w-2 h-2 rounded-full bg-mdanger"></span>
-              <h3 class="text-sm font-semibold text-mtext tracking-wide uppercase">Falling through the cracks</h3>
+              <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Falling through the cracks</h3>
             </div>
             <p class="text-xs text-mtext3 mb-3">No owner, lapsed windows, unmet promises. Things no personal queue is showing anyone.</p>
             <div id="cracks-list" class="space-y-2"></div>
@@ -291,7 +324,7 @@
         <!-- Open queue (filterable by owner row) -->
         <section class="mb-6">
           <div class="flex items-center gap-2.5 mb-3">
-            <h3 class="text-sm font-semibold text-mtext tracking-wide uppercase">Open follow-ups</h3>
+            <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Open follow-ups</h3>
             <span class="text-xs text-mtext3" id="mgr-queue-label">everyone</span>
             <div class="flex-1 h-px bg-mborder"></div>
           </div>
@@ -306,7 +339,7 @@
   </main>
 
   <!-- Drawer backdrop -->
-  <div id="drawer-backdrop" class="modal-backdrop fixed inset-0 bg-black/50 z-40"></div>
+  <div id="drawer-backdrop" class="modal-backdrop fixed inset-0 bg-black/30 z-40"></div>
 
   <!-- Reply drawer -->
   <div id="reply-drawer" class="drawer fixed right-0 top-0 h-full w-[480px] max-w-full bg-mcard border-l border-mborder z-50 flex flex-col shadow-2xl">
@@ -342,7 +375,7 @@
           <span class="text-[11px] text-mtext3">edit freely, sends as you</span>
         </div>
         <textarea id="drawer-draft" rows="8"
-          class="w-full bg-mbg border border-mborder rounded-lg px-3 py-2.5 text-sm text-mtext leading-relaxed focus:outline-none focus:border-maccent resize-none"></textarea>
+          class="w-full bg-msurface border border-mborder rounded-lg px-3 py-2.5 text-sm text-mtext leading-relaxed focus:outline-none focus:border-maccent focus:bg-mcard resize-none"></textarea>
       </div>
 
       <!-- Evidence -->
@@ -353,7 +386,7 @@
     </div>
 
     <div class="p-4 border-t border-mborder flex items-center gap-2">
-      <button id="drawer-copy" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-maccent text-white hover:bg-maccenth text-sm font-medium transition-colors">
+      <button id="drawer-copy" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-maccent text-white hover:bg-maccenth text-sm font-medium transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
         Copy reply
       </button>
@@ -391,7 +424,7 @@
       function avatar(ownerId, size) {
         const m = memberById(ownerId);
         const dim = size === 'sm' ? 'w-5 h-5 text-[9px]' : 'w-6 h-6 text-[10px]';
-        return `<span class="inline-flex items-center justify-center ${dim} rounded-full ${m.color} bg-opacity-20 font-semibold flex-shrink-0" title="${esc(m.name)} · ${esc(m.role)}">${m.initials}</span>`;
+        return `<span class="inline-flex items-center justify-center ${dim} rounded-full ${m.color} bg-opacity-15 font-semibold flex-shrink-0" title="${esc(m.name)} · ${esc(m.role)}">${m.initials}</span>`;
       }
 
       // Rough age in hours, parsed from the fixture chips (prototype only).
@@ -413,6 +446,11 @@
         if (!meta) return '';
         return `<span class="why-chip ${meta.tone}">${esc(item.reason_label || meta.label)}</span>`;
       }
+      // SLA stage chip (CON-1712 three-stage model; only awaiting-reply rows carry an active anchor)
+      function slaChip(item) {
+        if (!item.sla_stage) return '';
+        return `<span class="sla-chip ${item.sla_stage}">${esc(item.sla_label || 'SLA ' + item.sla_stage)}</span>`;
+      }
 
       // ── TA view ──
       function renderOwnerChips() {
@@ -428,11 +466,12 @@
         });
         host.querySelector('[data-owner="all"]').classList.toggle('active', ownerFilter === 'all');
         host.querySelector('[data-count="all"]').textContent = items.length;
+        $('#ta-tab-count').textContent = items.length;
       }
 
       function actNowCard(item) {
         return `
-          <div class="fu-card bg-mcard border border-mborder border-l-2 border-l-mdanger rounded-lg p-4" data-id="${item.id}">
+          <div class="fu-card bg-mcard border border-mborder border-l-2 border-l-mdanger rounded-xl p-4" data-id="${item.id}">
             <div class="flex items-start justify-between gap-3">
               <div class="min-w-0">
                 <p class="text-[11px] text-mtext3 mb-1">${esc(item.context)}</p>
@@ -442,11 +481,12 @@
             </div>
             <p class="text-xs text-mtext2 mt-2 leading-relaxed">${esc(item.detail)}</p>
             <div class="flex flex-wrap items-center gap-2 mt-3">
+              ${slaChip(item)}
               ${reasonChip(item)}
               ${whyChip(item)}
               <span class="quiet-chip">${esc(item.due)}</span>
               <div class="flex-1"></div>
-              <button class="open-drawer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-maccent text-white hover:bg-maccenth text-xs font-medium transition-colors" data-id="${item.id}">
+              <button class="open-drawer inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-maccent text-white hover:bg-maccenth text-xs font-medium transition-colors" data-id="${item.id}">
                 Review reply
               </button>
               <button class="filter-chip open-thread" data-id="${item.id}">Open thread</button>
@@ -456,7 +496,7 @@
 
       function waitingRow(item) {
         return `
-          <div class="fu-card bg-mcard border border-mborder rounded-lg px-4 py-3 flex items-center gap-3" data-id="${item.id}">
+          <div class="fu-card bg-mcard border border-mborder rounded-xl px-4 py-3 flex items-center gap-3" data-id="${item.id}">
             ${avatar(item.owner)}
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2">
@@ -495,10 +535,10 @@
 
         $('#act-now-list').innerHTML = act.length
           ? act.map(actNowCard).join('')
-          : `<div class="border border-dashed border-mborder rounded-lg p-6 text-center text-xs text-mtext3">Nothing urgent. All promises kept.</div>`;
+          : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">Nothing urgent. All promises kept.</div>`;
         $('#waiting-list').innerHTML = wait.length
           ? wait.map(waitingRow).join('')
-          : `<div class="border border-dashed border-mborder rounded-lg p-6 text-center text-xs text-mtext3">No quiet threads in a nudge window.</div>`;
+          : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">No quiet threads in a nudge window.</div>`;
 
         $('#act-now-count').textContent = act.length ? `${act.length}` : '';
         $('#waiting-count').textContent = wait.length ? `${wait.length}` : '';
@@ -543,7 +583,7 @@
             <span class="w-1.5 h-1.5 rounded-full ${sevDot[c.severity] || 'bg-mtext3'} mt-1.5 flex-shrink-0"></span>
             <div class="min-w-0 flex-1">
               <p class="text-xs text-mtext2 leading-relaxed">${esc(c.text)}</p>
-              <button class="crack-action text-[11px] text-maccent hover:underline mt-1.5" data-crack="${c.id}">${esc(c.action)}</button>
+              <button class="crack-action text-[11px] text-maccenth hover:underline mt-1.5" data-crack="${c.id}">${esc(c.action)}</button>
             </div>
             ${c.owner ? avatar(c.owner, 'sm') : ''}
           </div>`).join('');
@@ -552,7 +592,7 @@
         $('#mgr-queue-label').textContent = mgrOwnerFilter === 'all' ? 'everyone' : memberById(mgrOwnerFilter).name;
         $('#mgr-queue').innerHTML = queue.length
           ? queue.map(item => `
-              <div class="fu-card bg-mcard border border-mborder rounded-lg px-4 py-3 flex items-center gap-3" data-id="${item.id}">
+              <div class="fu-card bg-mcard border border-mborder rounded-xl px-4 py-3 flex items-center gap-3" data-id="${item.id}">
                 ${avatar(item.owner)}
                 <div class="min-w-0 flex-1">
                   <span class="text-[11px] text-mtext3 truncate block">${esc(item.context)}</span>
@@ -561,11 +601,12 @@
                 ${reasonChip(item)}
                 <button class="open-drawer filter-chip flex-shrink-0" data-id="${item.id}">Open</button>
               </div>`).join('')
-          : `<div class="border border-dashed border-mborder rounded-lg p-6 text-center text-xs text-mtext3">Nothing open for this owner.</div>`;
+          : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">Nothing open for this owner.</div>`;
       }
 
       function render() {
         if (viewMode === 'ta') renderTA(); else renderMgr();
+        $('#ta-tab-count').textContent = items.length;
       }
 
       function setView(mode) {
@@ -582,7 +623,7 @@
 
       function toast(msg, undoFn) {
         const el = document.createElement('div');
-        el.className = 'toast bg-mraised border border-mborder rounded-lg px-4 py-2.5 text-sm text-mtext shadow-2xl flex items-center gap-3';
+        el.className = 'toast bg-[#222222] text-white rounded-lg px-4 py-2.5 text-sm shadow-2xl flex items-center gap-3';
         el.innerHTML = `<span>${esc(msg)}</span>` + (undoFn ? `<button class="text-maccent text-xs font-medium hover:underline">Undo</button>` : '');
         if (undoFn) el.querySelector('button').addEventListener('click', () => { undoFn(); el.remove(); });
         $('#toast-root').appendChild(el);
@@ -598,7 +639,7 @@
         $('#drawer-context').textContent = item.context + ' · owner ' + memberById(item.owner).name;
         $('#drawer-headline').textContent = item.headline;
         $('#drawer-reason').innerHTML = meta
-          ? `${reasonChip(item)}<span class="text-[11px] text-mtext3 ml-2">${esc(meta.desc)}</span>` : '';
+          ? `${slaChip(item)} ${reasonChip(item)}<span class="text-[11px] text-mtext3 ml-2">${esc(meta.desc)}</span>` : '';
         $('#drawer-detail').textContent = item.detail;
         $('#drawer-provenance').textContent = `Source: ${item.signal} · task ${item.source_task} · confidence ${item.confidence}%`;
         $('#drawer-draft').value = item.draft;

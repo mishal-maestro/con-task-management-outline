@@ -10,6 +10,7 @@ const FOLLOWUPS = [
   {
     id: 'fu-001', bucket: 'act-now',
     reason: 'awaiting-reply', reason_label: 'Awaiting reply 1h',
+    sla_stage: 'red', sla_label: 'SLA red · 62m',
     member: 'Greer family', context: 'Greer · Tokyo Apr 30 · WhatsApp',
     owner: 'mc', support: ['js'],
     headline: 'Mid-award-booking, open name question on the ticket',
