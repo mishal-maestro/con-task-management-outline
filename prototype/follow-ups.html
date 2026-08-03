@@ -193,21 +193,21 @@
         </div>
         <div class="flex items-center gap-2 pt-1">
           <span class="quiet-chip">Mon, May 18 · updates live</span>
-          <a href="task-board.html" class="filter-chip">
-            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-            All tasks
-          </a>
         </div>
       </div>
 
-      <!-- View tabs (Figma tab-pill style) -->
+      <!-- Tasks-area tabs: Follow-ups is a tab within Tasks, the board stays -->
       <div class="flex items-center gap-1 mb-5">
-        <button id="view-ta" class="tab-pill active" data-view="ta" title="Your live follow-up queue">
-          My follow-ups <span class="tab-badge" id="ta-tab-count">0</span>
-        </button>
-        <button id="view-mgr" class="tab-pill" data-view="mgr" title="Cluster health: load, cracks, throughput">
-          Manager
-        </button>
+        <a href="task-board.html" class="tab-pill" title="The full task board (all tasks, all types)">All tasks</a>
+        <span class="tab-pill active" title="Member follow-up triage: who is waiting on you">
+          Follow-ups <span class="tab-badge" id="ta-tab-count">0</span>
+        </span>
+        <div class="flex-1"></div>
+        <!-- Lens toggle: same projection, TA vs manager view (role-scoped in the real build) -->
+        <div class="inline-flex items-center gap-1 bg-mraised/70 rounded-full p-1">
+          <button id="view-ta" class="app-nav-pill active text-[12px] !py-1.5" data-view="ta" title="Your live follow-up queue">My follow-ups</button>
+          <button id="view-mgr" class="app-nav-pill text-[12px] !py-1.5" data-view="mgr" title="Cluster health: load, cracks, throughput">Manager</button>
+        </div>
       </div>
 
       <!-- ══════════════════ TA VIEW ══════════════════ -->
