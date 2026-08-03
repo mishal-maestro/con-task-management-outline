@@ -232,3 +232,20 @@ const ITEM_SOURCES = {
   'fu-104': ['conversation'],
 };
 const SOURCE_LABELS = { conversation: 'Conversation', sla: 'SLA timer', task: 'Task plane', meeting: 'Meeting note', phone: 'Call outcome' };
+
+// Long tail: members quiet INSIDE their nudge windows (no action due yet).
+// Collapsed by default in the WAITING bucket; demonstrates the 30-40-members-per-TA scale.
+const EXTRA_WAITING = [
+  { member: 'Ferris', context: 'Ferris · Provence Sep', owner: 'mc', quiet: 'Quiet 2h', window: 'Window opens tonight' },
+  { member: 'Okonkwo', context: 'Okonkwo · Kyoto Nov', owner: 'js', quiet: 'Quiet 1h', window: 'Window opens tomorrow' },
+  { member: 'Lindqvist', context: 'Lindqvist · Antarctica Jan', owner: 'tk', quiet: 'Quiet 3h', window: 'Window opens tomorrow' },
+  { member: 'Marchetti', context: 'Marchetti · Amalfi Jul', owner: 'rp', quiet: 'Quiet 90m', window: 'Window opens 8 PM' },
+  { member: 'Delacroix', context: 'Delacroix · Marrakech Oct', owner: 'mc', quiet: 'Quiet 4h', window: 'Window opens tomorrow' },
+  { member: 'Tanaka', context: 'Tanaka · NYC Aug', owner: 'js', quiet: 'Quiet 2h', window: 'Window opens tonight' },
+  { member: 'Beaumont', context: 'Beaumont · Safari Feb', owner: 'tk', quiet: 'Quiet 5h', window: 'Window opens Thu' },
+  { member: 'Iyer', context: 'Iyer · Maldives Dec', owner: 'rp', quiet: 'Quiet 1h', window: 'Window opens tomorrow' },
+  { member: 'Kowalski', context: 'Kowalski · Lisbon Sep', owner: 'mc', quiet: 'Quiet 6h', window: 'Window opens tonight' },
+  { member: 'Reyes', context: 'Reyes · Patagonia Mar', owner: 'js', quiet: 'Quiet 2h', window: 'Window opens tomorrow' },
+  { member: 'Ashford', context: 'Ashford · Scotland Aug', owner: 'tk', quiet: 'Quiet 3h', window: 'Window opens 6 PM' },
+  { member: 'Nakamura', context: 'Nakamura · Aspen Dec', owner: 'mc', quiet: 'Quiet 45m', window: 'Window opens tomorrow' },
+];

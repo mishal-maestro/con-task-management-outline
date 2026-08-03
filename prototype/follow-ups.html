@@ -173,6 +173,9 @@
     .src-chip.later::before { content: ''; width: .3125rem; height: .3125rem; border-radius: 9999px; background: rgb(var(--maestro-amber)); }
     .src-chip.off { opacity: .55; border-style: dashed; }
 
+    /* Neutral initial avatars (Figma table style: dark sandal circle, light initials) */
+    .avatar { background: #503a33; color: #f6f4f0; letter-spacing: .02em; }
+
     /* Drawer: quoted context snippet + message composer */
     .snippet { border-left: 3px solid rgb(var(--maestro-accent)); background: rgb(var(--maestro-surface)); border-radius: .5rem; padding: .5625rem .75rem; }
     .composer-card { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
@@ -235,10 +238,22 @@
       <!-- ══════════════════ TA VIEW ══════════════════ -->
       <div id="ta-view">
 
-        <!-- Owner filter -->
-        <div class="flex flex-wrap items-center gap-1.5 mb-6" id="owner-filter">
-          <button class="filter-chip owner-chip active" data-owner="all">Everyone <span class="filter-count" data-count="all">0</span></button>
-          <!-- per-owner chips injected -->
+        <!-- Owner filter + search + sort -->
+        <div class="flex flex-wrap items-center gap-1.5 mb-6">
+          <div class="flex flex-wrap items-center gap-1.5" id="owner-filter">
+            <button class="filter-chip owner-chip active" data-owner="all">Everyone <span class="filter-count" data-count="all">0</span></button>
+            <!-- per-owner chips injected -->
+          </div>
+          <div class="flex-1"></div>
+          <div class="relative">
+            <input id="fu-search" type="text" placeholder="Search member or trip…"
+              class="w-[210px] bg-mcard border border-mborder rounded-full pl-8 pr-3 py-1.5 text-xs text-mtext placeholder-mtext3 focus:outline-none focus:border-maccent transition-colors" />
+            <svg class="w-3.5 h-3.5 text-mtext3 absolute left-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <select id="fu-sort" class="bg-mcard border border-mborder rounded-full px-3 py-1.5 text-xs text-mtext2 focus:outline-none focus:border-maccent">
+            <option value="urgency" selected>Sort: Urgency</option>
+            <option value="member">Sort: Member A-Z</option>
+          </select>
         </div>
 
         <div class="flex gap-6 items-start">
@@ -448,6 +463,9 @@
       let mgrOwnerFilter = 'all';
       let openItemId = null;
       let lastHandled = null;
+      let searchQ = '';
+      let sortBy = 'urgency';       // 'urgency' (fixture rank) | 'member'
+      let extraOpen = false;        // WAITING long tail expanded?
 
       const REASON_META = {
         'awaiting-reply':    { label: 'Awaiting reply',    tone: 'danger',  desc: 'Member is waiting on us with no reply yet. Reply-SLA clock is running.' },
@@ -464,7 +482,7 @@
       function avatar(ownerId, size) {
         const m = memberById(ownerId);
         const dim = size === 'sm' ? 'w-5 h-5 text-[9px]' : 'w-6 h-6 text-[10px]';
-        return `<span class="inline-flex items-center justify-center ${dim} rounded-full ${m.color} bg-opacity-15 font-semibold flex-shrink-0" title="${esc(m.name)} · ${esc(m.role)}">${m.initials}</span>`;
+        return `<span class="avatar inline-flex items-center justify-center ${dim} rounded-full font-semibold flex-shrink-0" title="${esc(m.name)} · ${esc(m.role)}">${m.initials}</span>`;
       }
 
       // Rough age in hours, parsed from the fixture chips (prototype only).
@@ -474,8 +492,22 @@
         return n;
       }
 
+      function matchesSearch(text) {
+        return !searchQ || text.toLowerCase().includes(searchQ);
+      }
       function visible() {
-        return items.filter(i => ownerFilter === 'all' || i.owner === ownerFilter);
+        let vis = items.filter(i =>
+          (ownerFilter === 'all' || i.owner === ownerFilter) &&
+          matchesSearch(i.member + ' ' + i.context + ' ' + i.headline));
+        if (sortBy === 'member') vis = vis.slice().sort((a, b) => a.member.localeCompare(b.member));
+        return vis;
+      }
+      function visibleExtras() {
+        let vis = EXTRA_WAITING.filter(x =>
+          (ownerFilter === 'all' || x.owner === ownerFilter) &&
+          matchesSearch(x.member + ' ' + x.context));
+        if (sortBy === 'member') vis = vis.slice().sort((a, b) => a.member.localeCompare(b.member));
+        return vis;
       }
 
       function whyChip(item) {
@@ -586,12 +618,30 @@
         $('#act-now-list').innerHTML = act.length
           ? act.map(actNowCard).join('')
           : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">Nothing urgent. All promises kept.</div>`;
-        $('#waiting-list').innerHTML = wait.length
+        // Long tail: members quiet but still INSIDE their windows, collapsed by default.
+        const extras = visibleExtras();
+        const extraRows = extras.map(x => `
+          <div class="fu-card bg-mcard/60 border border-mborder border-dashed rounded-xl px-4 py-2.5 flex items-center gap-3">
+            ${avatar(x.owner, 'sm')}
+            <div class="min-w-0 flex-1">
+              <span class="text-[11px] text-mtext3 truncate block">${esc(x.context)}</span>
+              <p class="text-[13px] text-mtext2 truncate">${esc(x.member)} · quiet, inside the window · no action due yet</p>
+            </div>
+            <span class="quiet-chip flex-shrink-0">${esc(x.quiet)}</span>
+            <span class="why-chip info flex-shrink-0">${esc(x.window)}</span>
+          </div>`).join('');
+        const extraBlock = extras.length
+          ? (extraOpen
+              ? `<button id="extra-toggle" class="w-full text-[11px] text-mtext3 hover:text-mtext py-1.5 transition-colors">Collapse the ${extras.length} in-window members ▴</button>${extraRows}`
+              : `<button id="extra-toggle" class="w-full border border-dashed border-mborder rounded-xl px-4 py-2.5 text-xs text-mtext3 hover:text-mtext hover:border-mborderh text-left transition-colors">+ ${extras.length} more members quiet inside their nudge windows · nothing due yet · expand ▾</button>`)
+          : '';
+
+        $('#waiting-list').innerHTML = (wait.length
           ? wait.map(waitingRow).join('')
-          : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">No quiet threads in a nudge window.</div>`;
+          : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">No quiet threads in a nudge window.</div>`) + extraBlock;
 
         $('#act-now-count').textContent = act.length ? `${act.length}` : '';
-        $('#waiting-count').textContent = wait.length ? `${wait.length}` : '';
+        $('#waiting-count').textContent = wait.length ? `${wait.length} due · ${extras.length} in window` : '';
         $('#facts-list').innerHTML = facts.map(factCard).join('');
         renderOwnerChips();
       }
@@ -832,6 +882,12 @@
 
       $('#view-ta').addEventListener('click', () => setView('ta'));
       $('#view-mgr').addEventListener('click', () => setView('mgr'));
+
+      $('#fu-search').addEventListener('input', (e) => { searchQ = e.target.value.trim().toLowerCase(); render(); });
+      $('#fu-sort').addEventListener('change', (e) => { sortBy = e.target.value; render(); });
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('#extra-toggle')) { extraOpen = !extraOpen; render(); }
+      });
 
       $('#drawer-close').addEventListener('click', closeDrawer);
       $('#drawer-backdrop').addEventListener('click', () => { if (threadIsOpen()) closeThread(); else closeDrawer(); });
