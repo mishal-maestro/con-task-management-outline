@@ -491,6 +491,14 @@
         if (!item.sla_stage) return '';
         return `<span class="sla-chip ${item.sla_stage}">${esc(item.sla_label || 'SLA ' + item.sla_stage)}</span>`;
       }
+      // Row-level origin chip for non-conversation sources (meeting notes, call outcomes),
+      // so ingested items are recognizable without opening the drawer.
+      function originChip(item) {
+        return (ITEM_SOURCES[item.id] || [])
+          .filter(s => s === 'meeting' || s === 'phone')
+          .map(s => `<span class="src-chip live" title="This item came from the concierge team's ${SOURCE_LABELS[s].toLowerCase()} source">via ${SOURCE_LABELS[s]}</span>`)
+          .join('');
+      }
 
       // ── TA view ──
       function renderOwnerChips() {
@@ -524,6 +532,7 @@
               ${slaChip(item)}
               ${reasonChip(item)}
               ${whyChip(item)}
+              ${originChip(item)}
               <span class="quiet-chip">${esc(item.due)}</span>
               <div class="flex-1"></div>
               <button class="open-drawer inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-maccent text-white hover:bg-maccenth text-xs font-medium transition-colors" data-id="${item.id}">
@@ -546,6 +555,7 @@
             </div>
             <span class="quiet-chip flex-shrink-0">${esc(item.quiet_for)}</span>
             ${whyChip(item)}
+            ${originChip(item)}
             <button class="open-drawer filter-chip flex-shrink-0" data-id="${item.id}">Verify + nudge</button>
           </div>`;
       }
