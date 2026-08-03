@@ -166,3 +166,46 @@ const CRACKS = [
 
 // Handled since yesterday, per owner (drives the manager summary + table).
 const HANDLED_TODAY = { mc: 4, js: 2, rp: 3, tk: 1 };
+
+// ── Conversation threads per follow-up (chat-module message shape, cf. inline-create.html).
+// sender: 'client' | 'ops' | 'system'. trigger: the message the follow-up cites.
+const THREADS = {
+  'fu-001': [
+    { sender: 'ops', name: 'Maya', time: '10:40 AM', text: 'Found it: JAL First (JL061) showing 2 award seats Apr 30, IAD to HND, 120k Flying Blue each. Walkthrough attached. Say the word and we hold.' },
+    { sender: 'client', name: 'Sarah Greer', time: '11:48 AM', text: 'Amazing. Starting the booking now from my account.' },
+    { sender: 'client', name: 'Sarah Greer', time: '11:53 AM', trigger: true, text: 'Wait, quick one before I pay. Can I put my sister on the second seat from MY account, or does she need her own Flying Blue account first? Do not want to mess this up.' },
+    { sender: 'system', time: '12:55 PM', text: 'SLA · waiting on our reply for 62m · red' },
+  ],
+  'fu-002': [
+    { sender: 'client', name: 'Anaya Patel', time: '7:05 AM', text: 'Confirmed! June 22 arrival works, party of 8 plus the dog. Go ahead.' },
+    { sender: 'ops', name: 'Jordan', time: '7:11 AM', trigger: true, text: 'Perfect, locking that in. We will be back shortly with the best villa options.' },
+    { sender: 'system', time: '12:11 PM', text: 'Promise open · "back shortly" · 5h with no follow-through' },
+  ],
+  'fu-101': [
+    { sender: 'ops', name: 'Maya', time: 'yesterday 4:48 PM', trigger: true, text: 'Rob, business award space just opened on your Patagonia dates. These windows usually hold about 24h. Dates in hand, we book. Want it?' },
+    { sender: 'system', time: 'today 12:40 PM', text: 'No member reply · quiet 20h · window expiring' },
+  ],
+  'fu-102': [
+    { sender: 'ops', name: 'Tomás', time: '12:32 AM', trigger: true, text: 'Ed, four business seats together on the same flight for Frankfurt, May 16. Four together goes fast. Reply and we lock all four.' },
+    { sender: 'system', time: '12:30 PM', text: 'No member reply · quiet 12h' },
+  ],
+  'fu-103': [
+    { sender: 'ops', name: 'Rae', time: '11:31 AM', trigger: true, text: 'Lucia, your Tokyo proposal is ready: three rooms held, itinerary attached. Holds are good for two days, so no rush.' },
+    { sender: 'system', time: '12:31 PM', text: 'Room hold auto-checked 1h ago · still active · nudge window opens 6 PM' },
+  ],
+  'fu-104': [
+    { sender: 'client', name: 'Dana Halverson', time: '9:12 AM', text: 'Any luck with the Croatia villas?' },
+    { sender: 'ops', name: 'Maya', time: '10:01 AM', trigger: true, text: 'All three villa options, ferry times and full pricing are in your trip page now. The Hvar one books out fastest if any of them stands out.' },
+  ],
+};
+
+// What fed each item (drawer source chips). All three are live v1 sources.
+const ITEM_SOURCES = {
+  'fu-001': ['conversation', 'sla', 'task'],
+  'fu-002': ['conversation', 'task'],
+  'fu-101': ['conversation', 'task'],
+  'fu-102': ['conversation', 'task'],
+  'fu-103': ['conversation', 'task'],
+  'fu-104': ['conversation'],
+};
+const SOURCE_LABELS = { conversation: 'Conversation', sla: 'SLA timer', task: 'Task plane' };

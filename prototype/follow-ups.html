@@ -158,6 +158,19 @@
 
     .fu-card { transition: border-color .12s ease-out, box-shadow .12s ease-out; }
     .fu-card:hover { border-color: rgb(var(--maestro-border-hover)); box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+
+    /* Chat thread bubbles (chat-module conventions, light theme) */
+    .bubble { max-width: 78%; border-radius: .75rem; padding: .5625rem .75rem; font-size: .8125rem; line-height: 1.45; color: rgb(var(--maestro-text-primary)); }
+    .bubble.client { background: rgb(var(--maestro-card)); border: 1px solid rgb(var(--maestro-border)); border-bottom-left-radius: .25rem; }
+    .bubble.ops { background: rgb(var(--maestro-surface-raised)); border-bottom-right-radius: .25rem; }
+    .bubble.trigger { box-shadow: 0 0 0 2px rgb(var(--maestro-accent)); }
+    .trigger-tag { display: inline-flex; align-items: center; gap: .25rem; font-size: .625rem; font-weight: 600; color: rgb(var(--maestro-accent-hover)); margin-top: .3125rem; }
+    .sys-entry { display: inline-flex; align-items: center; padding: .1875rem .625rem; font-size: .6875rem; color: rgb(var(--maestro-text-tertiary)); background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); border-radius: 9999px; }
+
+    /* Source chips (coverage + drawer provenance) */
+    .src-chip { display: inline-flex; align-items: center; gap: .25rem; padding: .1875rem .5625rem; font-size: .625rem; font-weight: 600; border-radius: 9999px; background: rgb(var(--maestro-surface)); border: 1px solid rgb(var(--maestro-border)); color: rgb(var(--maestro-text-secondary)); }
+    .src-chip.live::before { content: ''; width: .3125rem; height: .3125rem; border-radius: 9999px; background: rgb(var(--maestro-success)); }
+    .src-chip.off { opacity: .55; border-style: dashed; }
   </style>
 </head>
 
@@ -248,10 +261,7 @@
               <div id="waiting-list" class="space-y-2"></div>
             </section>
 
-            <p class="text-[11px] text-mtext3 border-t border-mborder pt-3">
-              v1 scope: projection over <span class="font-mono">conductor_tasks</span> + conversations only. No Slack or meeting-notes ingestion.
-              Flag: <span class="font-mono text-maccenth">follow-ups-view</span>. Ops announcements (HEADS-UP) stay in Slack for v1.
-            </p>
+            <div id="coverage-ta"></div>
           </div>
 
           <!-- Right: VERIFIED TODAY -->
@@ -331,9 +341,10 @@
           <div id="mgr-queue" class="space-y-2"></div>
         </section>
 
-        <p class="text-[11px] text-mtext3 border-t border-mborder pt-3">
+        <p class="text-[11px] text-mtext3 border-t border-mborder pt-3 mb-3">
           Audience: ops leadership. Real-time over the same projection as the TA view; an optional daily snapshot notification can sit on top (flag-gated).
         </p>
+        <div id="coverage-mgr"></div>
       </div>
     </div>
   </main>
@@ -360,6 +371,7 @@
         <div class="mb-2" id="drawer-reason"></div>
         <p class="text-sm text-mtext2" id="drawer-detail"></p>
         <p class="text-[11px] text-mtext3 mt-2" id="drawer-provenance"></p>
+        <div id="drawer-sources" class="flex flex-wrap items-center gap-1.5 mt-2"></div>
       </div>
 
       <!-- Verify checklist -->
@@ -393,6 +405,40 @@
       <button id="drawer-open-thread" class="filter-chip">Open conversation</button>
       <div class="flex-1"></div>
       <button id="drawer-done" class="text-sm text-msuccess hover:opacity-80 transition-opacity font-medium">Mark handled</button>
+    </div>
+  </div>
+
+  <!-- Conversation thread panel (chat module, read-only demo) -->
+  <div id="thread-panel" class="drawer fixed right-0 top-0 h-full w-[560px] max-w-full bg-mbg border-l border-mborder z-50 flex flex-col shadow-2xl">
+    <div class="flex items-center justify-between gap-3 p-4 border-b border-mborder bg-mcard">
+      <div class="flex items-center gap-2 min-w-0">
+        <button id="thread-back" class="hidden filter-chip !py-1 !px-2.5" title="Back to the follow-up">
+          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Follow-up
+        </button>
+        <div class="min-w-0">
+          <h3 class="text-sm font-semibold text-mtext truncate" id="thread-title"></h3>
+          <p class="text-[11px] text-mtext3 truncate" id="thread-subtitle"></p>
+        </div>
+      </div>
+      <button id="thread-close" class="p-1.5 text-mtext3 hover:text-mtext transition-colors flex-shrink-0">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="thread-messages" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+
+    <div class="border-t border-mborder bg-mcard p-4">
+      <textarea id="thread-composer" rows="3" placeholder="Write a reply…"
+        class="w-full bg-msurface border border-mborder rounded-lg px-3 py-2.5 text-sm text-mtext leading-relaxed focus:outline-none focus:border-maccent focus:bg-mcard resize-none"></textarea>
+      <div class="flex items-center gap-2 mt-2">
+        <span class="text-[11px] text-mtext3">Sends as you · personalize before sending</span>
+        <div class="flex-1"></div>
+        <button id="thread-send" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-maccent text-white hover:bg-maccenth text-sm font-medium transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          Send
+        </button>
+      </div>
     </div>
   </div>
 
@@ -604,9 +650,39 @@
           : `<div class="border border-dashed border-mborder rounded-xl p-6 text-center text-xs text-mtext3">Nothing open for this owner.</div>`;
       }
 
+      function coverageCard() {
+        const live = ['Conversations', 'Task plane · 17 signal sources', 'SLA timers'];
+        const off = [
+          { label: 'Slack', why: 'cluster comms move INTO Conductor (Aug 4 cutover), so ingestion becomes unnecessary' },
+          { label: 'Meeting notes', why: 'enter when logged as tasks and handoffs (CON-1533 path)' },
+          { label: 'Phone context', why: 'arrives via ops-report digitization (CON-1534 path)' },
+        ];
+        return `
+          <div class="bg-mcard border border-mborder rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="text-[13px] font-semibold text-mtext tracking-wide uppercase">Source coverage</h3>
+              <span class="text-xs text-mtext3">what feeds this view, and what deliberately does not (yet)</span>
+            </div>
+            <div class="flex flex-col md:flex-row gap-5">
+              <div class="flex-shrink-0">
+                <p class="text-[10px] font-semibold text-msuccess uppercase tracking-wide mb-1.5">Live in v1</p>
+                <div class="flex flex-wrap gap-1.5">${live.map(s => `<span class="src-chip live">${s}</span>`).join('')}</div>
+              </div>
+              <div class="flex-1">
+                <p class="text-[10px] font-semibold text-mtext3 uppercase tracking-wide mb-1.5">Not ingested in v1 · by design</p>
+                <div class="space-y-1.5">${off.map(s => `<div class="flex items-center gap-2"><span class="src-chip off flex-shrink-0">${s.label}</span><span class="text-[11px] text-mtext3">${s.why}</span></div>`).join('')}</div>
+              </div>
+            </div>
+            <p class="text-[11px] text-mtext3 mt-3 pt-3 border-t border-mborder">External tools (Read AI, Granola, Fireflies) are an explicit v2 decision. Flag: <span class="font-mono text-maccenth">follow-ups-view</span>.</p>
+          </div>`;
+      }
+
       function render() {
         if (viewMode === 'ta') renderTA(); else renderMgr();
         $('#ta-tab-count').textContent = items.length;
+        const cov = coverageCard();
+        $('#coverage-ta').innerHTML = cov;
+        $('#coverage-mgr').innerHTML = cov;
       }
 
       function setView(mode) {
@@ -642,6 +718,8 @@
           ? `${slaChip(item)} ${reasonChip(item)}<span class="text-[11px] text-mtext3 ml-2">${esc(meta.desc)}</span>` : '';
         $('#drawer-detail').textContent = item.detail;
         $('#drawer-provenance').textContent = `Source: ${item.signal} · task ${item.source_task} · confidence ${item.confidence}%`;
+        $('#drawer-sources').innerHTML = '<span class="text-[10px] text-mtext3 uppercase tracking-wide font-semibold mr-0.5">Fed by</span>' +
+          (ITEM_SOURCES[item.id] || []).map(s => `<span class="src-chip live">${SOURCE_LABELS[s] || s}</span>`).join('');
         $('#drawer-draft').value = item.draft;
         $('#drawer-verify').innerHTML = item.verify.length
           ? item.verify.map((v, i) => `
@@ -664,6 +742,55 @@
         $('#drawer-backdrop').classList.remove('open');
       }
 
+      // ── Conversation thread panel (chat module) ──
+      let threadItemId = null;
+      let threadFromDrawer = false;
+
+      function threadBubble(m, item) {
+        if (m.sender === 'system') {
+          return `<div class="flex justify-center py-1"><span class="sys-entry">${esc(m.text)} · ${esc(m.time)}</span></div>`;
+        }
+        const isClient = m.sender === 'client';
+        const meta = REASON_META[item.reason];
+        const tag = m.trigger
+          ? `<div class="trigger-tag"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Why you are here · ${esc(item.reason_label || (meta ? meta.label : ''))}</div>`
+          : '';
+        return `
+          <div class="flex flex-col ${isClient ? 'items-start' : 'items-end'}">
+            <span class="text-[10px] text-mtext3 mb-1 px-1">${esc(m.name || '')} · ${esc(m.time)}</span>
+            <div class="bubble ${isClient ? 'client' : 'ops'}${m.trigger ? ' trigger' : ''}">${esc(m.text)}</div>
+            ${tag}
+          </div>`;
+      }
+
+      function openThread(id, fromDrawer) {
+        const item = items.find(i => i.id === id) || FOLLOWUPS.find(i => i.id === id);
+        if (!item) return;
+        threadItemId = id;
+        threadFromDrawer = !!fromDrawer;
+        $('#thread-back').classList.toggle('hidden', !fromDrawer);
+        $('#thread-title').textContent = item.member;
+        $('#thread-subtitle').textContent = item.context + ' · owner ' + memberById(item.owner).name;
+        $('#thread-messages').innerHTML = (THREADS[id] || []).map(m => threadBubble(m, item)).join('')
+          || '<p class="text-xs text-mtext3 text-center">No messages in this thread yet.</p>';
+        $('#thread-composer').value = fromDrawer ? $('#drawer-draft').value : '';
+        $('#reply-drawer').classList.remove('open');
+        $('#thread-panel').classList.add('open');
+        $('#drawer-backdrop').classList.add('open');
+        setTimeout(() => {
+          const t = document.querySelector('#thread-messages .bubble.trigger');
+          if (t) t.scrollIntoView({ block: 'center' });
+        }, 60);
+      }
+
+      function closeThread(keepBackdrop) {
+        threadFromDrawer = false;
+        $('#thread-panel').classList.remove('open');
+        if (!keepBackdrop) { $('#drawer-backdrop').classList.remove('open'); threadItemId = null; }
+      }
+
+      function threadIsOpen() { return $('#thread-panel').classList.contains('open'); }
+
       // ── Events ──
       document.addEventListener('click', (e) => {
         const ownerBtn = e.target.closest('.owner-chip');
@@ -680,7 +807,7 @@
         if (openBtn) { openDrawer(openBtn.dataset.id); return; }
 
         const threadBtn = e.target.closest('.open-thread');
-        if (threadBtn) { toast('Would open the member conversation (out of prototype scope)'); return; }
+        if (threadBtn) { openThread(threadBtn.dataset.id, false); return; }
 
         const crackBtn = e.target.closest('.crack-action');
         if (crackBtn) { toast('Would jump to the record to fix this (out of prototype scope)'); return; }
@@ -698,16 +825,26 @@
       $('#view-mgr').addEventListener('click', () => setView('mgr'));
 
       $('#drawer-close').addEventListener('click', closeDrawer);
-      $('#drawer-backdrop').addEventListener('click', closeDrawer);
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+      $('#drawer-backdrop').addEventListener('click', () => { if (threadIsOpen()) closeThread(); else closeDrawer(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (threadIsOpen()) closeThread(); else closeDrawer(); } });
+
+      $('#thread-close').addEventListener('click', () => closeThread());
+      $('#thread-back').addEventListener('click', () => {
+        const id = threadItemId;
+        closeThread(true);
+        if (id) openDrawer(id);
+      });
+      $('#thread-send').addEventListener('click', () =>
+        toast('Sending is out of prototype scope. In Conductor this sends in the member thread, as you.'));
 
       $('#drawer-copy').addEventListener('click', () => {
         navigator.clipboard && navigator.clipboard.writeText($('#drawer-draft').value).catch(() => {});
         toast('Reply copied. Paste it in the conversation.');
       });
 
-      $('#drawer-open-thread').addEventListener('click', () =>
-        toast('Would open the member conversation (out of prototype scope)'));
+      $('#drawer-open-thread').addEventListener('click', () => {
+        if (openItemId) openThread(openItemId, true);
+      });
 
       $('#drawer-done').addEventListener('click', () => {
         if (!openItemId) return;
